@@ -13,6 +13,8 @@ load_dotenv()
 
 from database import db
 from auth import get_current_user, get_admin_user
+from services.grader import grade_all_pending
+from services.agent_runner import run_card_for_user
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
@@ -192,11 +194,6 @@ async def health():
 
 
 async def run_daily_cards(target_date: str = None, specific_user_id: str = None):
-    import sys
-    ESM_PATH = os.path.join(os.path.dirname(__file__), "..", "esm_agent")
-    if ESM_PATH not in sys.path:
-        sys.path.insert(0, ESM_PATH)
-    from services.grader import grade_all_pending
     today = target_date or date.today().isoformat()
     grade_result = grade_all_pending(db)
     print(f"[EdgeBet] Graded: {grade_result}")
@@ -210,7 +207,6 @@ async def run_daily_cards(target_date: str = None, specific_user_id: str = None)
         try:
             prefs_result = db.table("preferences").select("*").eq("user_id", uid).execute()
             prefs = prefs_result.data[0] if prefs_result.data else {}
-            from services.agent_runner import run_card_for_user
             run_card_for_user(uid, prefs, target_date=today)
             print(f"[EdgeBet] Card generated for {uid}")
         except Exception as e:
