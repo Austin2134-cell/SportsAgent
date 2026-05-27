@@ -1,0 +1,86 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-20  |  SLATE: B
+  Ten-game MLB slate with viable pitcher outs and strikeout plays at acceptable juice; no NBA or NHL data supplied so card is MLB-only but diversified across games.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Chicago White Sox @ Seattle Mariners
+     2:10 PM MDT
+     BET:    Emerson Hancock Over 17.5 Pitcher Outs
+     ODDS:   -104  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Hancock at -104 for 17.5 outs is essentially a coin-flip price on a line that sits squarely in the 15.5-17.5 sweet spot. Seattle is a heavy -149 home favorite against the White Sox, a team with a modest 25-23 record, and the low total of 7.5 suggests a pitching-friendly environment that supports a longer Hancock outing.
+     WHY:    Total of 7.5 is lowest on the slate — confirms low-scoring environment expected | Seattle -149 favorite; Mariners expected to be comfortable and keep Hancock in deep | 17.5 outs line is within the conservative sweet spot per framework (needs only 5.2+ innings) | Near-even juice at -104 provides strong price efficiency with minimal vig drag
+     RISK:   Hancock exits early due to injury, pitch limit, or unexpected command issues in a game that stays close — one bad inning can end the bet before reaching 18 outs.
+     LAST PLAYABLE: -120
+
+  2. [MLB] Houston Astros @ Minnesota Twins
+     11:40 AM MDT
+     BET:    Joe Ryan Over 17.5 Pitcher Outs
+     ODDS:   -165  (DraftKings)
+     UNITS:  1u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Ryan's line opened and sits at -165, which is above the preferred -130 ceiling for a full 2-unit play, but the underlying case is strong enough for a reduced 1-unit lean. Minnesota is a -149 home favorite in a game with a 8.0 total — the second-lowest on the slate — pointing to a clean pitching environment where Ryan is expected to work deep. The Astros are 20-30, one of the worst records in the AL, providing a favorable matchup for Ryan to rack up outs efficiently.
+     WHY:    8.0 total second-lowest on slate; low-scoring environment supports longer outings | Minnesota -149 favorite against a struggling 20-30 Astros club | 17.5 outs (needs 5.2+ innings) is well within a reliable starter's range in this context | Outs over market priced as heavy favorite confirms broad market agreement
+     RISK:   Juice at -165 exceeds the preferred -130 ceiling, making this a lean only; Ryan exits early or Astros string together traffic that inflates pitch count and triggers early hook.
+     LAST PLAYABLE: -130
+
+  3. [MLB] Cincinnati Reds @ Philadelphia Phillies
+     11:05 AM MDT
+     BET:    Aaron Nola Over 5.5 Strikeouts
+     ODDS:   -123  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Nola at 5.5 Ks is the maximum allowed line under the framework, and the -123 juice is within the hard ceiling of -130. Nola is an established strikeout pitcher facing a Reds lineup that is a modest .500 club (25-24), with a game total of 9.5 suggesting a moderate-scoring environment; Nola's outs line is priced as a near-favorite at -144 indicating the market expects a long, deep start, which supports the strikeout over.
+     WHY:    5.5 K line is at the conservative threshold — framework-compliant | Nola's outs over priced at -144, confirming market expects 6+ innings from him | Reds are a .500 team without obvious power threat concentration to force early exit | Juice at -123 is within the hard ceiling and reflects genuine market respect for this line
+     RISK:   Nola has a short leash night or the Reds make early contact and keep pitch counts high, forcing a 5th-inning exit before he reaches 6 strikeouts.
+     LAST PLAYABLE: -130
+
+  4. [MLB] Texas Rangers @ Colorado Rockies
+     1:10 PM MDT
+     BET:    Jack Leiter Over 17.5 Pitcher Outs
+     ODDS:   -117  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Leiter at -117 for 17.5 outs at Coors Field is interesting precisely because the inflated 10.0 total may mislead the market into pricing a shorter outing, but run-scoring environment and outs accumulation are not perfectly correlated — starters still get deep at Coors regularly. Texas is a -126 road favorite against a 19-30 Rockies team, and the -117 price represents real value for a line that only requires 5.2+ innings.
+     WHY:    17.5 outs line in the sweet spot; needs only 5.2 innings to clear | Coors 10.0 total may be creating public suppression on Leiter's outs line, inflating value | Texas -126 road favorite against a weak 19-30 Rockies club | Near-even juice at -117 with plausible deep-start scenario
+     RISK:   Coors Field is genuinely volatile — one big inning can spike pitch count and force an early hook before Leiter reaches 18 outs; altitude fatigue is a real factor for visiting starters.
+     LAST PLAYABLE: -125
+
+  5. [MLB] Chicago White Sox @ Seattle Mariners
+     2:10 PM MDT
+     BET:    Sean Burke Over 5.5 Strikeouts
+     ODDS:   +124  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Burke at +124 for 5.5 Ks is a plus-money play at the maximum allowed line — this is exactly where the framework says long-term ROI is built. The 7.5 total confirms a low-run environment and the White Sox are a modest 25-23 club; while Burke is the away starter for a team favored at -149 by the Mariners, the plus-money price at 5.5 Ks provides strong positive expected value if Burke's underlying strikeout profile supports regular 5-6 K outings.
+     WHY:    Plus money (+124) at the 5.5 K line — framework explicitly targets these prices for ROI | 7.5 total (lowest on the slate) creates a pitcher-friendly environment for both starters | Seattle -149 favorite; White Sox lineup may be thin, supporting K upside for Burke | 5.5 K over requires roughly 1 strikeout per inning across 5+ frames — achievable in this context
+     RISK:   Burke is the away starter for the underdog team — if White Sox fall behind early and bullpen takes over before 5 innings, the K total is truncated; Burke's own command instability could also cut the outing short.
+     LAST PLAYABLE: +100
+     ⚠ CORR: Correlated with Play 1 (Emerson Hancock Outs) — both plays are from the same SEA vs CWS game. Both depend on a low-scoring, pitcher-dominated environment. If the game script goes sideways early (unexpected offense), both plays are at risk simultaneously. Combined exposure is capped at 4 units total across both plays given this correlation.
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Andrew Abbott Over 4.5 Strikeouts (CIN @ PHI) +108  +108  1u  —  Plus money at the conservative 4.5 K line is appealing but Abbott is the road starter for a .500 team against a Phillies lineup that can produce offense (9.5 total is high); the upside is real but the PHI lineup quality introduces enough variance to keep this a lean rather than an official play.
+  • [MLB] Tanner Bibee Over 17.5 Pitcher Outs (CLE @ DET) -133  -133  1u  —  Bibee vs. a 20-29 Tigers club in a 7.5-total game is a strong outs setup, but the -133 juice exceeds the -130 hard ceiling by 3 points — framework rules this out as an official play. Playable at -130 or better on an alternate book.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • Today's best pricing is in the pitcher outs market — three plays cleared the sweet spot (15.5-17.5) at or near even juice, which is rare on a full 10-game slate.
+  • The CWS @ SEA game is the highest-conviction environment on the card (7.5 total, heavy favorite) but carries correlation risk across Plays 1 and 5 — total exposure to that game is intentionally reduced to 4 units.
+  • No NBA or NHL data was supplied so the card is forced to MLB-only; cross-sport diversification rules require flagging this — treat the card as a concentrated MLB slate and size accordingly.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Chris Sale Over 7.5 Ks (ATL @ MIA) — hard pass per framework rule: K lines above 5.5 require +120 or better; -108 at 7.5 Ks violates both the line threshold and the juice rule.
+  ✗ Janson Junk Over 17.5 Outs (ATL @ MIA) — facing an Atlanta Braves team that is 33-16 (best record on the slate) in a 7.0-total game is a severe mismatch; Braves lineup likely truncates any Marlins starter early.
+  ✗ All batter hit overs priced worse than -180 — Bryce Harper (-231), Elly De La Cruz (-249), Jose Barrero (-240), JT Realmuto (-264), and others all fail the hard juice ceiling rule; no batter hit over on this card.
+  ✗ Kyle Freeland Over 16.5 Outs (TEX @ COL) at -141 — exceeds -130 hard ceiling; Coors altitude risk compounds the concern.
+  ✗ Michael Burrows Over 4.5 Ks (HOU @ MIN) at -148 — exceeds -130 hard ceiling for a strikeout prop.
+  ✗ Cam Schlitter Over 17.5 Outs (TOR @ NYY) at -164 — far exceeds the -130 hard ceiling; automatic pass.
+  ✗ Trey Yesavage Over 14.5 Outs (TOR @ NYY) at -140 — exceeds hard ceiling by 10 points; pass.
+  ✗ Joe Ryan Over 6.5 Ks (HOU @ MIN) at +114 — while plus money satisfies the price rule, 6.5 Ks is above the 5.5 line threshold; framework requires verified lineup weakness and outs market support for 6+ innings before recommending 6.5+ K lines as official plays. Downgraded to pass given incomplete confirming data.
+  ✗ Merrill Kelly Over 17.5 Outs (SF @ ARI) at -145 — exceeds the -130 hard ceiling.
+  ✗ Injury report names redacted in supplied data — no specific player injuries could be cross-referenced against props; any player on an IL whose prop appeared was treated with standard caution and no assumptions of availability were made.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

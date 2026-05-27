@@ -1,0 +1,52 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-11  |  SLATE: C
+  Only three games have live market data supplied; injury context is anonymous with no player names confirmed, severely limiting prop analysis and forcing a team-total or moneyline focus only.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (2/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Tampa Bay Rays @ Toronto Blue Jays
+     5:08 PM MDT
+     BET:    Tampa Bay Rays Moneyline
+     ODDS:   +109  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   The Rays enter at 26-13, the best record of any team on the supplied slate, and are catching plus-money against a Blue Jays squad at 18-22. Plus-money on the better team by record in a low-total environment (7.0) offers positive expected value without requiring a dominant performance.
+     WHY:    Rays are 26-13, one of the best records in the league per supplied data | Blue Jays are 18-22, meaningful record gap supporting the underdog price | 7.0 total is low — tight game script favors the team with more wins and likely better run prevention | +109 is genuine plus-money, satisfying the price preference rule
+     RISK:   Starter quality and lineup construction for both sides are unconfirmed — no pitcher data supplied, and an anonymous injury list means a key Rays absence cannot be ruled out.
+     LAST PLAYABLE: -110
+
+  2. [MLB] Los Angeles Angels @ Cleveland Guardians
+     4:11 PM MDT
+     BET:    Game Total Under 7.5
+     ODDS:   -112  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   A 7.5 total in a matchup featuring a below-.500 Angels offense (16-25) against a Guardians team at 21-21 in a neutral-to-pitcher-friendly environment leans toward a lower-scoring outcome. The under is available at -112, just inside the hard juice ceiling.
+     WHY:    Angels are 16-25 — among the weaker offensive teams on this slate | Guardians at 21-21 are a competent but not elite offensive club | 7.5 is a modest total; under here does not require a pitcher's duel, just average or below output | -112 juice is within the -130 hard ceiling
+     RISK:   No starting pitcher data is confirmed — a high-strikeout arms matchup that favors the under cannot be verified, and conversely a weak starter or early bullpen exposure could push the total over easily.
+     LAST PLAYABLE: -125
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] New York Yankees Moneyline vs Baltimore Orioles  -156  1u  —  Yankees at 26-15 are the strongest team by record on the slate against a 18-23 Orioles club, but -156 juice exceeds the -130 hard ceiling for official plays. Structurally sound bet, wrong price — reduced to a lean only.
+  • [MLB] Tampa Bay Rays @ Toronto Blue Jays Under 7.0  -105  1u  —  Low total at favorable juice, but 7.0 is already tight and the under would require below-average offense from both sides. Unconfirmed starters make this fragile — keeping it as a lean rather than stacking it with the Rays ML on the same game.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • Slate data is severely limited — only three games with market lines and fully anonymous injury context. No player prop analysis is possible without confirmed names, roles, or lineups.
+  • The Rays ML at +109 is the cleanest play on the card: best record on the slate, plus-money price, low-total game environment that should stay competitive.
+  • The Yankees ML is structurally strong but -156 is hard-disqualified by the juice ceiling — it belongs in a parlay context only if specifically requested, never as a standalone official play at that price.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ ALL PLAYER PROPS — PASS: Injury data supplied contains zero player names. No prop can be evaluated for role, availability, usage, or matchup without confirmed player identities. Every player prop on every game is a hard pass today.
+  ✗ New York Yankees ML (-156) — PASS as official play: juice exceeds the -130 hard ceiling. Structurally correct bet, wrong price for official card inclusion.
+  ✗ Cleveland Guardians ML (-171) — PASS: juice far exceeds -130 ceiling. Even with the Angels at 16-25, -171 requires an unsustainable win rate to generate positive ROI.
+  ✗ Toronto Blue Jays ML (-131) — PASS: one tick above the -130 hard ceiling. Not enough margin to justify official play status given the Rays' superior record.
+  ✗ Arizona Diamondbacks @ Texas Rangers and Seattle Mariners @ Houston Astros and San Francisco Giants @ Los Angeles Dodgers — PASS: team records provided but zero market line data supplied for these games. Cannot evaluate moneylines, totals, or spreads without current odds.
+  ✗ New York Yankees @ Baltimore Orioles Total (9.0) — PASS: 9.0 is a high total requiring both offenses to perform above average; no starter data to anchor an under, and the over at -102 is nearly fair value with no identifiable edge.
+  ✗ NOTE ON RECORD: Current record stands at 4-12-0, -15.7 units, -50.6% ROI. Discipline and line selectivity are the only path to recovery — forcing plays on a thin slate accelerates drawdown. Two clean leans-as-officials is the correct response to a C-grade data environment.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

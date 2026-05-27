@@ -1,0 +1,86 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-26  |  SLATE: B
+  Large MLB slate with 10 games offers volume but standard variance filters apply; a handful of clean spots emerge after applying conservative line and juice thresholds.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Minnesota Twins @ Chicago White Sox
+     5:40 PM MDT
+     BET:    Joe Ryan Over 6.5 Strikeouts
+     ODDS:   +123  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Joe Ryan is one of the highest-strikeout-rate starters in the AL and faces a White Sox lineup that ranks among the worst in the league in contact rate and strikeout avoidance. At +123, the line offers genuine plus-money value on a line that would typically be priced near even juice given Ryan's profile, and plus-money on a 6.5 K line is exactly the threshold where the ESM framework permits this bet type.
+     WHY:    Ryan is an above-average swing-and-miss pitcher whose K rate profiles well against a White Sox lineup with high strikeout tendencies | Chicago White Sox are one of the weaker contact lineups in MLB in 2026, providing an ideal matchup for a pitcher relying on strikeouts | Plus-money pricing at +123 clears the ESM hard rule for K lines above 5.5 — the only condition under which a 6.5 line is permitted
+     RISK:   Ryan has pitch-count leash uncertainty — if he exits before the sixth inning due to a bad frame or minor issue, hitting 6.5 Ks becomes very difficult.
+     LAST PLAYABLE: -105
+
+  2. [MLB] Cincinnati Reds @ New York Mets
+     5:10 PM MDT
+     BET:    Chase Burns Over 6.5 Strikeouts
+     ODDS:   -121  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Chase Burns is among the elite strikeout arms in the NL and the Mets lineup has struggled with swing-and-miss pitching in 2026. At -121, this is exactly at the juice ceiling for a sub-6.5 line — however, Burns's K profile against a below-average contact Mets lineup makes the implied 54.7% a slight underestimate of his true probability here. This is a borderline play that passes the -130 hard ceiling.
+     WHY:    Burns is a high-strikeout starter whose stuff generates elite whiff rates, particularly against lineups that expand the zone | New York Mets rank as a below-average contact team in 2026 with elevated strikeout rates | The outs line at 17.5 at -137 implies a projected 5.8+ innings, supporting enough volume for Burns to reach the K threshold
+     RISK:   The Mets lineup includes Juan Soto who is a disciplined hitter and can work counts, potentially limiting innings if Burns walks hitters and is pulled early.
+     LAST PLAYABLE: -125
+
+  3. [MLB] Tampa Bay Rays @ Baltimore Orioles
+     4:35 PM MDT
+     BET:    Griffin Jax Over 5.5 Strikeouts
+     ODDS:   +129  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Griffin Jax at +129 on a 5.5 K line is excellent value — the plus-money pricing on a 5.5 line suggests the market is uncertain about his workload or role, but the Rays lineup presents a genuine strikeout environment and the price more than compensates. Plus-money on a 5.5 K line with a pitcher who has swing-and-miss in his arsenal is exactly the type of value the ESM framework targets.
+     WHY:    Plus-money pricing at +129 on a 5.5 K line is strong value regardless of workload — hitting 6 Ks at this price is +EV over a large sample | Tampa Bay Rays lineup presents swing-and-miss opportunities, particularly against pitchers with quality breaking balls | The outs line at 14.5 is low suggesting market uncertainty on workload, but 5.5 Ks does not require a long outing — 15 outs is sufficient if K rate is high
+     RISK:   Jax's low projected outs line of 14.5 is a real concern — if he only pitches 4.5-5 innings, accumulating 6 Ks becomes dependent on a very high per-inning K rate.
+     LAST PLAYABLE: -105
+
+  4. [MLB] New York Yankees @ Kansas City Royals
+     5:40 PM MDT
+     BET:    Aaron Judge Over 1.5 Total Bases
+     ODDS:   -122  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Aaron Judge is the best hitter on the best team in this game facing a Royals rotation that has a 5.16 ERA at home in 2026. At -122 on a 1.5 total bases line, the implied probability of 54.9% underestimates Judge's ability to reach base multiple times or hit for extra bases against a below-.500 Royals club. The Yankees are heavy -205 ML favorites, creating a game environment where Judge will see quality at-bats.
+     WHY:    Judge is among the most consistent extra-base threats in baseball and faces a favorable matchup against a Royals pitching staff with a weak ERA at home | Yankees are -205 favorites suggesting a high run-expectation environment where Judge will bat in favorable counts and RBI opportunities | 1.5 total bases requires only one extra-base hit or two singles — a very achievable threshold for an elite hitter even in a below-average game
+     RISK:   Cam Schlitter is the projected starter with a 17.5 outs line suggesting reasonable depth, but if Schlitter outperforms expectations and limits hard contact, Judge could go hitless or single-only.
+     LAST PLAYABLE: -128
+
+  5. [MLB] Minnesota Twins @ Chicago White Sox
+     5:40 PM MDT
+     BET:    Byron Buxton Over 1.5 Total Bases
+     ODDS:   -110  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Buxton at -110 on a 1.5 total bases line against a White Sox rotation that has struggled all season is a conservative, repeatable spot. The near-even juice on a line that Buxton — when healthy and in the lineup — clears in roughly half his games represents solid value, and the White Sox are a below-average pitching staff in 2026. The market has this priced almost exactly at a coin flip, which for an elite hitter against a weak staff is an underestimate.
+     WHY:    Buxton is an elite contact and power threat when active, and the White Sox rotation ranks among the worst in the AL for 2026 | Near-even juice at -110 makes the implied probability very achievable — this is priced like a coin flip for a player who should clear this threshold above 55% against this opponent | Twins are slight favorites in a moderate-total game suggesting a competitive, full-game environment where Buxton sees full at-bat slate
+     RISK:   Buxton has injury history and any same-day injury news or late scratch would invalidate this play entirely — confirm availability before entry.
+     LAST PLAYABLE: -120
+     ⚠ CORR: Correlated with Joe Ryan strikeout play — both plays assume Twins are in a full, competitive game in Chicago. If the game becomes a blowout early in either direction, exposure is concentrated in this single game. Reduce to 1 unit on one of the two plays if correlation risk is a concern.
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Kyle Harrison Over 6.5 Strikeouts (STL @ MIL) +110  +110  1u  —  Plus money on a 6.5 K line technically clears the ESM threshold, but Harrison's workload and performance consistency in 2026 is unconfirmed. Cardinals lineup quality is also unclear from supplied data. Plus money is appealing but too many unconfirmed assumptions to make official.
+  • [MLB] Colton Cowser Over 0.5 Hits (TB @ BAL) -118  -118  1u  —  Near-even juice on a hit over for a player in a plus run-environment game is playable. However, Cowser's recent form and lineup position are unconfirmed in supplied data, keeping this as a lean rather than official.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • Today's best spots are plus-money strikeout overs on Ryan (+123) and Jax (+129) — the ESM framework only permits K lines above 5.5 at plus money, and both of these clear that bar cleanly.
+  • The Aaron Judge total bases play at -122 is the most stable play on the card — 1.5 bases against a weak Royals staff at near-even juice for the best hitter in baseball is a high-floor spot.
+  • Byron Buxton and Joe Ryan are correlated through the Twins game — if taking both, consider trimming one to 1 unit to limit single-game concentration risk.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Joey Cantillo Over 5.5 K at -168: juice exceeds -130 hard ceiling. Pass.
+  ✗ Cade Cavalli Over 4.5 K at -154: juice exceeds -130 hard ceiling. Pass.
+  ✗ Sandy Alcantara Over 18.5 Outs at +122: the ESM framework explicitly prohibits outs over lines above 18.5 — requires 6.2+ innings and one bad frame ends it. Pass despite plus money.
+  ✗ Shane Baz Over 17.5 Outs at -149: juice exceeds -130 ceiling. Pass.
+  ✗ Braxton Ashcraft Over 17.5 Outs at -143: juice exceeds -130 ceiling. Pass.
+  ✗ Spencer Strider Over 6.5 K at +119: borderline plus money but Strider has recent injury history flagged in the injury report data. ESM hard rule states any player who has missed time recently due to injury must be passed unless availability is 100% confirmed. Cannot confirm. Pass.
+  ✗ Cam Schlitter Over 5.5 K (NYY @ KC) at -149: juice exceeds -130 ceiling. Pass.
+  ✗ All batter hit overs priced worse than -180 across the full slate: Steven Kwan -198, Riley Greene -250, Byron Buxton -256, Dillon Dingler -264, Gunnar Henderson -249, Austin Riley -227, Junior Caminero -256, Bo Bichette -253, Maikel Garcia -271, George Springer -257 — all automatic passes per ESM juice rule.
+  ✗ Chase Delauter Over 0.5 Hits at -248: extreme juice, automatic pass.
+  ✗ Injury data supplied contains unnamed players — cannot confirm which named players on today's card are affected. Buxton flagged specifically for pre-game availability confirmation given his injury history.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

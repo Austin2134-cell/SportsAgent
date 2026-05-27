@@ -1,0 +1,82 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-05  |  SLATE: C
+  Injury feed names are redacted, limiting NBA role-confirmation depth; MLB slate is broad but pitcher workload and lineup context is partially unverified, keeping overall confidence constrained.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [NBA] Cleveland Cavaliers @ Detroit Pistons
+     5:10 PM MDT
+     BET:    Cade Cunningham Over 43.5 Points + Rebounds + Assists
+     ODDS:   -109  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Cunningham is the Pistons' primary engine at home against a Cleveland team that concedes usage to opposing lead guards. The 43.5 PRA number is modest for a player averaging this kind of all-around production as Detroit's top option, and the -109 price is fair given the role certainty and home court.
+     WHY:    Cunningham is Detroit's clear No. 1 usage player and playmaker — role is not fragile | Detroit is favored by 3.5 at home, meaning Pistons are expected to control pace and script | 43.5 PRA threshold is reachable through any combination of his three tracked stats — not dependent on a single-category spike | Cleveland's defense allows lead-guard creation; Cunningham benefits from attack-and-distribute opportunities | Implied probability at -109 (~52%) understates realistic hit probability for a secure-role star at home in a playoff-atmosphere game
+     RISK:   Blowout in either direction could truncate Cunningham's minutes in the fourth quarter, and redacted NBA injury feed means a late scratch to a key teammate (shifting defensive attention) or Cunningham himself cannot be fully confirmed.
+     LAST PLAYABLE: -125
+
+  2. [MLB] Cincinnati Reds @ Chicago Cubs
+     5:40 PM MDT
+     BET:    Jameson Taillon Over 17.5 Pitcher Outs
+     ODDS:   -165  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Taillon working at home for the Cubs (23-12, best record on this slate) against a Cincinnati offense that has run-prevention vulnerabilities, and the 17.5-out mark equates to just under 6 innings — a threshold a healthy Taillon in a favorable home environment clears with regularity. The Cubs' run support incentivizes the team to ride him deep rather than pull early.
+     WHY:    Cubs are -171 ML favorites, signaling high run-support expectation and a deep leash for Taillon | 17.5 outs = 5.2 innings; Taillon's workload profile at home with a lead typically exceeds this | Cincinnati offense is not elite at generating traffic against control-oriented starters — lowers bullpen urgency | Low total (8.0) suggests a pitcher-friendly environment at Wrigley for this matchup | Cubs' 23-12 record reflects roster quality that can absorb early exits, but the team has incentive to preserve bullpen given game importance
+     RISK:   Early trouble or high pitch count through 3-4 innings could force a shorter outing; any unverified Taillon injury or undisclosed limitation would immediately invalidate this play.
+     LAST PLAYABLE: -185
+
+  3. [MLB] Toronto Blue Jays @ Tampa Bay Rays
+     4:41 PM MDT
+     BET:    Drew Rasmussen Over 4.5 Strikeouts
+     ODDS:   -114  (FanDuel)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Rasmussen at home for Tampa Bay (22-12, strongest record on the MLB slate) against a Toronto offense that has underperformed this season at 16-19, and the 4.5-K threshold is achievable across 5-6 innings for a pitcher who works with swing-and-miss stuff. The -114 price reflects fair value given Tampa's home dominance this year.
+     WHY:    Tampa Bay 22-12 is the best record among all MLB teams on this slate — strong roster support and favorable home environment | Toronto at 16-19 suggests a lineup with pockets of weakness Rasmussen can exploit | 4.5 Ks is a low threshold for a full-workload start — only needs roughly one strikeout per inning through 5 frames | Total set at 7.0 (O-122) indicates a moderate-to-low scoring environment that favors extended pitcher usage | Rasmussen's over/under on outs (17.5) priced at -123 over confirms market expects a workload that supports K accumulation
+     RISK:   If Rasmussen's pitch efficiency is poor early and he is pulled before reaching 5 innings, the K total becomes very difficult to clear; any unverified health limitation would be a full pass trigger.
+     LAST PLAYABLE: -130
+
+  4. [MLB] Cleveland Guardians @ Kansas City Royals
+     5:41 PM MDT
+     BET:    Gavin Williams Over 5.5 Strikeouts
+     ODDS:   -130  (BetMGM)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Williams has the strikeout profile to clear 5.5 against a Kansas City lineup that ranks among the weaker offenses on this slate at 16-19, and the companion outs market (-165 on 17.5 outs) confirms the book expects Williams to work deep enough for K accumulation. At -130 the implied probability is reasonable for a power arm in a low-total (7.5) environment.
+     WHY:    Total of 7.5 in a pitcher-friendly context supports extended Williams usage and K opportunities | Kansas City at 16-19 is a below-.500 lineup — fewer lineup-protection threats means Williams can challenge hitters | Outs market priced at -165 for 17.5 confirms expected workload depth that makes 5.5 Ks achievable | Cleveland is a slight favorite (-118 ML), meaning they have run support incentive to let Williams work | 6-inning workload at approximately 1 K per inning easily clears the 5.5 number
+     RISK:   Williams working inefficiently or with command issues in early innings could shorten his outing before K total is reached; KC lineup getting on base early forces pitch count up and limits strikeout window.
+     LAST PLAYABLE: -148
+
+  5. [MLB] Texas Rangers @ New York Yankees
+     5:06 PM MDT
+     BET:    Jacob deGrom Over 16.5 Pitcher Outs
+     ODDS:   -104  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   The -104 price on 16.5 outs for deGrom offers the best juice-to-threshold value on the slate — 16.5 outs is only 5.2 innings, and a healthy deGrom at home for the Yankees (24-11, elite record) against a Rangers lineup at 16-18 should clear that comfortably if he is at full health. The K market at 6.5 (over +125) signals the book respects his strikeout upside, which correlates with deeper outings.
+     WHY:    16.5 outs is a minimal threshold — just over 5 full innings needed | Yankees at 24-11 are the top-record team on the MLB slate, providing run support and roster confidence | Texas Rangers at 16-18 are a below-.500 opponent — manageable lineup for a healthy elite arm | Total at 9.0 with -105 over suggests a moderate run-scoring environment, not a blowout pace that forces early removal | deGrom K line at 6.5 over +125 confirms the book expects a meaningful workload — you don't chase Ks in 4 innings
+     RISK:   deGrom's injury history is the single biggest risk — any unverified health limitation or undisclosed pitch-count restriction would immediately make this a pass; this is classified LEAN because health confirmation is unavailable in the current data.
+     LAST PLAYABLE: -120
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Cristopher Sanchez Over 6.5 Strikeouts (-120, BetMGM) — Athletics @ Philadelphia Phillies  -120  1u  —  Sanchez is home for the Phillies (-194 ML favorites) against a weak Athletics lineup (18-16 record but facing an elite home environment). The 6.5 K threshold is modest for a quality arm in Philly. Held to lean because lineup confirmation for Oakland is unverified and the juice at -120 reduces margin for error.
+  • [MLB] Under 7.0 Total — Toronto Blue Jays @ Tampa Bay Rays (U102, DraftKings)  +102  1u  —  With Gausman and Rasmussen both projected for deep outings and the market pricing the over at -122, the under at +102 represents a rare plus-money position in a low-total environment. Held to lean because plus-money totals in low-run games carry lineup-outcome volatility and both pitchers' health is unconfirmed.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • NBA card is limited to one play due to redacted injury feed — Cunningham PRA is the most role-stable option in a game where Detroit's usage hierarchy is clear.
+  • MLB pitcher outs and strikeout props are the strongest market category today — four of five official plays and both leans use pitcher lines because workload depth is easier to model than batter outcomes on a thin injury-context day.
+  • deGrom is classified LEAN specifically because his health history demands confirmation before full-unit commitment — if you have current health information confirming he is full-go, this could be upgraded to MEDIUM confidence.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Donovan Mitchell Over 25.5 Points — passed because Mitchell's points line at -105 is priced close to coin-flip without role confirmation from the redacted injury feed; blowout risk in a game Detroit is favored also threatens usage.
+  ✗ James Harden Over 19.5 Points — Harden's scoring role as a third or fourth option in Cleveland's offense is insufficient to justify at -106; aging usage profile and game-script dependency make this too fragile.
+  ✗ Sandy Alcantara Over 5.5 Strikeouts (+116, DraftKings) — the plus-money price is attractive but Alcantara's return from Tommy John workload management creates too much leash uncertainty to bet the strikeout accumulation.
+  ✗ Kevin Gausman Over 5.5 Strikeouts (+106, FanDuel) — plus-money pricing signals the market is skeptical of his K volume; without verified K-rate and health data this is too thin to go official.
+  ✗ Taj Bradley Over 17.5 Outs (-140, BetMGM) — juice too high at -140 for a pitcher without verified full-workload confirmation; the -140 price removes most of the value from a bet that needs him to work deep.
+  ✗ LA Lakers @ OKC Thunder — game is listed in team records but no props or odds were supplied in the session data; cannot handicap without market lines. Full pass per data integrity rules.
+  ✗ LA Dodgers @ Houston Astros — game listed in team records but no props or odds were supplied; full pass per data integrity rules.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

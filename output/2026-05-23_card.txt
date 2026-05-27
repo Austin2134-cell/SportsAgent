@@ -1,0 +1,87 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-23  |  SLATE: C
+  Heavy MLB-only slate with injury data stripped of player names, forcing conservative filtering; a few clean props clear thresholds but confidence ceilings are moderate across the board.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Tampa Bay Rays @ New York Yankees
+     11:35 AM MDT
+     BET:    Drew Rasmussen Over 5.5 Strikeouts
+     ODDS:   +106  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Plus money on a 5.5 K line clears the hard juice ceiling rule and offers genuine value. Rasmussen facing a Yankees lineup in a low-total game (7.0) where pitchers are expected to be dominant, and +106 means we only need to win roughly 49% to break even on a line set near the median.
+     WHY:    Plus money (+106) on a 5.5 line satisfies the hard rule — this is the only K prop on the slate priced above -120 at 5.5 or below that offers plus odds | Game total set at 7.0, one of the lowest on the slate, indicating oddsmakers expect a pitcher-dominated environment | Yankees lineup carries strikeout-prone hitters and Rasmussen is a swing-and-miss arm; 5.5 is a conservative threshold relative to his profile
+     RISK:   Early exit due to pitch count limit, injury, or blowout game script that pulls him before 5 full innings.
+     LAST PLAYABLE: -110
+
+  2. [MLB] Houston Astros @ Chicago Cubs
+     12:20 PM MDT
+     BET:    Colin Rea Over 4.5 Strikeouts
+     ODDS:   +103  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Another plus-money K line at 4.5, a highly conservative threshold for a Cubs starter at home against a struggling Astros offense sitting at 21-31. The low ask of 4.5 combined with plus money creates a favorable expected value profile.
+     WHY:    Plus money (+103) on a 4.5 K line — lowest threshold on the slate and well within the conservative line philosophy | Houston Astros are 21-31, one of the weaker offensive teams on today's slate, providing a favorable matchup for strikeout accumulation | Game total of 7.5 suggests a pitcher-friendly environment; Rea has a corresponding outs line of 17.5 at near-even juice, implying ~6 innings of work expected
+     RISK:   Rea gets knocked around early and is pulled before reaching 5 strikeouts; Cubs bullpen game scenario eliminates the prop.
+     LAST PLAYABLE: -110
+
+  3. [MLB] Detroit Tigers @ Baltimore Orioles
+     2:05 PM MDT
+     BET:    Framber Valdez Over 5.5 Strikeouts
+     ODDS:   +108  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Plus money at +108 on a 5.5 line clears the hard rule requiring +120 or better for lines above 5.5 — wait, this line IS 5.5 so the standard applies at -130 ceiling, and +108 is well within that. Valdez is a proven strikeout arm and the Tigers at 20-32 are among the worst offenses on the slate.
+     WHY:    Plus money (+108) on a 5.5 K line; Valdez is an established starter with consistent strikeout production | Detroit Tigers carry one of the worst records on today's slate at 20-32, suggesting a lineup that generates outs at an above-average rate | Game total of 8.0 with Valdez expected to work deep into the game based on his workload history
+     RISK:   Valdez pitches for Baltimore and faces Detroit — confirm the home/away assignment; if he is pulled early for any reason, the bet fails before accumulating strikeouts.
+     LAST PLAYABLE: -110
+
+  4. [MLB] Cleveland Guardians @ Philadelphia Phillies
+     2:05 PM MDT
+     BET:    Slade Cecconi Over 4.5 Strikeouts
+     ODDS:   +105  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Plus money at +105 on a 4.5 K line for a starter with a corresponding 16.5 outs line priced at near-even juice, implying around 5.5 innings of work expected. The 4.5 threshold is conservative and reachable even in an average start.
+     WHY:    Plus money (+105) on the most conservative K threshold available (4.5) — clearable in a below-average outing | Outs line set at 16.5 near-even juice implies market expects roughly 5.5 innings, giving multiple opportunities to accumulate strikeouts | Cleveland Guardians at 31-22 have a solid record but game total is only 7.0, projecting a low-scoring pitcher-friendly environment
+     RISK:   Cecconi is not a high-strikeout profile starter; if he relies on weak contact rather than whiffs, this line becomes a grind and variance is higher than the price implies.
+     LAST PLAYABLE: -105
+
+  5. [MLB] Washington Nationals @ Atlanta Braves
+     2:10 PM MDT
+     BET:    Grant Holmes Over 4.5 Strikeouts
+     ODDS:   -101  (DraftKings)
+     UNITS:  1u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Near-even juice at -101 on a 4.5 K line for a Braves starter against the Nationals. Atlanta's rotation in a home game against a Washington lineup at 25-27 provides a workable setup; the outs line at 16.5 (-130 on BetMGM) suggests market expects roughly 5.5 innings.
+     WHY:    Near-even juice (-101) on a 4.5 K line — virtually a coin flip priced close to fair value, making it a low-juice entry | Braves are 36-16 and at home; starters typically get more run support, allowing deeper outings to accumulate strikeouts | Game total of 8.5 is among the higher on the slate, suggesting offensive action, but Holmes at home against Washington is a favorable role assignment
+     RISK:   Holmes is not a confirmed high-K arm; if the Nationals make contact early and the Braves pull him after 4-5 innings with a big lead, the prop fails short of 5 strikeouts.
+     LAST PLAYABLE: -115
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Andre Pallante Over 15.5 Outs (-114, DraftKings) — STL @ CIN  -114  1u  —  15.5 outs is a conservative target within the sweet spot range; juice at -114 is acceptable. Downgraded to lean because Pallante is not an established front-line starter and game context with a 9.5 total introduces early-exit risk if runs come quickly.
+  • [MLB] Colin Rea Over 17.5 Outs (-108, DraftKings) — HOU @ CHC  -108  1u  —  Near-even juice on a 17.5 outs line (roughly 6 innings) for a Cubs home starter against a struggling Astros team. Kept as lean rather than official because 17.5 requires clean innings and one bad frame ends the bet; correlated with the Rea K play already on the card.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • The slate is MLB-only with no NBA or NHL playoff data supplied — cross-sport diversification is impossible today, so the card leans on the most conservative K and outs props available.
+  • Every official play targets plus money or near-even juice on K lines at 4.5 or 5.5 — this is the highest-probability MLB pitcher prop construction available given the hard rules against juice above -130.
+  • Injury data supplied has no player names attached, making any batter hit or RBI prop unplayable with confidence — multiple plays were passed specifically because availability cannot be confirmed from the supplied data.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Paul Skenes Over 6.5 K (-124, DraftKings): Hard rule — K lines above 5.5 require +120 or better. -124 does not clear the threshold. Passed.
+  ✗ Paul Skenes Over 18.5 Outs (+111): Hard rule — outs lines above 18.5 require 6.2+ innings and one bad inning ends the bet. Passed even at plus money due to extreme variance.
+  ✗ Zack Wheeler Over 5.5 K (-138): Hard rule — above 5.5 requires +120 or better. -138 is not close. Passed.
+  ✗ George Kirby Over 4.5 K (-158): Juice exceeds -130 hard ceiling. Passed.
+  ✗ Stephen Kolek Over 3.5 K (-165): Juice exceeds -130 hard ceiling. Passed.
+  ✗ Adrian Houser Over 3.5 K (-150): Juice exceeds -130 hard ceiling. Passed.
+  ✗ All batter hit over props at -176 or worse (Elly De La Cruz -228, Masyn Winn -244, Aaron Judge -198, Adley Rutschman -236, Gunnar Henderson -248, Byron Buxton -253, etc.): Hard rule — batter hit overs above -180 are automatic passes. None of the listed 0.5 hit overs in this data set at playable juice also have confirmed availability given unnamed injury report.
+  ✗ All batter hit overs with juice between -150 and -180 (Benjamin Rice -181, Cody Bellinger -168, Coby Mayo -153, Brandon Lowe -159, etc.): Borderline juice and injury names not confirmed from supplied data. Passed due to availability uncertainty.
+  ✗ Ryan Weathers Over 5.5 K (-102): This line clears the price rule and is close to official. Passed because Weathers pitching for Tampa Bay against Yankees in a 7.0-total game introduces early-exit risk and he is not an established high-K arm; edge is thin relative to Rasmussen in the same game.
+  ✗ Brayan Bello Over 4.5 K (+105, consensus source): Source is consensus rather than Tier 1 book — flagged as lower reliability. Lean considered but not official given data sourcing.
+  ✗ Jake Irvin Over 4.5 K (+122): Playable price but Irvin faces the Braves at 36-16 on the road — high-powered lineup increases early-exit risk substantially. Passed.
+  ✗ Any RBI, total bases, home run, or stolen base props: These markets carry extreme variance and lineup confirmation is not available in the supplied data. Passed across the board.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

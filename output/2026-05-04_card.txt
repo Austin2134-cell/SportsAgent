@@ -1,0 +1,84 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-04  |  SLATE: C
+  Playable slate with multiple games across MLB and NHL, but injury data is anonymized with no player names attached, limiting confidence on role assumptions and lineup confirmation for several key props.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [NHL] Philadelphia Flyers @ Carolina Hurricanes
+     5:10 PM MDT
+     BET:    Andrei Svechnikov Over 2.5 Shots on Goal
+     ODDS:   -140  (FanDuel)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Svechnikov is a high-volume shooter playing on Carolina's top line against a Flyers team that enters as a significant underdog and will likely play conservatively, generating extended offensive-zone time for the Hurricanes. Carolina's shot suppression and offensive depth reliably push top-line forwards into 3-plus shot territory in favorable home matchups.
+     WHY:    Carolina is a -258 moneyline favorite, meaning extended offensive zone pressure and more shot opportunities for top forwards | Svechnikov's points line is priced at -175 to score 0.5 points, reflecting consistent offensive involvement | Philadelphia is a heavy underdog and likely to play a defensive shell that concedes perimeter shots rather than rush offense, padding shot totals for Carolina's top line | Svechnikov also has a points market priced at -175, corroborating his projected involvement in the game script
+     RISK:   A low-event, trap-style defensive game by Philadelphia could limit puck movement and compress shot volume, or Svechnikov takes fewer than expected shots if Carolina scores early and manages the game conservatively.
+     LAST PLAYABLE: -155
+     ⚠ CORR: Loosely correlated with any Carolina team-total bet given shared offensive-zone reliance, but no other official play on this game is included.
+
+  2. [NHL] Philadelphia Flyers @ Carolina Hurricanes
+     5:10 PM MDT
+     BET:    Sebastian Aho Over 0.5 Points
+     ODDS:   -195  (DraftKings)
+     UNITS:  1u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Aho is Carolina's primary playmaker and center on the top line against the Flyers, who are a significant underdog with limited capacity to suppress elite offensive talent at home. The -195 price reflects near-certainty of involvement, but the implied 66 percent is still beatable given Aho's role stability and the mismatch in team quality.
+     WHY:    Aho is priced as the highest-confidence points scorer on the Carolina roster, consistent with his first-line center role and power-play involvement | Carolina's -258 moneyline advantage implies heavy offensive pressure and extended zone time in Aho's favor | Philadelphia's road record and underdog status historically correlates with top opposing centers generating points | Shots-on-goal market for Aho at -114 over 2.5 suggests volume presence even if goals don't come directly
+     RISK:   Price is steep at -195 and any game that trends toward a tight, low-event first period where Aho is held off the scoresheet in an early deficit scenario creates real downgrade risk on return.
+     LAST PLAYABLE: -215
+     ⚠ CORR: Correlated with Svechnikov shots play above — both rely on Carolina generating sustained offensive zone pressure. Combined exposure to this game is 3 units total across two plays; acceptable given the team quality mismatch but flagged.
+
+  3. [MLB] Cincinnati Reds @ Chicago Cubs
+     5:11 PM MDT
+     BET:    Seiya Suzuki Over 0.5 RBI
+     ODDS:   -105  (BetMGM)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   The Cubs enter as -219 favorites in a game with an 11.5-run total — the highest on the slate — implying heavy run scoring expected from Chicago's lineup. Suzuki's RBI line is priced at -105, which is exceptional value for a middle-of-the-order bat in a game projected for significant offense, especially in a favorable home environment.
+     WHY:    Game total of 11.5 is the highest on the entire slate, with the over priced at -108, signaling significant projected run output | Cubs are -219 favorites against a Reds team with a 20-14 record, keeping the scoring weight on Chicago's side | Suzuki's RBI market at -105 is notably softer than teammates like Ian Happ at -139 and Dansby Swanson at -156, suggesting potential mispricing relative to Suzuki's lineup position and power production | Chase Petty is starting for Cincinnati with an outs line of only 11.5, suggesting a short leash that could lead to bullpen exposure early, benefiting run-scoring opportunities
+     RISK:   If Suzuki bats in a lineup slot with limited runners ahead of him or the Cubs' offense is concentrated in innings Suzuki doesn't contribute to, a 0-RBI game is entirely possible even in high-total environments.
+     LAST PLAYABLE: -120
+
+  4. [MLB] Baltimore Orioles @ New York Yankees
+     5:06 PM MDT
+     BET:    Cam Schlittler Over 7.5 Strikeouts
+     ODDS:   +100  (BetMGM)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Getting even money on a strikeout prop over 7.5 for a Yankees starter against a Baltimore lineup that enters at 15-19 and has shown vulnerability is exceptional pricing on its face. The Yankees are -207 favorites, suggesting a blowout-adjacent game script where Schlittler would pitch deep into the game, and the 17.5 outs line at -137 (approximately 5.8 innings) supports a workload consistent with reaching 8-plus strikeouts.
+     WHY:    Even-money odds on a strikeout prop represent rare positive-EV territory when supported by workload and game context | Yankees are -207 favorites, reducing the likelihood of early exit due to a deficit and supporting Schlittler pitching deep | Outs line of 17.5 at -137 suggests the market expects close to 6 innings of work, creating sufficient volume for 8 strikeouts | Baltimore is 15-19, indicating lineup struggles that should support above-average strikeout rates for a home pitcher
+     RISK:   If Schlittler is on an innings limit, pulled early for bullpen management, or Baltimore makes contact-heavy adjustments, the strikeout total could fall short of 8. Line movement to juice side would also signal sharp disagreement.
+     LAST PLAYABLE: -115
+
+  5. [MLB] Cleveland Guardians @ Kansas City Royals
+     5:41 PM MDT
+     BET:    Tanner Bibee Over 4.5 Strikeouts
+     ODDS:   +116  (FanDuel)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Bibee at +116 on the over 4.5 strikeouts offers positive expected value if his workload holds, with his outs line of 15.5 at -113 suggesting the market expects roughly 5 innings of work — enough volume where hitting 5-plus strikeouts is a realistic outcome. Kansas City's lineup at 15-19 has not been an elite contact unit, creating a favorable environment.
+     WHY:    Positive odds at +116 mean you only need to hit this slightly above 46 percent of the time to show profit, lowering the bar considerably | Outs line of 15.5 at -113 confirms expected workload in the range of 5-plus innings, which supports strikeout volume | Kansas City is 15-19 and the game total is 9.0, a moderate environment that does not suppress strikeout opportunity | Cleveland is a slight underdog at +100, but game script dependency is manageable given Bibee's outs projection
+     RISK:   Bibee has a history of workload management concerns, and a bad first inning or early defensive errors that inflate pitch counts could truncate his outing before he accumulates 5 strikeouts. Also, Kansas City's lineup consistency in 2026 is unverified beyond their record.
+     LAST PLAYABLE: +100
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Aaron Nola Over 5.5 Strikeouts (-140, DraftKings) — PHI @ MIA  -140  1u  —  Nola's outs line of 17.5 at even money suggests 5-plus inning workload and his strikeout profile is strong, but -140 at 5.5 is a steep price in a low-total (8.5) game against a Marlins lineup that is not a prolific strikeout unit by reputation. Insufficient projection data to push to official status at this price.
+  • [MLB] Mets @ Rockies Over 10.5 Total (-120, DraftKings)  -120  1u  —  Coors Field provides a natural over lean with Sugano's outs line of only 15.5 suggesting a short leash. However, the -120 juice on a 10.5 total is not great value, and Mets are 12-22 with lineup concerns. Interesting environment but price is slightly off for official status.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • The NHL Flyers-Hurricanes mismatch is the highest-confidence game-script play on the card — Carolina's offensive pressure is priced into every market and the top-line shot and points props remain the cleanest plays of the day.
+  • The Cubs-Reds 11.5 total is the most interesting MLB environment on the slate — Chase Petty's short outs projection and Chicago's -219 favoritism keep the scoring weight on the Cubs side, making Suzuki's -105 RBI line look like soft pricing.
+  • Cam Schlittler even money on over 7.5 strikeouts against a struggling Baltimore lineup in a blowout-candidate environment is the most compelling pure-value play on the card — positive EV pricing in this market is uncommon and worth the risk.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ PASS — All 0.5 hits props across every game: juice levels ranging from -186 to -270 offer no actionable value regardless of lineup quality. The implied probabilities baked into these markets make them negative EV at any reasonable hit rate.
+  ✗ PASS — Nick Martinez Over 3.5 K and Eric Lauer Over 3.5 K in TOR @ TB: Both lines are in the -133 and +107 range respectively, but workload floors are unclear and game context (8.0 total) suppresses strikeout volume assumptions.
+  ✗ PASS — Shane Baz Over 5.5 K (BAL @ NYY): Priced at +101 which is interesting, but Baz's outs line of 16.5 at -110/-113 suggests only moderate workload and 6-plus strikeouts against any lineup at that volume is a fragile ask without confirmed pitch-count stability.
+  ✗ PASS — Chad Patrick and Kyle Leahy strikeout props (MIL @ STL): Both starters are -151 and -133 favorites on their respective 3.5 K lines — poor value at price given the low 8.5 game total and no projection data to support deeper analysis.
+  ✗ PASS — Dodgers @ Astros and White Sox @ Angels: No market data was supplied for these games in the session data. Cannot fabricate lines or analysis without supplied pricing.
+  ✗ PASS — All anonymous injury entries: The injury report contains no player names, making it impossible to apply lineup or role adjustments with any confidence. This significantly constrained analysis on several games and was a primary reason for the C slate grade.
+  ✗ PASS — Vegas Golden Knights vs Anaheim Ducks (NHL): No prop market data was supplied for this game. Cannot build a play without pricing data.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

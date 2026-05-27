@@ -1,0 +1,86 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-24  |  SLATE: C
+  Heavy MLB-only slate with no NBA or NHL playoff data supplied; prop market is deep but injury report is anonymized, forcing conservative filtering and reduced confidence across the board.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] St. Louis Cardinals @ Cincinnati Reds
+     11:40 AM MDT
+     BET:    Brady Singer Over 4.5 Strikeouts
+     ODDS:   -105  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Singer's 4.5 K line at -105 is near-even juice on a target well within the conservative 5.5-and-under filter. The Cardinals rank among the weaker offensive units in the NL and the 10.0 total implies a run-scoring environment that typically favors longer starter outings where strikeout accumulation is sustainable.
+     WHY:    4.5 K line clears the conservative strikeout threshold with favorable juice at -105 | Cardinals offense weak enough that Singer can attack the zone without fear of hard contact limiting his leash | High game total (10.0) suggests both starters expected to pitch into scoring situations, supporting deeper outings and K accumulation
+     RISK:   A Cardinals offensive explosion early could shorten Singer's outing before he reaches 5 Ks, and the anonymized injury report leaves lineup confirmation unverifiable.
+     LAST PLAYABLE: -120
+
+  2. [MLB] Detroit Tigers @ Baltimore Orioles
+     10:35 AM MDT
+     BET:    Framber Valdez Over 5.5 Strikeouts
+     ODDS:   +122  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Valdez at +122 on 5.5 Ks clears the hard rule requiring plus money for any line above 5.5, and the Tigers are one of the weakest offensive lineups in the AL at 20-32. The outs market supporting 17.5 outs at -167 implies Baltimore expects Valdez to pitch deep, giving him ample opportunity to accumulate strikeouts against a vulnerable Detroit lineup.
+     WHY:    Plus money (+122) satisfies the mandatory pricing requirement for a 5.5+ strikeout line | Tigers rank among the worst offensive teams in the AL, providing a favorable strikeout environment | Outs market priced at -167 over 17.5 strongly implies the books expect Valdez to pitch 6+ innings, giving him the volume needed to hit 6 Ks
+     RISK:   Valdez has sinker-heavy profile that generates ground balls more than strikeouts on some nights; if the Tigers make early contact and force quick outs, K accumulation stalls.
+     LAST PLAYABLE: -110
+
+  3. [MLB] Seattle Mariners @ Kansas City Royals
+     12:10 PM MDT
+     BET:    Bryan Woo Over 5.5 Strikeouts
+     ODDS:   +120  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Woo at +120 on 5.5 Ks meets the plus-money threshold required for this line tier, and Kansas City at 21-31 is one of the weakest offensive clubs on the slate. The outs market on Woo is interesting — the over 18.5 outs sits at +151, suggesting the books are not confident he goes deep, which actually supports the K line: if he pitches 5-6 competitive innings against this lineup, 6 Ks is achievable at plus money.
+     WHY:    +120 satisfies the hard pricing rule for a 5.5 K line | Royals at 21-31 are among the weakest offensive environments available on this slate | Conservative outs projection (books skeptical of 18.5+) means Woo can accumulate Ks in a quality 5-6 inning outing without needing a dominant long start
+     RISK:   If Woo is on a pitch limit or exits early due to any undisclosed workload concern, the volume simply is not there to hit 6 Ks; anonymized injury data leaves this partially unverifiable.
+     LAST PLAYABLE: -110
+
+  4. [MLB] St. Louis Cardinals @ Cincinnati Reds
+     11:40 AM MDT
+     BET:    Elly De La Cruz Over 0.5 Hits
+     ODDS:   -130  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   De La Cruz at -130 sits at the hard juice ceiling and represents a legitimate 0.5 hit line for one of the NL's most dangerous hitters in a 10.0-total game that implies an active offensive environment. The pricing reflects his elite status without crossing into the unprofitable -180 or worse territory that triggers an automatic pass.
+     WHY:    10.0 game total is the highest on the slate, creating maximum offensive opportunity for De La Cruz | Cardinals starter (Matt Liberatore) is a left-hander with a 4.5 K line priced at -148, suggesting the market views him as vulnerable, which benefits De La Cruz's hit probability | -130 sits exactly at the hard ceiling — playable but at the limit, supporting a standard 2-unit allocation
+     RISK:   At -130, this is the last playable number with no margin; any line movement to -135 or worse makes this a pass, and the anonymized injury report cannot confirm De La Cruz's full availability.
+     LAST PLAYABLE: -130
+     ⚠ CORR: Same game as Play 1 (Brady Singer K over); both depend on a competitive, high-scoring Cardinals-Reds environment. Exposure is noted but not disqualifying since the props are independent outcomes.
+
+  5. [MLB] Tampa Bay Rays @ New York Yankees
+     11:35 AM MDT
+     BET:    Drew Rasmussen Over 5.5 Strikeouts
+     ODDS:   +121  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Rasmussen at +121 on 5.5 Ks clears the plus-money pricing requirement, and while the Yankees lineup is formidable, the 7.0 game total implies a pitcher-friendly environment where both starters are expected to be effective. Plus money on a 5.5 K line against a legitimate lineup provides the EV justification for a reduced-confidence inclusion.
+     WHY:    +121 satisfies the mandatory plus-money requirement for a 5.5+ K line | Low game total (7.0) signals a pitcher-friendly environment where Rasmussen can work deep and accumulate strikeouts | Rays at 34-15 suggests a competitive game script where Rasmussen would not be pulled early for score-related reasons
+     RISK:   The Yankees are one of the better offensive lineups in the AL — if they make consistent contact or draw walks, Rasmussen's pitch count rises quickly and the K total stalls below 6; confidence is LEAN specifically because of the quality of opposition.
+     LAST PLAYABLE: -110
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Mitch Keller Over 17.5 Outs (-116, DraftKings) — Pittsburgh @ Toronto  -116  1u  —  Juice is acceptable at -116 and the 17.5 line is within the preferred 15.5-17.5 sweet spot. Held to a lean because Toronto's lineup and pitcher matchup data are limited, and the anonymized injury report means Blue Jays lineup cannot be fully confirmed.
+  • [MLB] Brandon Valenzuela Over 0.5 Hits (-135, DraftKings) — Pittsburgh @ Toronto  -135  1u  —  Held out of official plays because juice at -135 exceeds the -130 hard ceiling. Directionally interesting as a lighter-juice target but not eligible for an official slot under the pricing rules.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • This is a pure MLB card with no NBA or NHL data supplied — cross-sport diversification is impossible today, so exposure is capped conservatively and confidence tiers reflect the inherent variance of pitcher props.
+  • All three pitcher strikeout plays above 5.5 carry plus-money pricing, which is the non-negotiable threshold; any of these moving to juice territory before game time should be downgraded or passed entirely.
+  • The anonymized injury report is a material data gap — no specific player names are attached to IL designations, meaning any official play could theoretically involve an undisclosed injury; monitor closer to first pitches and exit any play where key lineup or starter news changes the assumption.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Dylan Cease Over 8.5 Strikeouts (+114) — PASS. Line of 8.5 is well above the 5.5 threshold; even at +114, the variance of reaching 9 Ks is too extreme and the downside of missing by 3-4 Ks is not offset by the price.
+  ✗ Shota Imanaga Over 5.5 Strikeouts (-141, DraftKings) — PASS. Juice at -141 exceeds the -130 hard ceiling on a straight bet and violates the rule requiring plus money for any line above 5.5. Automatic pass.
+  ✗ Yoshinobu Yamamoto Over 6.5 Strikeouts (+101, DraftKings) — PASS. Line is above 6.5 which is a high-K tier; +101 is technically plus money but barely, and Yamamoto's K rate must be dominant against Milwaukee for this to hit — insufficient data to confirm that edge at near-even juice on such a high number.
+  ✗ Parker Messick Over 5.5 Strikeouts (-133, DraftKings) — PASS. Juice at -133 exceeds the -130 hard ceiling. Would need to be +120 or better to qualify under the 5.5+ pricing rule.
+  ✗ Any batter hit over priced worse than -130 — multiple candidates (George Springer -236, Chandler Simpson -227, Aaron Judge -232, Alec Bohm -240, Chase Delauter -260, etc.) — ALL PASS. Juice levels of -180 to -260 are automatic passes regardless of the hitter's quality.
+  ✗ Seth Lugo Over 17.5 Outs (-152, DraftKings) — PASS. Juice at -152 exceeds the -130 hard ceiling for straight bets. Value is gone at this price.
+  ✗ Yoshinobu Yamamoto Over 17.5 Outs (-160, DraftKings) — PASS. Juice at -160 exceeds the -130 hard ceiling. Pass.
+  ✗ Shota Imanaga Over 17.5 Outs (-180, DraftKings) — PASS. Juice at -180 is far beyond the hard ceiling. Automatic pass.
+  ✗ Ryan Weathers Over 5.5 Strikeouts (-104, DraftKings) — PASS. Near-even juice at -104 is acceptable on pricing, but Weathers starting against the Yankees lineup (30-22) in a 7.0-total game introduces significant risk that he does not pitch deep enough or dominates. Insufficient profile data to confirm edge; held to pass rather than a lean given the quality of opposition and data gaps.
+  ✗ Christian Scott Over 4.5 Strikeouts (-130, DraftKings) — PASS. Exactly at the juice ceiling but the outs market shows only 14.5 as the line, suggesting a short outing expectation; 5 Ks in potentially 4-5 innings is a coin flip at -130 with no margin.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

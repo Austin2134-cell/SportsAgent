@@ -1,0 +1,91 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-27  |  SLATE: B
+  Ten-game MLB slate with solid pitcher outs and batter hit opportunities; single-sport card is acceptable per mandate, but filters must be strict given recent -39.2% ROI and thin sample.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Seattle Mariners @ Athletics
+     1:05 PM MDT
+     BET:    Logan Gilbert Over 17.5 Outs
+     ODDS:   -105  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Gilbert is one of the most durable starters in the AL and routinely pitches into the sixth inning or deeper, making 17.5 outs (5.2 IP) a clearable floor rather than a stretch. The Athletics rank among the weaker offensive clubs and the total of 9.0 suggests a run environment that keeps starters in games; at -105 this is near-even juice on a repeatable outcome.
+     WHY:    Gilbert is a proven workload arm — 17.5 outs equates to just 5.2 innings, a floor he routinely clears | Athletics offense is below-average, reducing early-exit risk from big innings or high pitch counts | Near-even juice (-105) provides genuine value relative to implied probability for this prop type | Total of 9.0 in a neutral pitching environment keeps the game competitive and starters honest
+     RISK:   Any early-inning trouble or pitch-count spike (high walk total, long at-bats) could pull Gilbert before he clears 17.5 outs; lineup and health confirmation not available in supplied data.
+     LAST PLAYABLE: -120
+
+  2. [MLB] Seattle Mariners @ Athletics
+     1:05 PM MDT
+     BET:    Jeffrey Springs Over 4.5 Strikeouts
+     ODDS:   -116  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Springs at 4.5 Ks sits at the preferred conservative threshold from the ESM framework and the juice at -116 stays inside the hard ceiling. The Mariners lineup has strikeout tendencies and Springs — when healthy — is a swing-and-miss arm; four-plus strikeouts in five-plus innings is a realistic floor, not a ceiling ask.
+     WHY:    4.5 line is at the conservative sweet spot — requires only an average Springs outing to clear | -116 juice is inside the hard -130 ceiling, providing acceptable value | Mariners are a strikeout-prone offense, supporting the matchup angle | Paired with the outs over on Gilbert creates mild same-game correlation but different pitchers — no material conflict
+     RISK:   Springs has missed time historically; if he is on any workload restriction or pitching deep into a count-heavy game, he could exit before accumulating enough strikeouts. Availability not 100% confirmed in supplied data — confidence kept at MEDIUM.
+     LAST PLAYABLE: -128
+     ⚠ CORR: Same game as Play 1 (Logan Gilbert), but different pitchers — correlation is minimal and does not create script dependency.
+
+  3. [MLB] Chicago Cubs @ Pittsburgh Pirates
+     4:40 PM MDT
+     BET:    Jameson Taillon Over 17.5 Outs
+     ODDS:   -109  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Taillon is a contact-inducing, efficient starter whose profile aligns well with clearing 17.5 outs (5.2 innings); his low-walk tendency keeps pitch counts manageable and the Cubs at -102 on the ML signals a competitive game that keeps starters in. At -109 this is essentially even-money on a durable arm in a neutral matchup.
+     WHY:    17.5 outs is a floor number for a veteran starter of Taillon's workload profile | Efficient contact-based pitching style keeps pitch counts low, reducing early hook risk | Competitive game implied by near-pick ML (-102/-119) — neither team blowing the other out | -109 juice is outstanding value for a pitcher outs play at this threshold
+     RISK:   If Taillon runs into early trouble or the Cubs stack walks and extra-base hits in the first two innings, the Pirates bullpen could take over before 17.5 outs are recorded.
+     LAST PLAYABLE: -122
+
+  4. [MLB] Arizona Diamondbacks @ San Francisco Giants
+     1:45 PM MDT
+     BET:    Mike Soroka Over 5.5 Strikeouts
+     ODDS:   +119  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Soroka at 5.5 Ks is being offered at +119, which clears the ESM rule requiring plus money for any strikeout line above 5.5 — technically this line IS at 5.5 so the standard -130 ceiling applies but plus money here provides genuine EV. The Diamondbacks carry strikeout vulnerabilities across their lineup and Soroka has the arsenal to reach six Ks against a divisional opponent in a low-total (7.5) game that stays competitive.
+     WHY:    +119 odds provide positive expected value even at a moderate hit rate — this is the sweet spot for K props | 5.5 is at the top of the preferred conservative range; plus money satisfies the ESM threshold requirement | Arizona lineup has strikeout tendencies that support the matchup for a right-handed starter | Low total (7.5) implies a pitcher-friendly environment and a longer leash for both starters
+     RISK:   Soroka's durability and current workload status are not confirmed in supplied data; if he exits early due to pitch count or poor command, six strikeouts will not be reached. Confidence held at LEAN given health uncertainty.
+     LAST PLAYABLE: +100
+
+  5. [MLB] Tampa Bay Rays @ Baltimore Orioles
+     4:35 PM MDT
+     BET:    Jose Barrero Over 0.5 Hits
+     ODDS:   -139  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Barrero at -139 sits inside the hard juice ceiling and is one of the better-priced 0.5 hit overs on the slate; the Rays enter as -110 underdogs in a 9.0-total game that projects as a run-scoring environment, keeping starter Steven Matz on a short leash and creating favorable plate-appearance volume. This is a floor play — Barrero needs one hit in a high-run game.
+     WHY:    -139 juice is inside the hard -180 ceiling for batter hit overs — acceptable entry price | Total of 9.0 is the highest on today's slate, suggesting a run-heavy environment with starter turnover | Steven Matz is the opposing starter with a modest strikeout prop (4.5 at +112), implying hitter-friendly contact | Rays are 34-18 (best record on today's slate) — quality lineup with plate discipline
+     RISK:   Barrero's lineup position and recent form are unconfirmed in supplied data; if he is hitting low in the order or is replaced, plate appearances shrink and the hit prop becomes harder to clear.
+     LAST PLAYABLE: -155
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Kevin Gausman Over 18.5 Outs +129 (Toronto vs Miami)  +129  1u  —  Plus money on 18.5 outs is tempting for a durable ace, but 18.5 requires 6.1+ innings — one bad inning ends the bet. ESM conservative outs philosophy caps official plays at 18.5 only with plus money AND confirmed workload, which cannot be fully verified here. Keeping this as a lean.
+  • [MLB] Gavin Williams Over 18.5 Outs +127 (Cleveland vs Washington)  +127  1u  —  Same constraint as Gausman — 18.5 outs at plus money is attractive but requires 6.1+ innings. Williams is a durable arm facing a weak Nationals offense, but the ESM framework flags 18.5+ as too volatile for official plays without confirmed full workload. Lean only.
+  • [MLB] Connelly Early Over 5.5 Strikeouts +118 (Boston vs Atlanta)  +118  1u  —  Plus money on a 5.5 K line against the Braves — Atlanta has strikeout-prone hitters — but Early is a less-established arm whose role and workload stability cannot be confirmed. Braves are 37-18, the best team on the slate, which adds risk. Lean only given unverified arm profile.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • Pitcher outs props in the 15.5–17.5 range remain the best value on today's MLB slate — three of the five official plays lean on durable starters at reasonable juice rather than chasing volatile K lines.
+  • The Rays-Orioles 9.0 total and Angels-Tigers 7.5 total illustrate the run-environment split today; the high-total games favor batter props while low-total games favor starter outs and K props.
+  • The injury report supplied contains no player names — cannot confirm availability for any player today. All confidence levels are held at MEDIUM or LEAN as a result; no HIGH-confidence plays are justified without confirmed health data.
+  • ROI is -39.2% over three bets — the sample is too small to adjust strategy materially, but the focus on near-even juice props and plus-money K lines reflects the correct long-term approach to rebuild the record.
+  • Cristopher Sanchez 6.5 Ks at -116 and Jose Soriano 5.5 Ks at -146 were both evaluated and passed — the Sanchez line is 6.5+ without confirmed plus money, and Soriano at -146 exceeds the hard juice ceiling.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Cristopher Sanchez Over 6.5 Strikeouts -116 (PHI @ SD): PASS — 6.5 K line requires plus money (+120 or better) per ESM hard rule. -116 does not clear the threshold. Passed.
+  ✗ Jose Soriano Over 5.5 Strikeouts -146 (LAA @ DET): PASS — juice of -146 exceeds the hard -130 ceiling for official plays. No exceptions.
+  ✗ Eury Perez Over 5.5 Strikeouts -163 (MIA @ TOR): PASS — juice of -163 far exceeds the hard -130 ceiling. Automatic pass regardless of matchup quality.
+  ✗ Logan Gilbert Over 5.5 Strikeouts -147 (SEA @ OAK): PASS — juice of -147 exceeds the hard -130 ceiling. The outs line at -105 is the preferred vehicle for Gilbert exposure.
+  ✗ Bryce Harper Over 0.5 Hits -256 (PHI @ SD): PASS — juice of -256 massively exceeds the hard -180 ceiling for batter hit overs. Never playable at this price.
+  ✗ George Springer Over 0.5 Hits -221 (MIA @ TOR): PASS — juice of -221 exceeds the hard -180 ceiling.
+  ✗ Daulton Varsho Over 0.5 Hits -189 (MIA @ TOR): PASS — juice at -189 exceeds the -180 ceiling. Too close to the limit with no confirmed lineup data.
+  ✗ Gavin Williams Over 6.5 Strikeouts -118 (WSH @ CLE): PASS — line is 6.5+ at near-even juice; ESM hard rule requires +120 or better for K lines above 5.5. -118 does not satisfy the requirement.
+  ✗ Casey Mize Over 5.5 Strikeouts -107 (LAA @ DET): Borderline — juice is acceptable at -107 but Mize's workload status and health cannot be confirmed from supplied injury data (names redacted). Pass on health uncertainty grounds; moved to evaluation only.
+  ✗ Eury Perez Over 16.5 Outs -124 (MIA @ TOR): PASS — juice of -124 is inside the ceiling but Perez's durability profile for a 16.5-out line needs confirmed health status given the injury report. Insufficient data to proceed as official play.
+  ✗ All batter RBI and home run props evaluated and passed: juice profiles on RBI overs range from +125 to +369 but the variance on RBI props (runner dependence, situational scoring) is too high for official plays under ESM conservative framework.
+  ✗ Bubba Chandler Over 14.5 Outs -156 (CHC @ PIT): PASS — juice of -156 exceeds the hard -130 ceiling. The line is too cheap for a reason — Chandler likely has a short leash.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

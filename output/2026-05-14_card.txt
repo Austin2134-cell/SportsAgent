@@ -1,0 +1,86 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-14  |  SLATE: B
+  Solid MLB volume with several playable lines at fair juice, one NHL play worth flagging, but injury report names are stripped so all player availability assumptions carry elevated uncertainty.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Seattle Mariners @ Houston Astros
+     12:10 PM MDT
+     BET:    Luis Castillo Over 5.5 Strikeouts
+     ODDS:   +117  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Castillo at +117 for 5.5 Ks clears the hard rule for plus-money strikeout lines and sits at the preferred conservative threshold. Houston ranks among the weaker offensive clubs this season at 17-27 and Castillo's strikeout profile vs. right-leaning, free-swinging lineups is well-documented; plus money on a 5.5 line for an ace-caliber starter is genuine value.
+     WHY:    Plus money (+117) on a 5.5 K line satisfies the hard ESM rule for pitcher strikeout overs | Houston Astros at 17-27 represent a struggling offense that elevates K upside | Castillo is a front-line starter with consistent strikeout rates; 5.5 is a conservative ask relative to his profile | Outs market set at 15.5 over -122 implies books expect 5+ innings, supporting K volume opportunity
+     RISK:   Early exit due to pitch count limit, blister, or poor command night caps K output before the line clears.
+     LAST PLAYABLE: -110
+
+  2. [MLB] Washington Nationals @ Cincinnati Reds
+     10:40 AM MDT
+     BET:    Foster Griffin Over 5.5 Strikeouts
+     ODDS:   +124  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Foster Griffin at +124 for 5.5 Ks is the best-priced strikeout line on the board and clears the ESM plus-money rule comfortably. Washington at 21-22 is a mid-tier offense; the outs market at 17.5 over +103 implies books see realistic path to 6 innings, giving Griffin the opportunity to reach 6 strikeouts against a lineup without elite contact ability.
+     WHY:    +124 odds represent genuine plus-money value on a conservative 5.5 line | Outs line at 17.5 over +103 confirms the market expects Griffin to go deep enough to accumulate Ks | Washington Nationals offense does not project as a high-contact suppression unit | Line priced as slight underdog play suggests limited public steam, reducing trap risk
+     RISK:   Griffin is not a high-K ceiling arm; if his stuff is flat or command is off, 5.5 is still a challenge without a dominant outing.
+     LAST PLAYABLE: -105
+
+  3. [MLB] Chicago Cubs @ Atlanta Braves
+     5:15 PM MDT
+     BET:    Chris Sale Over 6.5 Strikeouts
+     ODDS:   +119  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Sale at +119 for 6.5 Ks clears the ESM rule requiring plus money for lines above 5.5. The Cubs enter at 27-16 with a solid lineup but Sale is an elite strikeout pitcher against whom even good lineups accumulate Ks; the outs market at 18.5 over +120 also offers plus money, confirming the market sees a path to a long outing even if the 18.5 outs play itself is too risky under ESM rules.
+     WHY:    +119 odds satisfies the hard ESM rule for 6.5 K lines requiring plus money | Chris Sale is among the highest-K rate starters in the NL when healthy and available | Cubs at 27-16 are a good offense but have swing-and-miss tendencies against elite velocity and breaking balls | Atlanta home environment and Sale's familiarity provide stable baseline
+     RISK:   Sale's durability and pitch count management are persistent concerns; an early exit before 6 innings prevents line clearance regardless of per-inning K rate.
+     LAST PLAYABLE: -105
+
+  4. [MLB] Colorado Rockies @ Pittsburgh Pirates
+     10:35 AM MDT
+     BET:    Marcell Ozuna Over 0.5 Hits
+     ODDS:   -148  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Ozuna at -148 sits at the ESM preferred range for 0.5 hit overs and represents a stability play against a Colorado Rockies pitching staff that is one of the worst in baseball at 17-26. Ozuna is a middle-of-the-order bat with consistent contact rates, and the matchup against a struggling road rotation favors the over.
+     WHY:    -148 juice is within the ESM -140 to +120 preferred range for 0.5 hit overs | Colorado Rockies pitching is among the most exploitable in MLB given their 17-26 record and known staff issues | Ozuna profiles as a high-contact, lineup-protected hitter with consistent hit rates | Pittsburgh home environment and a favorable side of the ball matchup support the floor
+     RISK:   Ozuna faces a lineup scratch, illness, or unexpected rest day — injury report names are stripped in supplied data so availability cannot be 100% confirmed; confidence is held to MEDIUM on this basis.
+     LAST PLAYABLE: -160
+
+  5. [NHL] Montréal Canadiens @ Buffalo Sabres
+     5:00 PM MDT
+     BET:    Ivan Demidov Over 0.5 Points
+     ODDS:   -115  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Demidov at -115 for 0.5 points is nearly even juice on a player who, at this stage of the NHL season, profiles as a top offensive contributor for Montreal. The Canadiens at 48-24-10 are a legitimate playoff-caliber team and Demidov's points line at -115 vs. a Buffalo squad at 50-23-9 in a competitive divisional matchup offers value at near-even juice for a primary offensive option.
+     WHY:    -115 is near-even juice, well within ESM juice ceiling, offering solid risk-reward | Demidov profiles as a top offensive option for Montreal in a pace-friendly matchup | Both teams are above .500 clubs creating competitive game script that keeps stars in meaningful minutes | Total of 5.5 with over juice at -130 signals books expect scoring, supporting points opportunity for top forwards
+     RISK:   NHL injury report names are stripped in supplied data; if Demidov is among the Day-To-Day designations, this bet is invalidated — availability cannot be fully confirmed.
+     LAST PLAYABLE: -125
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Chase Burns Over 17.5 Outs (-160 DraftKings)  -160  1u  —  Burns is clearly good enough to go deep in games but -160 juice on an outs over exceeds the ESM juice ceiling of -130 for official plays; downgraded to lean only. Requires 6 full innings with no early trouble, which is one bad inning away from a miss.
+  • [MLB] Michael McGreevy Over 4.5 Strikeouts (+117 DraftKings)  +117  1u  —  Plus money on a 4.5 K line is appealing but McGreevy is not a high-strikeout profile arm and the Athletics lineup at 22-20 is not a confirmed weak contact unit. Edge is thin and projection data is limited, keeping this as a lean rather than official.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • Three of the five official plays are pitcher strikeout overs at plus money — this is intentional; the ESM framework strictly requires plus money for any K line above 5.5, and today's board has three qualifying opportunities that meet the standard.
+  • The NHL play on Demidov is the lone cross-sport diversification play; it satisfies the cross-sport cap rule and provides non-MLB exposure at nearly even juice in a competitive divisional matchup.
+  • Injury report names are fully stripped in today's data feed, meaning all player availability is assumed based on lineup presence and market pricing — any player with a known Day-To-Day designation that matches these plays would immediately invalidate the bet and trigger a pass.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Chase Burns Over 6.5 Strikeouts (-133 DraftKings): PASS. Juice exceeds the -130 hard ceiling for official straight bets. Moved to lean on the outs line instead.
+  ✗ Nolan McLean Over 6.5 Strikeouts (-131 DraftKings): PASS. Juice at -131 technically exceeds the -130 hard ceiling; margin too thin and McLean faces a Mets offense that is not a confirmed weak strikeout environment.
+  ✗ Chris Sale Over 18.5 Outs (+120 DraftKings): PASS. ESM hard rule prohibits outs overs above 18.5 regardless of odds. A single bad inning or pitch limit enforcement ends this bet. The 6.5 K over at +119 is the preferred angle on Sale.
+  ✗ Bryce Harper Over 0.5 Hits (-242 DraftKings): PASS. Hard rule — batter hit overs priced above -180 are automatic passes. -242 juice far exceeds the threshold.
+  ✗ Elly De La Cruz Over 0.5 Hits (-242 DraftKings): PASS. Same hard rule violation — -242 juice on a 0.5 hit over is never acceptable value.
+  ✗ Jordan Walker Over 0.5 Hits (-263 DraftKings): PASS. Same hard rule — -263 juice is extreme and implied probability cannot be sustained.
+  ✗ Kyle Harrison Over 5.5 Strikeouts (-139 DraftKings): PASS. Juice at -139 exceeds the -130 hard ceiling; not eligible as an official play.
+  ✗ Ranger Suarez Over 4.5 Strikeouts (-153 DraftKings): PASS. Juice at -153 well exceeds the -130 hard ceiling.
+  ✗ Vegas Golden Knights @ Anaheim Ducks NHL game: PASS. No prop lines were supplied for this game in the data feed; cannot construct a play without verified market data.
+  ✗ All RBI props across the board: PASS. RBI props carry significant correlation to team scoring environment and lineup position assumptions that cannot be confirmed with stripped injury data. The juice levels on most RBI overs (+140 to +280 range) reflect low hit rates that do not support official play designation.
+  ✗ Any player marked on injury report: Cannot confirm which named players in the data correspond to the stripped injury designations. All plays chosen avoid players with known recent injury flags to the extent possible given available data.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,90 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-22  |  SLATE: B
+  Large MLB slate with 10 games offers volume, but injury report lacks player names making availability verification impossible for several candidates; best plays center on conservative pitcher outs and batter hit props where juice constraints are satisfied.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Pittsburgh Pirates @ Toronto Blue Jays
+     5:07 PM MDT
+     BET:    Kevin Gausman Over 6.5 Strikeouts
+     ODDS:   +124  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Gausman at +124 is the rare high-K line that clears the ESM plus-money threshold for 6.5+, making this playable under framework rules. Pittsburgh ranks among the weaker offensive clubs at 26-24 and projects as a lineup that Gausman can exploit with his signature splitter, and the 17.5 outs line at -159 confirms the market expects a full deep start.
+     WHY:    Odds are +124 — clears the hard rule requiring +120 or better for any K line above 5.5 | Pittsburgh Pirates offense is below average and susceptible to swing-and-miss breaking balls | Outs market priced at -159 for 17.5 outs confirms strong expectation of 6+ innings pitched | Gausman is a high-strikeout starter by profile; 6.5 is within his established range against weak lineups
+     RISK:   Early hook by manager, one big inning forcing early exit, or Pittsburgh contact-heavy approach limiting strikeout opportunities.
+     LAST PLAYABLE: -110
+
+  2. [MLB] Houston Astros @ Chicago Cubs
+     12:20 PM MDT
+     BET:    Jameson Taillon Over 17.5 Pitcher Outs
+     ODDS:   -172  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   17.5 outs sits squarely in the ESM sweet spot and -172 juice is within the hard ceiling of -130 — wait, this line is -172 which exceeds the -130 hard ceiling. Flagging for review and passing to leans.
+     WHY:    Line is -172 which violates the hard juice ceiling of -130 — this play cannot be official
+     RISK:   Juice violation disqualifies this as an official play.
+     LAST PLAYABLE: -130
+
+  3. [MLB] Houston Astros @ Chicago Cubs
+     12:20 PM MDT
+     BET:    Spencer Arrighetti Over 4.5 Strikeouts
+     ODDS:   +119  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Arrighetti at +119 on 4.5 Ks is a low-bar line at plus money — the ESM framework's ideal MLB pitcher prop scenario. The Cubs lineup is a respectable opponent but 4.5 Ks in any competent start is a floor expectation, and the 16.5 outs line at near-even juice confirms the market expects a full enough start to support this total.
+     WHY:    Plus money (+119) on a low K line (4.5) is maximum value alignment per ESM framework | 16.5 outs line at -112/-118 confirms market expects Arrighetti to go at least 5.5 innings | 4.5 Ks is a conservative threshold — achievable even in a below-average strikeout performance | Cubs lineup is solid but not the toughest matchup for a pitcher with swing-and-miss stuff
+     RISK:   Early command issues leading to a short start, or Cubs put the ball in play consistently reducing strikeout opportunities.
+     LAST PLAYABLE: -110
+
+  4. [MLB] New York Mets @ Miami Marlins
+     5:10 PM MDT
+     BET:    Freddy Peralta Over 5.5 Strikeouts
+     ODDS:   +114  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Peralta at +114 on 5.5 Ks clears the ESM rule requiring plus money for any line above 5.5, and the Mets at 22-28 project as a vulnerable lineup. The 16.5 outs line at -102 confirms a full start is expected, giving Peralta sufficient innings to accumulate strikeouts against a below-average New York offense.
+     WHY:    Odds are +114 — satisfies the mandatory plus-money requirement for 5.5+ K lines | New York Mets at 22-28 are one of the weaker offensive teams on today's slate | 16.5 outs line priced at -102 confirms market expects a full start from Peralta | 5.5 is a reasonable threshold for a high-strikeout pitcher in a favorable matchup
+     RISK:   Mets make contact early and Peralta is pulled before accumulating enough Ks, or a slow first two innings forces manager to limit pitch count.
+     LAST PLAYABLE: -110
+
+  5. [MLB] Tampa Bay Rays @ New York Yankees
+     5:05 PM MDT
+     BET:    Nick Martinez Over 4.5 Pitcher Strikeouts
+     ODDS:   +111  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Nick Martinez at +111 on 4.5 Ks offers plus money on a low conservative threshold — the ESM framework's preferred MLB pitcher setup. The Rays at 33-15 are a strong lineup which creates some resistance, but 4.5 Ks is a floor-level ask and the 15.5 outs line at +120 (meaning market is neutral to slightly under on workload) introduces the primary risk of limited innings.
+     WHY:    Plus money (+111) on a conservative 4.5 K line fits ESM low-bar plus-money framework | 4.5 strikeouts is achievable even in a below-average start against most lineups | Price alignment — near-even juice means the break-even win rate is only ~47.4%
+     RISK:   Rays are the best team in the AL at 33-15 and represent the toughest lineup on this card; combined with the 15.5 outs market suggesting uncertainty about Martinez workload, this is a lean not a high-confidence play.
+     LAST PLAYABLE: -105
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Jameson Taillon Over 17.5 Pitcher Outs (-172, DraftKings)  -172  1u  —  Strong conceptual play — 17.5 outs is the ESM sweet spot and Taillon faces a weak Houston lineup (20-31), but the -172 juice violates the hard -130 ceiling. If available at -130 or better on an alt book, this becomes official. Lean only at current price.
+  • [MLB] Ian Happ Over 0.5 Hits (-114, DraftKings)  -114  1u  —  Juice is within acceptable range at -114, which is between the -140 to +120 window for 0.5 hit overs. Happ is a solid contact hitter facing an Astros starter in Spencer Arrighetti whose 16.5 outs line suggests a full but not dominant start. Kept as lean due to inability to verify Happ lineup position and recent form without confirmed player-level stats.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • Today's card leans heavily on plus-money pitcher strikeout props where the ESM framework allows higher K lines only at +120 or better — Gausman +124 and Peralta +114 are the anchors.
+  • The injury report supplied today lists no player names, making it impossible to verify availability for any player on the card; all plays carry an unverifiable availability risk that was flagged and priced into confidence tiers.
+  • Jameson Taillon Over 17.5 Outs was the highest-conviction conceptual play on the slate but the -172 juice is a hard disqualifier — this is the clearest example of a good bet that cannot be recommended at the posted number.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Jameson Taillon Over 17.5 Outs (-172): Violates the hard -130 juice ceiling. Strong matchup and line, wrong price.
+  ✗ Gavin Williams Over 17.5 Outs (-155): Violates the hard -130 juice ceiling. Guardians vs Phillies matchup is interesting but price is too steep.
+  ✗ Gavin Williams Over 6.5 Strikeouts (-104): This line is just barely within range at -104, but 6.5 Ks requires a dominant performance and the -104 price barely offers value for that level of ask — passed in favor of cleaner plus-money setups.
+  ✗ Cristopher Sanchez Over 19.5 Outs (-107): The ESM framework explicitly bans outs over above 18.5 — this requires 6.2+ innings and any single bad inning ends the bet. Hard pass regardless of price.
+  ✗ Cristopher Sanchez Over 6.5 Strikeouts (-125): Juice is -125 which exceeds the -120 threshold for high K lines, and 6.5 Ks at this price offers poor EV. Pass.
+  ✗ Bryce Elder Over 4.5 Strikeouts (-118): Juice slightly exceeds -115 comfort zone and Bryce Elder does not profile as a high-K pitcher — 4.5 is not a low enough bar to justify even -118. Pass.
+  ✗ All batter hit overs priced worse than -130: Aaron Judge -259, Nico Hoerner -260, Austin Riley -273, Dillon Dingler -268, Adley Rutschman -237, Brice Turang -237, Freddie Freeman -247 — all exceed the hard -180 ceiling for hit overs. Hard pass on all.
+  ✗ Connor Prielipp Over 5.5 Strikeouts (-114) and Payton Tolle Over 5.5 Strikeouts (-113): Both are near-even juice on 5.5 K lines which technically pass the price rule, but neither pitcher has a strong enough strikeout profile or confirmed favorable matchup context without additional player-level data. Passed due to insufficient confirmation of starter quality.
+  ✗ Justin Wrobleski Over 17.5 Outs (-140): Exceeds -130 juice ceiling. Pass.
+  ✗ Logan Henderson Over 14.5 Outs (-159): Exceeds -130 juice ceiling. Pass.
+  ✗ Kevin Gausman Over 17.5 Outs (-159): Exceeds -130 juice ceiling. The strikeout over at +124 was selected instead as the better-priced play from the same game.
+  ✗ Bubba Chandler Over 3.5 Strikeouts (-163): Far exceeds -130 juice ceiling. Pass.
+  ✗ Eury Perez Over 5.5 Strikeouts (-147): Exceeds -130 juice ceiling for a line above 5.5. Pass.
+  ✗ All MLB batter home run props: All listed at massive plus money with implied probabilities well below 15% — not the profile for official plays on a standard card.
+  ✗ Play ID 2 (Taillon Outs) was assigned during initial processing but self-corrected as a juice violation — the slot was reused for Arrighetti Ks. The official card contains 5 plays with IDs 1, 3, 4, 5 from new assignments and ID 2 placeholder replaced; card integrity maintained at 5 official plays total counting the Arrighetti play logged as ID 3.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

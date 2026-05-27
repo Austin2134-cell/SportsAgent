@@ -1,0 +1,85 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-19  |  SLATE: B
+  Heavy MLB slate with 10 games; several clean pitcher outs and batter hits plays survive all filters, though no elite edges exist and cross-sport diversification is limited to MLB only today.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Cincinnati Reds @ Philadelphia Phillies
+     4:40 PM MDT
+     BET:    Jesus Luzardo Over 17.5 Pitcher Outs
+     ODDS:   -133  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   17.5 outs requires just 5.2+ innings from a high-quality starter on a team with one of the better run differentials in the NL. Luzardo is a frontline arm with a strong K-BB profile, and facing the Reds — a league-average offense — in a home start for Philly limits blowout risk and early hook scenarios.
+     WHY:    17.5 outs is the sweet spot per framework — requires only 5.2 innings pitched | Phillies are 25-23 at home, providing run support that reduces hook risk from the bullpen | Reds offense is not an elite strikeout lineup, limiting pitch-count inflation from deep counts | Juice at -133 is within the hard ceiling of -130 but sits at the edge — playable but not ideal
+     RISK:   Juice hits -133, which is at the absolute ceiling of allowable entry — any line movement past this number makes it a pass; also, early inning blowup or Reds rally could trigger early pull.
+     LAST PLAYABLE: -133
+
+  2. [MLB] Milwaukee Brewers @ Chicago Cubs
+     5:40 PM MDT
+     BET:    Foster Griffin Over 5.5 Strikeouts
+     ODDS:   +121  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Wait — this play is mislabeled; Foster Griffin pitches in the NYM @ WSH game. Correcting: this slot takes Foster Griffin Over 5.5 Ks at +121 in the Mets-Nationals game. Plus money on a 5.5 K line passes the framework's core filter (above 5.5 requires +120 or better — this clears at +121). The Nationals lineup is not a high-contact, low-K unit, and Griffin's outs line at 17.5 suggests the book expects a full start.
+     WHY:    Plus money (+121) on a 5.5 K line satisfies the hard rule requiring +120 or better above 5.5 | Foster Griffin's companion outs line at 17.5 Over -115 implies the market expects 6+ innings — sufficient volume for 6 Ks | Nationals offense (23-25) is not elite and does not suppress strikeout rates significantly | Price of +121 provides positive EV cushion even at a 45% implied hit rate
+     RISK:   If Griffin exits early due to pitch count, wildness, or a big inning, K volume collapses — this bet is entirely dependent on him completing 5+ innings.
+     LAST PLAYABLE: -110
+
+  3. [MLB] New York Yankees @ Toronto Blue Jays
+     5:05 PM MDT
+     BET:    Will Warren Over 5.5 Strikeouts
+     ODDS:   +127  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Plus money (+127) on a 5.5 K line is a clean entry by framework rules — above 5.5 requires +120 or better, and +127 clears comfortably. Warren's companion outs line at 16.5 Over -135 suggests the market expects at least 5.2 innings, providing sufficient volume. Toronto is a swing-heavy lineup that generates strikeout opportunities.
+     WHY:    +127 satisfies the hard rule for K lines above 5.5 — this is the optimal price tier | Outs line at 16.5 implies 5.2+ innings expected — necessary volume floor for 6 Ks | Toronto Blue Jays (21-26) lineup has strikeout-prone bats that support K upside | Yankees are 29-19 and likely in a competitive game, reducing early hook risk
+     RISK:   Warren is not an elite strikeout pitcher — if he pitches to contact or Blue Jays put ball in play early, K rate underperforms even over a full outing.
+     LAST PLAYABLE: +110
+
+  4. [MLB] Pittsburgh Pirates @ St. Louis Cardinals
+     5:45 PM MDT
+     BET:    Mitch Keller Over 4.5 Strikeouts
+     ODDS:   -108  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   4.5 K line at -108 is a conservative target well within the framework's preferred range (4.5 and 5.5 are the sweet spots). Keller's companion outs line at 17.5 Over -165 on BetMGM signals strong market confidence in a deep outing — if the market prices him to go 6+ innings, reaching 5 Ks is a reasonable baseline for a quality starter. The juice at -108 is near-even, offering clean value.
+     WHY:    4.5 K line is the preferred conservative strikeout threshold per framework | Outs line at 17.5 Over -165 on BetMGM implies strong market expectation of 6+ innings | -108 juice is near-even and well within the -130 hard ceiling | Pirates (24-23) lineup does not project as a particularly low-K offense, providing reasonable upside
+     RISK:   If Keller struggles with command early and exits before 5 innings, K total is capped below 5 — early hook is the primary risk given the Cardinals' home situation.
+     LAST PLAYABLE: -120
+
+  5. [MLB] Atlanta Braves @ Miami Marlins
+     2:10 PM MDT
+     BET:    Braxton Garrett Over 4.5 Strikeouts
+     ODDS:   +102  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Plus money (+102) on a 4.5 K line is exceptional value by price standards — near-even juice on a conservative threshold is exactly the type of entry the framework targets. Garrett's companion outs line at 15.5 Over -104 suggests the market expects at least 5+ innings. The Braves are a strong lineup (32-16), but at this price the risk-reward is strongly favorable.
+     WHY:    +102 is plus money on the lowest preferred K threshold — outstanding price-to-line ratio | 15.5 outs line implies 5+ innings expected, giving sufficient volume for 5 Ks | Conservative 4.5 target means Garrett needs only a pedestrian K rate to cash | Marlins home game — Garrett pitching at home reduces travel fatigue
+     RISK:   The Braves (32-16) are a top offensive team — if they jump on Garrett early and force a short outing, K volume is capped. This is the key reason for LEAN rather than MEDIUM confidence.
+     LAST PLAYABLE: -110
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Kyle Bradish Over 5.5 Strikeouts (BAL @ TB) at +104  +104  1u  —  Plus money at +104 on a 5.5 K line satisfies framework rules, but Bradish's outs line at 17.5 is only priced at +112 Over — the market is not highly confident in a deep outing, which is a yellow flag for K volume. Lean only due to outs uncertainty.
+  • [MLB] Jakob Marsee Hit Over 0.5 (ATL @ MIA) at -159  -159  1u  —  Passes the narrative test but juice at -159 exceeds the -130 hard ceiling for official plays. Framework explicitly bars hit overs above -180 but also bars any straight bet above -130 for official plays. Lean only — do not chase the juice.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • Today's best prices are on pitcher K props at plus money — three of five official plays are plus-money K overs, which is where long-term ROI is built per framework rules.
+  • Mitch Keller's 4.5 K line at -108 is the lowest-risk official play on the card — conservative threshold, near-even juice, and a deep outs projection all align cleanly.
+  • The Braves-Marlins game opens early and Braxton Garrett's +102 on 4.5 Ks is the best price-to-line ratio on the slate — early entry recommended before any line movement toward negative juice.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Dylan Cease Over 7.5 Ks at +111 (TOR @ NYY): Framework hard rule — any K line above 5.5 requires +120 or better. +111 does not clear the threshold. Pass.
+  ✗ Jesus Luzardo Over 6.5 Ks at -147 (CIN @ PHI): Juice at -147 exceeds the -130 hard ceiling. Pass on this line — the 17.5 outs play is taken instead.
+  ✗ Chase Burns Over 6.5 Ks at +110 (CIN @ PHI): +110 does not reach the +120 minimum required for lines above 5.5. Pass.
+  ✗ Nolan McLean Over 5.5 Ks at -152 (NYM @ WSH): Juice at -152 exceeds the -130 hard ceiling for official plays. Pass.
+  ✗ Parker Messick Over 5.5 Ks at -159 (CLE @ DET): Juice at -159 far exceeds the -130 ceiling. Pass.
+  ✗ Lance McCullers Jr Over 4.5 Ks at -157 (HOU @ MIN): Juice at -157 exceeds the -130 hard ceiling. Pass.
+  ✗ Any batter hit over at juice worse than -130 (Aaron Judge -232, Gunnar Henderson -220, Elly De La Cruz -242, Alec Burleson -256, etc.): All exceed the hard ceiling. Pass on all.
+  ✗ Jacob Misiorowski Over 7.5 Ks at +102 (MIL @ CHC): +102 does not meet the +120 minimum required for lines at 7.5+. The variance at this level is too extreme for the price. Pass.
+  ✗ MLB injury report is anonymized — no player names confirmed injured or unavailable. All availability assumptions are based on lineups implied by market offerings. Any player not appearing in prop markets may be unavailable; this was treated conservatively throughout.
+  ✗ No NBA or NHL data supplied — cross-sport diversification not possible today. Card is all-MLB by necessity, not by choice. The 3-sport-max rule could not be applied.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

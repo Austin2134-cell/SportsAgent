@@ -1,0 +1,81 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-10  |  SLATE: B
+  Strong multi-sport slate with two NBA playoff-caliber matchups and a deep MLB card, but injury report names are redacted, limiting full confidence on role assumptions.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [NBA] San Antonio Spurs @ Minnesota Timberwolves
+     5:40 PM MDT
+     BET:    Victor Wembanyama Over 27.5 Points
+     ODDS:   +105  (BetMGM)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Wembanyama is the offensive engine on the league's best team at 62-20, and Minnesota's interior defense has been tested all season against elite bigs. Getting plus money on a 27.5 line for a player averaging near or above that threshold is a pricing inefficiency worth exploiting.
+     WHY:    San Antonio is the top seed at 62-20, suggesting Wembanyama has been producing at an elite level all season with a stable offensive role | Minnesota's pace and scheme at 217.5 total suggests a scoring environment that supports high individual output | Plus-money price on a 27.5 line for a generational talent represents positive expected value even at a modest hit rate above 50 percent
+     RISK:   Injury report names are redacted so any late Wembanyama status change or minutes restriction cannot be confirmed in this session.
+     LAST PLAYABLE: -108
+
+  2. [NBA] San Antonio Spurs @ Minnesota Timberwolves
+     5:40 PM MDT
+     BET:    Victor Wembanyama Over 3.5 Blocks
+     ODDS:   -155  (BetMGM)
+     UNITS:  1u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Wembanyama is the most prolific shot-blocker in the NBA and the market has priced this at -155, implying roughly 61 percent, which likely undervalues his true hit rate against a Minnesota team that attacks the paint with Edwards, Randle, and Gobert's frontcourt generating interior attempts. The line at 3.5 is aggressive but the price is still in range.
+     WHY:    Wembanyama's elite shot-blocking profile is the most predictable and repeatable skill in his game | Minnesota's offensive style with multiple paint-attacking players creates above-average block opportunities | Market pricing at -155 still implies under 61 percent, which likely undersells his per-game block frequency against a physically aggressive opponent
+     RISK:   If Minnesota spaces the floor heavily and avoids the paint, or if Wembanyama picks up early foul trouble, the block total can fall short easily.
+     LAST PLAYABLE: -175
+     ⚠ CORR: Correlated with Play 1 — both legs depend on Wembanyama availability and role. If he is limited or scratched, both plays are void of edge. Reduce combined exposure accordingly; total risk on these two plays should not exceed 3 units combined.
+
+  3. [NBA] New York Knicks @ Philadelphia 76ers
+     1:40 PM MDT
+     BET:    Jalen Brunson Over 27.5 Points
+     ODDS:   -106  (FanDuel)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Brunson is the Knicks' primary offensive creator and at -106 on a 27.5 line the price is near flat, making this a positive-EV play if his scoring rate is anywhere near his established season norms. Philadelphia's defense without key personnel — names redacted but the 76ers at 45-37 suggest a depleted or inconsistent roster — creates an exploitable mismatch for an elite isolation scorer.
+     WHY:    Brunson is the unquestioned primary scorer and ball-handler for a 53-win Knicks team, meaning usage and shot volume are among the most stable in the league | Philadelphia's 45-37 record indicates defensive inconsistency that elite point guards have likely exploited all season | Near-even money pricing at -106 for a player of Brunson's caliber and usage is a value opportunity rather than a juice play
+     RISK:   Blowout in either direction changes the script; if the Knicks win big, Brunson sits early, and if the 76ers win big, his usage may be artificially inflated but the game could end in garbage time.
+     LAST PLAYABLE: -120
+
+  4. [MLB] Colorado Rockies @ Philadelphia Phillies
+     11:36 AM MDT
+     BET:    Cristopher Sanchez Over 7.5 Strikeouts
+     ODDS:   -101  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Getting near-even money on a Phillies ace against the Colorado Rockies — the worst offense in baseball at 16-24 — is a strong price-to-matchup alignment. Sanchez is a strikeout-capable left-hander and the Rockies lineup is a high-strikeout environment for pitchers with quality offspeed pitches. The 7.5 line at -101 is essentially a coin-flip price on what should be a favorable matchup.
+     WHY:    Colorado Rockies at 16-24 represent one of the weakest offensive units on the slate, providing an ideal strikeout environment | Cristopher Sanchez on the Phillies at Citizens Bank Park against a road team with travel and altitude transition from Coors is a strong home pitcher spot | Near-even money pricing at -101 means very little juice is being paid for what projects as a better-than-50-percent outcome given the matchup quality
+     RISK:   Sanchez's leash and pitch count could limit him to 5-6 innings if the Phillies build a big early lead, capping strikeout accumulation before he reaches the threshold.
+     LAST PLAYABLE: -118
+
+  5. [MLB] Chicago Cubs @ Texas Rangers
+     12:36 PM MDT
+     BET:    Jacob deGrom Over 6.5 Strikeouts
+     ODDS:   +105  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   DeGrom at plus money on a 6.5 strikeout line against the Cubs — a team that strikes out at a above-average rate — is a price worth taking if he is confirmed healthy and on a normal workload. The Cubs at 27-13 are a strong lineup, which is the primary risk, but deGrom's stuff when healthy is elite and +105 implies the market is uncertain about his current health status.
+     WHY:    Plus-money pricing on a 6.5 strikeout line for an elite arm like deGrom represents positive expected value if workload is normal | Chicago Cubs opponents have historically been a reasonable strikeout target given their aggressive swing tendencies | Texas at home with a -126 ML suggests a neutral-to-favorable game script that keeps deGrom pitching deep into games
+     RISK:   DeGrom's injury history is the single largest risk here — the redacted injury report means his current health and pitch count ceiling cannot be confirmed, which is why this is graded LEAN rather than MEDIUM. If any workload restriction is in place, this play loses its foundation entirely.
+     LAST PLAYABLE: -110
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [NBA] Karl-Anthony Towns Over 11.5 Rebounds — FanDuel +114  +114  1u  —  Towns is the primary rebounder for the Knicks but the 11.5 line is high and matchup context against Embiid and Philadelphia's rebounding scheme introduces enough variance to keep this out of the official card. Plus money is appealing but the ceiling assumption is fragile without confirmed minutes and role data.
+  • [MLB] Gavin Williams Over 6.5 Strikeouts — BetMGM -110  -110  1u  —  Williams against a Twins team at 17-23 in a low-total 7.5 game is a reasonable strikeout spot, but the -110 price is less compelling than the deGrom or Sanchez plays and the low total introduces early hook risk. Playable but not official-card quality on this slate.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • The Spurs-Wolves game at 217.5 total is the highest-scoring environment on the NBA slate and Wembanyama's dual-threat value in both scoring and blocks makes it the most productive single-game targeting opportunity.
+  • Near-even money on Brunson at 27.5 and Sanchez at 7.5 Ks are the clearest price inefficiencies on the card — both are close to coin-flip pricing on plays that should clear 50 percent given role and matchup alignment.
+  • The redacted injury report is the biggest limiting factor today — any confirmed late scratches, especially Wembanyama, Brunson, or deGrom, should immediately trigger a reassessment and potential pass on the correlated plays.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Joel Embiid Over 26.5 Points — PASS. Embiid's injury history and the redacted injury report make role and minutes confirmation impossible. His scoring line at 26.5 is aggressive for a player with known availability risk and no confirmed healthy status in this session.
+  ✗ Anthony Edwards Over 26.5 Points — PASS. Edwards is a strong talent but -105 on a 26.5 line against a Spurs team with the best record in basketball and Wembanyama anchoring the defense is not a clean enough edge at this price.
+  ✗ Sandy Alcantara Over 4.5 Strikeouts — PASS. Alcantara against Washington is a reasonable matchup but the -136 juice on a 4.5 line is too expensive relative to the edge size and his recent health and workload trajectory could not be confirmed.
+  ✗ NHL Buffalo @ Montreal — PASS on all props. The NHL game has significant injury report uncertainty with multiple redacted outs on both rosters, making line assignment, power-play role, and ice time assumptions unreliable. The 5.5 total and -130 juice on the over make the game-total unattractive as well.
+  ✗ All MLB batter hit and RBI props — PASS. The 0.5 hit and RBI props available are priced with excessive juice on the under side and the plus-money overs carry too much variance for official-card inclusion on a single-hit threshold. The 1.5 hit props like Luis Arraez and Bo Bichette are interesting but require lineup confirmation not available in this session.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

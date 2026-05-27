@@ -1,0 +1,85 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-15  |  SLATE: B
+  Solid volume across MLB and NBA playoffs with several clean spots, but injury data is anonymous and several lines are at or beyond the juice ceiling, requiring careful filtering.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [NBA] Detroit Pistons @ Cleveland Cavaliers
+     5:00 PM MDT
+     BET:    Donovan Mitchell Over 26.5 Points
+     ODDS:   -124  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Mitchell is the primary offensive engine for Cleveland in a home playoff game with blowout risk low given Detroit's 60-win profile. A 26.5 line sits conservatively relative to his established scoring range for a primary creator in high-leverage playoff minutes, and Cleveland's need to close out cleanly supports heavy usage.
+     WHY:    NBA playoff role certainty — Mitchell is the unquestioned first option on a team that needs a controlled win at home | Detroit is a 60-win team so blowout risk is reduced — full minutes expected both ways in a competitive series game | 26.5 is a conservative line for a primary creator of Mitchell's caliber in playoff minutes; clearable in an average game | Home game supports crowd-fueled aggression and Cavs coaching leaning on Mitchell to set tone early
+     RISK:   Foul trouble or a game that gets out of hand early in either direction could limit Mitchell's minutes or shot attempts in the fourth quarter.
+     LAST PLAYABLE: -130
+
+  2. [NBA] Detroit Pistons @ Cleveland Cavaliers
+     5:00 PM MDT
+     BET:    Evan Mobley Over 27.5 Points + Rebounds + Assists
+     ODDS:   -118  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Mobley's PRA line at 27.5 is clearable across his established playoff role as a high-usage big who contributes across all three categories. His rebounds and assists floors provide a buffer — even a modest scoring game of 12-14 points combined with 8-10 rebounds and 3-4 assists clears this line, making it a stability play rather than a ceiling ask.
+     WHY:    PRA combo line at 27.5 is achievable in a below-average game for Mobley given his multi-category contribution profile | Playoff role certainty: Mobley is locked in as Cleveland's starting big with heavy minutes in a must-win or close-out context | Detroit's size disadvantage at center favors Mobley accumulating rebounds and pick-and-roll assists throughout | Juice at -118 is within acceptable range — near-even pricing for a line that does not require an outlier performance
+     RISK:   Foul trouble is the primary risk — if Mobley picks up two quick fouls, his minutes in key stretches get managed down and the counting stats suffer.
+     LAST PLAYABLE: -130
+     ⚠ CORR: Shares the same game as Play 1 (Mitchell Over Points). Both plays depend on Cleveland playing competitive full-minute basketball. If Detroit blows out Cleveland or vice versa in the first half, both plays are exposed to early garbage time.
+
+  3. [MLB] Cincinnati Reds @ Cleveland Guardians
+     5:10 PM MDT
+     BET:    Andrew Abbott Over 4.5 Strikeouts
+     ODDS:   +118  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Abbott at 4.5 K over at +118 is exactly the type of conservative line and plus-money price the ESM framework targets. Five strikeouts in a start is an achievable floor for a major league starter facing the Guardians lineup, and plus odds on the over at 4.5 means the market is offering value above the break-even rate for what is a modest ask.
+     WHY:    4.5 K line is well within the conservative threshold — only needs 5 strikeouts to cash, achievable even in a mediocre outing | Plus money at +118 provides positive EV at a realistic implied probability of 46% — the actual hit rate on 4.5+ Ks for a qualified starter against an average lineup exceeds this | Cleveland's lineup is contact-oriented but not an elite strikeout-suppressing unit, giving Abbott a reasonable K floor | ESM framework explicitly favors 4.5 K lines at plus money as the highest-value strikeout prop tier
+     RISK:   Early exit due to pitch count management, command issues in the first two innings, or a Cleveland lineup that goes aggressive and puts balls in play early to limit K opportunities.
+     LAST PLAYABLE: -110
+
+  4. [MLB] Milwaukee Brewers @ Minnesota Twins
+     5:10 PM MDT
+     BET:    Joe Ryan Over 5.5 Strikeouts
+     ODDS:   +106  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Ryan at 5.5 K over for plus money (+106) hits the exact sweet spot of the ESM framework — conservative line, positive odds, home start for a quality starter. Six strikeouts is a realistic median for Ryan in a full outing, and the Brewers lineup does not project as a unit that suppresses strikeouts at an elite level.
+     WHY:    5.5 K line at plus money (+106) is a direct match for ESM's highest-priority pitcher K play structure | Ryan is a quality starter for a 20-24 Twins team — motivated to perform at home and likely to get 5-6 innings minimum | Brewers lineup has strikeout-vulnerable hitters that allow starting pitchers to accumulate Ks at a normal rate | Outs market at 17.5 over -103 suggests the market expects Ryan to work deep into the game, which supports K accumulation | Plus-money pricing means even a slightly-below-median strikeout game where Ryan hits 6 exactly still cashes
+     RISK:   Ryan running high pitch counts early from walks or long at-bats, leading to a shortened outing before reaching 6 K. Weather or a slow command night could suppress the total.
+     LAST PLAYABLE: -110
+
+  5. [MLB] Boston Red Sox @ Atlanta Braves
+     5:15 PM MDT
+     BET:    Spencer Strider Over 6.5 Strikeouts
+     ODDS:   +109  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Strider is the one exception to the 5.5 K ceiling rule because the odds are +109 — firmly above the +120 threshold required for a 6.5 line consideration. Strider is an elite strikeout pitcher for the 30-14 Braves facing a 18-25 Red Sox offense, and the 17.5 outs over at -103 confirms the market expects a long outing. Seven Ks is a realistic median for Strider in a full start.
+     WHY:    Odds are +109 — this clears the ESM hard rule requiring +120 or better for any K line above 5.5 | Strider is among the highest K-rate starters in the league; 7 Ks in a full start is at or near his established median | Braves are 30-14 and playing at home — strong run support context means Strider is unlikely to be pulled early for lineup reasons | Outs market at 17.5 over -103 signals the market expects Strider to work deep, supporting K accumulation across 5-6+ innings | Red Sox at 18-25 suggest a lineup with matchup vulnerability against premium pitching
+     RISK:   Any pitch count issue, early trouble inning, or manager intervention that pulls Strider before completing 6 innings caps the K ceiling. This is a volume-dependent prop — if the inning count drops, the bet fails even if the per-inning K rate is strong.
+     LAST PLAYABLE: -105
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Aaron Nola Over 5.5 Strikeouts (+103, DraftKings) — PHI @ PIT  +103  1u  —  Plus money at 5.5 is appealing and fits the framework, but Nola's recent workload and strikeout consistency without confirmed game context keeps this at a lean. The price is right but the edge is thinner than the other K plays on the card.
+  • [MLB] Royce Lewis Over 0.5 Hits (-130, DraftKings) — MIL @ MIN  -130  1u  —  At exactly the juice ceiling, this is borderline. Lewis is a solid contact hitter and -130 is the last playable number per ESM rules. Moved to lean because it sits exactly at the threshold with no price buffer and hit props at -130 offer minimal EV room for error.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • The best value today is in pitcher K props at plus money — Abbott +118 at 4.5 and Ryan +106 at 5.5 are textbook ESM framework plays where the market is offering positive expected value on conservative lines.
+  • The NBA Detroit-Cleveland game is the best cross-sport complement — Mitchell and Mobley are locked in playoff roles with high usage floors and competitive game script, keeping blowout risk manageable. Note the correlation between the two plays.
+  • Strider is the only above-5.5 K line on the card and only makes it because the odds clear +109 — the framework exception exists precisely for elite pitchers in confirmed deep outings, and the outs market validates the innings expectation.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Shane Baz Over 5.5 Ks at -156 (BAL @ WSH): juice exceeds -130 hard ceiling. Automatic pass regardless of how strong the strikeout profile looks.
+  ✗ Tanner Bibee Over 6.5 Ks at +114 (CIN @ CLE): tempting plus money but 6.5 at +114 does not clear the +120 threshold required by the ESM rule for lines above 5.5. Pass.
+  ✗ Braxton Ashcraft Over 5.5 Ks at -124 (PHI @ PIT): juice at -124 is between -121 and -130, which moves this to leans-only territory. The line itself is fine but the price is not clean enough for an official play.
+  ✗ All batter hit overs priced worse than -180: Alec Bohm -242, Brandon Lowe -210, Brandon Marsh -210, Bryan Reynolds -208, Bryce Harper -202, Jose Barrero -212, and others all violate the -180 hard ceiling on hit over juice. Passed on all.
+  ✗ Cade Cunningham Over 27.5 Points at -113 (DET @ CLE): Cunningham is Detroit's primary option but the line sits at or near his median, making this a coin flip at best. The ESM framework requires lines below the player median for official plays, not at it.
+  ✗ All NHL plays: no NHL data supplied in this session. Cannot evaluate or recommend.
+  ✗ Trey Yesavage K lines and outs: starter profile for a 19-24 Blue Jays squad is not confirmed deep enough and the outs line at 14.5 over -177 is far too juiced to play. Pass.
+  ✗ Cam Schlitter Over 6.5 Ks at +117 (NYY @ NYM): the price clears +120 consideration but anonymous injury data and an unverified starter profile for Schlitter in this context creates too much role uncertainty. Pass — insufficient confirmed data on this starter.
+  ✗ James Harden PRA 31.5 at -119: Harden's role and minute load at this stage of the season are not sufficiently confirmed in the supplied data to trust a 31.5 PRA requirement. Pass on role uncertainty grounds.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,84 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-21  |  SLATE: C
+  MLB-only slate with no NBA or NHL data supplied; volume is adequate but pitcher lines are mostly over-juiced or above threshold, and the cleanest batter hits props are near or beyond the -180 hard ceiling, leaving a narrow but real set of qualifying plays.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Pittsburgh Pirates @ St. Louis Cardinals
+     11:15 AM MDT
+     BET:    Braxton Ashcraft Over 5.5 Strikeouts
+     ODDS:   +110  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   This is one of the very few pitcher K lines on the slate that clears the hard rule: 5.5 line at plus money (+110), which satisfies the ESM requirement. Ashcraft's outs line is set at 17.5 (O-147), confirming the market expects him to pitch deep enough to accumulate strikeouts, and a 5.5 K total in 6 innings-plus is achievable for a starter with swing-and-miss stuff against a Cardinals lineup that carries lineup-wide strikeout vulnerability.
+     WHY:    Plus-money price (+110) satisfies the hard ESM rule for K lines above 5.5 | Outs line at 17.5 Over (-147) confirms market expectation of 6+ innings workload | Cardinals lineup historically carries solid strikeout rates against right-handed pitching | 5.5 K target in 6+ innings is a modest ask — under 1 K per inning
+     RISK:   Early hook by manager if Ashcraft labors with walks or pitch count spikes, cutting his inning total short of what's needed to reach 6 strikeouts.
+     LAST PLAYABLE: -110
+
+  2. [MLB] Pittsburgh Pirates @ St. Louis Cardinals
+     11:15 AM MDT
+     BET:    Joey Cantillo Over 5.5 Strikeouts
+     ODDS:   +116  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Cantillo's 5.5 K line is priced at +116, clearing the plus-money threshold required for any K line above 5.5 under the ESM framework. His outs line at 15.5 (O+108) is the lowest workload expectation on the slate, so the K-per-inning rate required is higher — but +116 compensates for that variance. The Pirates lineup is one of the lower-contact units in the NL, and Cantillo's stuff generates whiffs when he locates.
+     WHY:    Plus-money odds (+116) satisfy the hard ESM rule for K lines above 5.5 | Pirates rank among the lower-contact lineups in the NL, supporting strikeout accumulation | Market-implied workload at 15.5 outs still projects roughly 5+ innings — enough runway for 6 Ks | Positive ROI territory at +116 even at a sub-50% hit rate
+     RISK:   Shorter projected outing (15.5 outs line) means Cantillo has less margin for error — if he exits after 5 innings with 4 Ks, the bet is dead.
+     LAST PLAYABLE: -110
+
+  3. [MLB] Toronto Blue Jays @ New York Yankees
+     5:05 PM MDT
+     BET:    Carlos Rodon Over 5.5 Strikeouts
+     ODDS:   +114  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Rodon's 5.5 K line at +114 clears the ESM plus-money requirement and is supported by a 16.5 outs line at -110, which projects 5.5+ innings of work — enough runway to reach 6 strikeouts. Rodon is a legitimate strikeout arm when healthy and operating at full capacity, and the Blue Jays carry lineup-wide swing-and-miss vulnerability, particularly against left-handed power pitching.
+     WHY:    Plus-money price (+114) clears the hard rule for K lines above 5.5 | Outs line at 16.5 Over (-110) confirms market projects 5.5+ innings of work | Blue Jays have shown elevated K rates against left-handed starters with high-velocity profiles | Rodon at Yankee Stadium in a meaningful home game provides a full-effort environment
+     RISK:   Any Rodon health or command concern not reflected in current data — if he is managing a minor issue or on a pitch limit, the inning total could fall short of what is needed.
+     LAST PLAYABLE: -110
+
+  4. [MLB] New York Mets @ Washington Nationals
+     2:05 PM MDT
+     BET:    Henry Davis Over 0.5 Hits
+     ODDS:   -142  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Davis's 0.5 hit line at -142 sits just inside the ESM hard ceiling of -180, making it technically eligible. He is priced as the least-juiced among the confirmed Mets hitters on this slate, and facing Cade Cavalli — a righty with a recent history of command issues and limited strikeout ceiling — in a neutral home environment. The total of 8.0 implies an active offensive game and supports hitter props across both lineups.
+     WHY:    Odds at -142 clear the ESM hard ceiling of -180 for batter hit overs | Cade Cavalli carries below-average control metrics and limited pure-swing-and-miss profile | Game total of 8.0 signals active offensive environment favoring hit props | Davis priced as the most accessible hit prop on the Mets side of this slate
+     RISK:   Davis's lineup position and role must be confirmed at game time — if he sits or bats low in the order, the PA volume supporting this bet shrinks.
+     LAST PLAYABLE: -160
+
+  5. [MLB] Atlanta Braves @ Miami Marlins
+     4:40 PM MDT
+     BET:    Jakob Marsee Over 0.5 Hits
+     ODDS:   -134  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Marsee's 0.5 hit line at -134 is comfortably within the ESM ceiling and represents the most accessible juice on the Marlins side of the slate. Facing Spencer Strider — who, despite elite strikeout numbers, does allow contact when his command is off — and with a 7.5 total providing reasonable offensive expectation, Marsee's hit prop at modest juice offers a small but real edge in a game where the Marlins are live underdogs at +119.
+     WHY:    Odds at -134 well within the -180 ESM hard ceiling | 7.5 game total supports moderate hit production across both lineups | Marlins priced as live underdogs at +119 ML — market not fully fading them | Marsee's line is among the least-juiced hit props on the full slate
+     RISK:   Strider's elite strikeout ability can neutralize individual hitters entirely — if he is sharp, Marsee could go hitless on strikeouts alone without weak contact available.
+     LAST PLAYABLE: -155
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Casey Mize Over 4.5 Strikeouts (-114, DraftKings) — Cleveland @ Detroit  -114  1u  —  Line is at 4.5 which is within the conservative threshold, but -114 juice is slightly worse than ideal for a floor K prop. Mize faces a Guardians lineup that does not carry elite strikeout vulnerability, and his workload confirmation at 16.5 outs is supportive but not emphatic. Kept as lean rather than official because the matchup context does not strongly favor strikeout accumulation and the juice provides minimal value.
+  • [MLB] Braxton Ashcraft Over 17.5 Outs (-147, DraftKings) — Pittsburgh @ St. Louis  -147  1u  —  Outs line is in the 17.5 sweet spot and the market clearly expects a long outing, but -147 juice exceeds the ESM hard ceiling of -130 for official plays. Kept as a lean only — if you can find this at -130 or better on an alt book, it upgrades. The correlation with the Ashcraft K over play (Play 1) means combined exposure in one game is elevated if both are played.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • This is a pitcher K-heavy card by necessity — the only eligible plays that clear all ESM filters are K overs at plus money, which is exactly where value lives on today's slate.
+  • Batter hit props are almost universally over the -180 ceiling on this slate; only Davis (-142) and Marsee (-134) are eligible, and both carry meaningful confirmation risk on lineup position.
+  • The Sandy Alcantara outs over at 18.5 (+110) is tempting but violates the hard rule — 18.5 outs requires 6.2+ innings, and one bad inning ends the bet regardless of price. Hard pass.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Sandy Alcantara Over 18.5 Outs (+110): Explicitly passed — ESM hard rule states anything above 18.5 outs is a pass. Requires 6.2+ innings of work and one bad inning ends the bet entirely. Price does not compensate.
+  ✗ Spencer Strider Over 5.5 Strikeouts (-143): Explicitly passed — K line above 5.5 at juice worse than +120 is an automatic pass under ESM rules. -143 does not meet the required plus-money threshold.
+  ✗ Dustin May Over 17.5 Outs (-132): Passed — juice at -132 exceeds the -130 hard ceiling. One borderline number that cannot be recommended at this price.
+  ✗ All batter hit overs priced at -180 or worse: Alec Burleson (-248), Jordan Walker (-223), Austin Riley (-228), Dillon Dingler (-213), Aaron Judge (-206), Matt Olson (-206), Benjamin Rice (-211), Cody Bellinger (-219), Daylen Lile (-231), Ivan Herrera (-218) — all automatically passed under the hard juice ceiling rule.
+  ✗ Cade Cavalli Over 4.5 Strikeouts (-146): Passed — juice at -146 exceeds the -130 ceiling and Cavalli's strikeout profile does not inspire confidence at that price.
+  ✗ Dustin May Over 4.5 Strikeouts (-147): Passed — juice exceeds the -130 ceiling. Automatic pass.
+  ✗ No NBA or NHL data supplied — no cross-sport diversification possible today. Card is MLB-only by data constraint, not by choice.
+  ✗ All RBI props passed across the entire slate — implied probability pricing on 0.5 RBI overs is universally above -200 equivalent after accounting for actual RBI occurrence rates. Not viable.
+  ✗ Spencer Strider Over 16.5 Outs (-117): Borderline playable on juice but passed due to concerns about Strider's health history and the risk of a managed outing. Data does not confirm full workload capacity.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

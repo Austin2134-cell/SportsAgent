@@ -1,0 +1,97 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-17  |  SLATE: B
+  Large MLB slate with 10 games offers volume, but most pitcher lines are priced past entry thresholds or sit above safe K ceilings; a handful of clean batter and pitcher outs plays survive the full filter stack.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] MIA @ TB
+     10:15 AM MDT
+     BET:    Eury Perez Over 5.5 Strikeouts
+     ODDS:   +122  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Eury Perez at +122 clears the ESM hard rule requiring +120 or better for any K line above 5.5 — this is the exact threshold where value unlocks. The Marlins lineup ranks among the weaker offensive units in the NL with limited contact quality, giving Perez a favorable matchup to work deep into counts and generate swings and misses.
+     WHY:    Plus-money odds (+122) clear the mandatory threshold for a 5.5 K line — this is a prerequisite met, not just a preference | Miami Marlins lineup is a low-OBP, strikeout-prone group that supports pitcher K upside | Perez has youth arm upside and Tampa Bay would have no reason to pull him early in a home game against a weak opponent | Total is 7.0, a moderate run environment that doesn't signal extreme bullpen-first game management
+     RISK:   Perez is a young pitcher and pitch-count management or a short outing due to control issues could leave him short of 6 Ks before the line clears.
+     LAST PLAYABLE: +110
+
+  2. [MLB] MIA @ TB
+     10:15 AM MDT
+     BET:    Joe Mack Over 0.5 Hits
+     ODDS:   -101  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Joe Mack at -101 is the best-priced 0.5 hit over on the entire slate, sitting right at the fair-value threshold. At near-even juice, the implied probability is essentially a coin flip, but any established starting lineup bat hitting the ball at league-average rates should connect at a rate above 50% — giving us a small but real edge on price alone.
+     WHY:    Odds of -101 are the most favorable hit over pricing on today's slate by a wide margin — near-even juice means minimal vig drag | 0.5 hit line is the most conservative possible MLB batter prop; a single contact hit clears the bet | Playing at home in Tampa Bay against a Marlins starter adds lineup familiarity and home-field comfort | No injury flag confirmed for Mack in supplied data
+     RISK:   If Mack is not in the confirmed starting lineup or bats low in the order against a strong starter, the hit probability drops meaningfully.
+     LAST PLAYABLE: -120
+     ⚠ CORR: Same game as Play 1 (Eury Perez K over). These are not correlated in direction — Perez K over benefits from weak Marlins hitting, while Mack hit over is a Rays hitter bet. Mild same-game exposure noted but not a correlated-script risk.
+
+  3. [MLB] TEX @ HOU
+     12:10 PM MDT
+     BET:    Alejandro Osuna Over 0.5 Hits
+     ODDS:   -128  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Osuna at -128 is within the hard juice ceiling of -130 and represents a solid 0.5 hit line with reasonable implied probability. The Rangers-Astros game carries an 8.0 total suggesting meaningful offensive activity on both sides, and Osuna's line is priced at a level consistent with a productive top-half lineup contributor.
+     WHY:    Juice at -128 is within the -130 hard ceiling — this is the last playable number zone but still clears the rule | 8.0 game total signals an offense-friendly environment where contact opportunities are elevated | 0.5 hit line is the simplest, lowest-variance MLB prop available — one hit in any at-bat clears the bet | No injury flag on Osuna in supplied data
+     RISK:   If Osuna sits outside the top six in the batting order or the game environment shifts (pitchers dominate early), the single-hit floor becomes harder to reach.
+     LAST PLAYABLE: -130
+
+  4. [MLB] CIN @ CLE
+     11:40 AM MDT
+     BET:    Gavin Williams Over 17.5 Outs
+     ODDS:   -151  (DraftKings)
+     UNITS:  0u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Flagged as LEAN only — juice at -151 exceeds the hard -130 ceiling for official plays. Williams is a quality arm for Cleveland facing a Cincinnati lineup that is not elite, and 17.5 outs requires only 5.2 innings. The underlying play has merit but the price is prohibitive under ESM rules.
+     WHY:    17.5 outs is a conservative line requiring only 5.2 innings — well within a starter's expected workload | Cleveland is at home, favored at -162, which signals they expect their starter to hold a lead and go deep | Cincinnati ranks as a below-average offensive team (24-22 record) with no premium lineup firepower confirmed | Juice at -151 is the disqualifying factor — exceeds hard ceiling
+     RISK:   Juice makes this unplayable as an official bet. Any official unit allocation would violate the -130 price ceiling rule.
+     LAST PLAYABLE: -130
+     ⚠ CORR: Demoted to lean due to juice violation. Not placed as official play.
+
+  5. [MLB] TOR @ DET
+     11:40 AM MDT
+     BET:    Kevin Gausman Over 5.5 Strikeouts
+     ODDS:   -112  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Gausman at -112 on a 5.5 K line is right at the fair-value zone and technically passes the price ceiling. The ESM framework requires plus-money for lines above 5.5, but 5.5 itself is the maximum allowed line at juice — -112 is within the acceptable range. Gausman is a veteran power arm for Toronto, a team favored on the road (-131 ML), suggesting they expect him to go deep into the game against a Detroit lineup that generates limited high-OBP threats.
+     WHY:    5.5 K line is the maximum allowed under ESM framework; -112 juice is within the acceptable -130 ceiling | Toronto is -131 ML favorite, signaling Gausman expected to be the primary starter through deep innings | Detroit lineup (20-26 record) is below average offensively and has limited high-contact threats at top of order | 7.5 game total is moderate — not a blowout environment — suggesting competitive innings and full starter deployment | Gausman is an experienced ace-caliber arm with consistent K rates across the season
+     RISK:   Any early-inning trouble, high pitch count, or score-based hook by the Toronto manager could pull Gausman before the K line clears — 5.5 Ks requires at least 6 quality innings.
+     LAST PLAYABLE: -125
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Gavin Williams Over 17.5 Outs (CIN @ CLE, DraftKings, -151)  -151  1u  —  Strong underlying play — 17.5 outs is a conservative line for a Cleveland home starter with the team a -162 favorite, and Williams is a quality arm. Demoted from official because juice at -151 exceeds the hard -130 ceiling. If available at -130 or better on an alternate book, this becomes an official play.
+  • [MLB] Jared Triolo Over 0.5 Hits (PHI @ PIT, DraftKings, -137)  -137  1u  —  Triolo's -137 is slightly over the -130 ceiling, disqualifying it as an official play. Pittsburgh is home and -131 ML favorite, and Triolo is a contact-oriented hitter with a favorable matchup against Zack Wheeler who can be inconsistent. Watch for line movement to -130 or better.
+  • [MLB] Drew Rasmussen Over 5.5 Strikeouts (MIA @ TB, DraftKings, +106)  +106  1u  —  Plus money (+106) clears the threshold for a 5.5 K line and Rasmussen is a Tampa Bay home starter against a weak Marlins lineup. Held to lean because the outs market shows 17.5 over at -150, suggesting Tampa may have some workload uncertainty or pitch-count considerations. The K play has value but outs data creates mild doubt on innings depth.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • Today's best value is concentrated in conservative MLB batter hit props near even juice and plus-money pitcher K lines — the Eury Perez +122 and Kevin Gausman -112 both clear the full filter stack on the same 5.5 K threshold.
+  • Avoid all six strikeout lines above 5.5 that are priced at juice today: Paul Skenes 6.5 at -150, Zack Wheeler 6.5 at -155, Freddy Peralta 6.5 at -103 (marginal but 6.5+ requires confirmation), and Nathan Eovaldi 5.5 at -149 — all violate ESM price rules or ceiling rules.
+  • The Gavin Williams outs over (17.5, -151) is the strongest line on the slate structurally but the juice makes it unplayable as an official bet — monitor for line correction or book shopping.
+  • Paul Skenes 18.5 outs at +141 is tempting but requires 6.2+ innings from a starter in a competitive game — one bad inning ends the bet. The ESM hard rule on 18.5+ outs is a pass regardless of odds.
+  • Cross-sport note: No NBA or NHL playoff data was supplied in today's session. Card is MLB-only by data availability, not by choice — diversification rules cannot override missing data.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Paul Skenes Over 6.5 K (-150, PHI @ PIT): Above 5.5 K threshold and juice exceeds -130 ceiling. Hard pass on both counts.
+  ✗ Zack Wheeler Over 6.5 K (-155, PHI @ PIT): Same dual violation — above 5.5 line and juice at -155. Pass.
+  ✗ Freddy Peralta Over 6.5 K (-103, NYY @ NYM): Odds are near even but 6.5 K line is above the 5.5 maximum. The ESM framework requires +120 or better for anything above 5.5, and -103 does not qualify. Pass.
+  ✗ Nathan Eovaldi Over 5.5 K (-149, TEX @ HOU): 5.5 line is acceptable but juice at -149 is one tick from the -150 automatic pass threshold. ESM ceiling is -130; this is disqualified. Pass.
+  ✗ Paul Skenes Over 18.5 Outs (+141, PHI @ PIT): ESM hard rule — any outs over above 18.5 requires the starter to pitch 6.2+ innings. One rough inning ends this bet. Pass regardless of plus-money price.
+  ✗ Kevin Gausman Over 17.5 Outs (-154, TOR @ DET): Juice at -154 exceeds the -130 ceiling. Pass on this market; K over at -112 is the preferred Gausman play.
+  ✗ Zack Wheeler Over 17.5 Outs (-162, PHI @ PIT): Juice far exceeds ceiling at -162. Automatic pass.
+  ✗ All batter hit overs priced worse than -180 (Alec Bohm -203, Ceddanne Rafaela -234, Jarren Duran -234, CJ Abrams -253, Daylen Lile -260, James Wood -258, Brady House -232, Benjamin Rice -213, Aaron Judge -222, Angel Martinez -229, Chase Delauter -244, Ernie Clement -237, George Springer -233, Brandon Nimmo -213, Austin Riley -200, Marcelo Mayer -200, et al.): All violate the hard -180 juice ceiling for batter hit overs. Pass on all.
+  ✗ Brayan Bello Over 3.5 K (-155, BOS @ ATL): Juice exceeds -130. Pass.
+  ✗ Grant Holmes Over 4.5 K (-160, BOS @ ATL): Juice exceeds -130. Pass.
+  ✗ Brandon Young Over 3.5 K (-131, BAL @ WSH): One tick over the -130 ceiling. Pass.
+  ✗ Robert Gasser Over 3.5 K (-137, MIL @ MIN): Juice exceeds -130. Pass.
+  ✗ Brady Singer Over 3.5 K (-130, CIN @ CLE): At exactly -130, this is technically at the ceiling. Held as pass because Brady Singer's workload and K-rate consistency could not be confirmed from supplied data alone, and the edge at exactly the ceiling price is too thin to justify official play status.
+  ✗ Chandler Simpson Over 0.5 Hits (-245, MIA @ TB): Juice at -245 is far above the -180 ceiling. Pass.
+  ✗ Connor Norby Over 0.5 Hits (-183, MIA @ TB): One tick above -180 ceiling. Pass.
+  ✗ No NBA Playoffs or NHL Playoffs data was supplied. Cannot produce cross-sport plays without verified lines and player availability data. All NBA and NHL plays are passed by default for today's card due to missing session data.
+  ✗ Injury report supplied without player names attached to designations — cannot cross-reference specific player availability. Where any hit line was priced aggressively and injury status was uncertain, the player was excluded from official consideration per ESM pass framework.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

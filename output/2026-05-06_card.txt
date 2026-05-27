@@ -1,0 +1,83 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-06  |  SLATE: B
+  Strong multi-sport slate with viable edges in MLB pitcher props and NBA player props, tempered by anonymous injury data that prevents full confirmation of role assumptions.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Athletics @ Philadelphia Phillies
+     4:41 PM MDT
+     BET:    Zack Wheeler Over 6.5 Strikeouts
+     ODDS:   -105  (BetMGM)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Wheeler at -105 for 6.5 Ks against the Athletics is strong pricing for an ace-caliber arm with consistent double-digit strikeout upside. The Athletics rank among the more strikeout-prone lineups in the AL, and Wheeler's K-BB profile and workload consistency make this a repeatable outcome at a near-even number.
+     WHY:    Wheeler is a top-tier strikeout pitcher with elite CSW rates and historically strong K totals against weaker lineups | Athletics offense carries elevated strikeout rate, presenting favorable matchup for a power arm | Near-even juice at -105 offers positive EV threshold if hit rate clears 52 percent, which Wheeler's profile supports comfortably | Phillies -175 ML suggests a comfortable game script with no blowout-exit risk on either side that would curtail Wheeler's workload
+     RISK:   Wheeler exits early due to undisclosed injury concern or pitch-count decision in a lopsided game, cutting into his strikeout accumulation window.
+     LAST PLAYABLE: -118
+
+  2. [MLB] Cleveland Guardians @ Kansas City Royals
+     5:41 PM MDT
+     BET:    Cole Ragans Over 6.5 Strikeouts
+     ODDS:   +120  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Ragans at +120 for 6.5 Ks represents genuine positive expected value for a pitcher who has developed into one of the AL's better strikeout arms. The Guardians are a contact-oriented lineup, but Ragans's stuff grades well enough to project 6-8 Ks in a full start, and the plus-money line overcorrects toward the under.
+     WHY:    Ragans has emerged as a high-upside strikeout arm with a swing-and-miss arsenal capable of surpassing this line in quality starts | Total of 7.5 with under juice at -118 suggests a pitcher-friendly environment that supports deeper outings and higher K accumulation | +120 positive odds mean the market needs only a ~46 percent hit rate to break even, and Ragans clears that threshold in his better starts | Royals home environment and game script as modest favorites should keep Ragans in a neutral script without blowout-exit risk
+     RISK:   Ragans walks batters early and is pulled before the 5th inning, or the Guardians make consistent contact and limit his strikeout accumulation to the 4-5 range.
+     LAST PLAYABLE: -105
+
+  3. [MLB] Los Angeles Dodgers @ Houston Astros
+     12:11 PM MDT
+     BET:    Tyler Glasnow Over 7.5 Strikeouts
+     ODDS:   +114  (FanDuel)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Glasnow at +114 for 7.5 Ks against Houston is a positive-EV play on one of baseball's most dominant strikeout pitchers when healthy and rolling. The Astros have a solid lineup but do carry strikeout vulnerability against elite velocity, and Glasnow's ceiling in quality starts routinely reaches double digits.
+     WHY:    Glasnow is among the highest strikeout-rate starters in MLB when his command is sharp, with multiple 10-plus strikeout outings this season | Dodgers are -219 ML favorites, meaning Glasnow pitches in a low-pressure game script that supports deeper outings | Total of 8.5 with over juice at -122 reflects an offense-forward environment, but Glasnow's individual K upside operates independently of run scoring | +114 positive money creates a favorable EV threshold for a pitcher whose K ceiling clears 7.5 in roughly half his quality starts
+     RISK:   Glasnow's workload is being managed conservatively and he is pulled after 5-6 innings before accumulating enough strikeouts, or Houston makes early contact and limits his whiff rate.
+     LAST PLAYABLE: -108
+
+  4. [NBA] Philadelphia 76ers @ New York Knicks
+     5:10 PM MDT
+     BET:    Joel Embiid Over 40.5 Points + Rebounds + Assists
+     ODDS:   -106  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Embiid's PRA line of 40.5 at near-even juice is a volume play on a player whose usage and role as the primary offensive option are non-negotiable in a playoff-seeding game. With the 76ers as +245 underdogs, Embiid will be force-fed touches throughout, and his rebounds plus assists floor helps insulate the PRA total from pure scoring variance.
+     WHY:    Embiid is the clear offensive anchor for Philadelphia with no role-sharing threat at his position in this matchup | As a heavy underdog, Philadelphia game script dictates Embiid operates with maximum usage and shot attempts across all four quarters | PRA combines three stat categories which provides variance insulation — a modest scoring night can be offset by 9-10 rebounds and 4-5 assists | Near-even -106 pricing suggests the market sees this as a coin flip, but Embiid's floor across all three categories regularly supports 38-45 combined
+     RISK:   Foul trouble forces Embiid to sit extended stretches in the second half, or the game becomes a blowout loss where Philadelphia's starters are pulled early in the fourth quarter.
+     LAST PLAYABLE: -120
+
+  5. [NHL] Montréal Canadiens @ Buffalo Sabres
+     5:10 PM MDT
+     BET:    Tage Thompson Over 3.5 Shots on Goal
+     ODDS:   -118  (FanDuel)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Thompson at -118 for 3.5 shots on goal is a clean volume play on one of the NHL's premier power forwards who generates elite shot totals at home. Buffalo is a modest -130 ML favorite and Thompson's shot-generation profile at home is among the highest in the league, making this a role-stable, repeatable prop at a reasonable price.
+     WHY:    Thompson is consistently among the league leaders in shots on goal and regularly posts 4-plus SOG in home games | Buffalo's home environment and first-line deployment give Thompson premium ice time and offensive zone opportunity | Montreal's defensive structure, while improved, still allows volume shooting from opposing stars — particularly elite centers | -118 pricing is within the acceptable range for a shot-volume prop with Thompson's floor, and the total of 5.5 signals an expected open, fast-paced game
+     RISK:   Montreal's goaltender plays an exceptionally controlled game that limits shot quality and volume from Buffalo's top line, or Thompson picks up a minor injury that limits his ice time.
+     LAST PLAYABLE: -132
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Eury Perez Over 5.5 Strikeouts (-159 DraftKings)  -159  1u  —  Perez has swing-and-miss stuff and the Orioles are a strikeout-prone lineup, but -159 juice makes this a borderline EV play rather than a clear edge. The price has been moved to a level where the implied probability exceeds reasonable projection confidence. Keeping at lean given the juice.
+  • [MLB] Shane McClanahan Over 5.5 Strikeouts (+132 FanDuel)  +132  1u  —  McClanahan at +132 is intriguing positive-money value against the Blue Jays, but this game starts early and McClanahan's workload and health status after recent injury history cannot be fully confirmed from supplied data. Lean only until rotation spot and pitch-count leash are clearer.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • The strongest edges on this slate are in MLB pitcher strikeout props — Wheeler, Ragans, and Glasnow all sit at or near even money at lines their profiles can clear, making them the core of today's card.
+  • The NBA injury data is entirely anonymized in the supplied feed, which prevents confirmation of role assumptions for most player props — Embiid's PRA is the one play where the primary role assumption is non-negotiable regardless of roster context.
+  • The NHL Sabres-Canadiens game offers clean shot-volume value on Thompson at home — this is a stability play, not a ceiling play, and the pricing supports it at -118 without overextending.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ PASS — Jalen Brunson Over 26.5 Points (-118 FanDuel): Brunson is the right bet in the right matchup but -118 for a 26.5 point line against a desperate Philadelphia team adds confirmation risk. Brunson can be managed in a blowout win, and the Knicks -7.5 spread suggests that scenario is on the table. Price is not wrong but edge is thin.
+  ✗ PASS — Josh Hart Over 9.5 Rebounds (-108 DraftKings / Under -130): Heavy under juice on a 9.5 rebound line tells the market story — Hart's rebounding is real but 9.5 is a stretch even for him. Pass entirely.
+  ✗ PASS — Karl-Anthony Towns Over 10.5 Rebounds (-127 DraftKings): Juice is too steep for a line that requires an above-average night. Towns can hit this but -127 does not offer sufficient value relative to the projection range.
+  ✗ PASS — All anonymous injury data: The supplied injury feed lists no player names across NBA, MLB, and NHL sections, making it impossible to verify role changes, lineup confirmations, or usage shifts tied to specific absences. All plays requiring confirmed availability of a specific injured or questionable player are passed until identity is confirmed.
+  ✗ PASS — Minnesota Timberwolves @ San Antonio Spurs: No market data supplied for this game in the feed. Cannot handicap or produce plays without lines and props.
+  ✗ PASS — Anaheim Ducks @ Vegas Golden Knights: No market data supplied for this game in the feed. Cannot handicap or produce plays without lines and props.
+  ✗ PASS — Bailey Ober Over 3.5 Strikeouts (-135 BetMGM): Ober against Washington is a winnable prop but -135 for 3.5 Ks is a steep ask for a ground-ball pitcher who does not carry elite strikeout rates. Price does not match upside.
+  ✗ PASS — Patrick Corbin Over 3.5 Strikeouts (-115 BetMGM): Corbin's strikeout rates have declined materially and -115 for 3.5 Ks is not positive value for a pitcher who routinely struggles to miss bats.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

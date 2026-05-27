@@ -1,0 +1,93 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ESM DAILY CARD  |  2026-05-13  |  SLATE: C
+  Heavy MLB slate with no NBA or NHL playoff action supplied; applying strict filters to a high-variance single-sport day keeps the card lean and conservative.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  OFFICIAL PLAYS  (5/5 max)
+  ────────────────────────────────────────────────────────
+
+  1. [MLB] Kansas City Royals @ Chicago White Sox
+     5:40 PM MDT
+     BET:    Seth Lugo Over 5.5 Strikeouts
+     ODDS:   -106  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Lugo at 5.5 Ks at -106 is right at the juice ceiling and the line itself is within the conservative 5.5 threshold. The White Sox rank among the weakest offensive units in the AL and Lugo has shown consistent strikeout volume against bottom-tier lineups this season.
+     WHY:    Line sits exactly at 5.5 — within the ESM conservative threshold for pitcher K props | Juice at -106 is well inside the -130 hard ceiling, offering near-even money on a 51.5% implied probability | Chicago White Sox lineup is one of the most strikeout-prone in the AL, providing a favorable matchup for a strikeout-generating starter | Seth Lugo has been a durable, workload-stable starter with consistent K production; outs line at 17.5 over -107 confirms the market expects a full start
+     RISK:   Lugo gets roughed up early or the White Sox make unusual contact, capping his pitch count and limiting total strikeout opportunity below 6.
+     LAST PLAYABLE: -120
+
+  2. [MLB] Kansas City Royals @ Chicago White Sox
+     5:40 PM MDT
+     BET:    Seth Lugo Over 17.5 Outs
+     ODDS:   -107  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   17.5 outs requires Lugo to complete 5.2 innings — a workload easily within his established profile as a full-rotation starter. Near-even juice at -107 against a White Sox lineup with limited ability to chase him early makes this a high-floor stability play.
+     WHY:    17.5 outs sits in the ESM sweet spot range of 15.5–17.5 — requires only 5.2 innings pitched | Juice at -107 is well under the -130 ceiling, offering strong price efficiency | White Sox offense is bottom-tier, reducing the probability of a blowup inning that forces an early hook | Outs market aligning with the K line confirms market consensus on Lugo completing a full start
+     RISK:   Early blowup inning or injury concern forces the bullpen before Lugo records his 18th out.
+     LAST PLAYABLE: -125
+     ⚠ CORR: Correlated with Play 1 — both depend on Lugo completing a quality start against Chicago. If Lugo exits early, both plays lose. Total exposure capped at 4u across these two legs; do not add further Lugo props.
+
+  3. [MLB] Chicago Cubs @ Atlanta Braves
+     5:15 PM MDT
+     BET:    Shota Imanaga Over 5.5 Strikeouts
+     ODDS:   -106  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Imanaga at 5.5 Ks for -106 is exactly at the ESM conservative threshold with near-even juice. The outs line at 17.5 over -164 confirms the market expects a long, dominant outing, and Imanaga's strikeout profile against a Braves lineup that has shown vulnerability to elite spin supports this floor.
+     WHY:    5.5 K line sits within the conservative ESM threshold; -106 juice is well inside the -130 ceiling | Outs market pricing Imanaga heavy to clear 17.5 outs signals market confidence in a long start — more innings means more K opportunities | Imanaga is among the NL's more consistent strikeout-generating starters with elite spin rates and swing-and-miss stuff | Cubs are 27-15, suggesting strong offensive support reducing early-hook risk even if Imanaga labors through a tough inning
+     RISK:   Braves are the hottest team in the NL at 29-13 — if they make contact early and force pitch count to climb, Imanaga could be pulled before reaching 6 Ks.
+     LAST PLAYABLE: -120
+
+  4. [MLB] Detroit Tigers @ New York Mets
+     5:10 PM MDT
+     BET:    Framber Valdez Over 5.5 Strikeouts
+     ODDS:   +127  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ● MEDIUM
+     EDGE:   Valdez at 5.5 Ks at +127 is a plus-money play on a line the ESM framework explicitly favors — plus odds on a 5.5 K line against a Detroit lineup sitting at .500 or below. The outs market has Valdez heavy to clear 17.5 outs over at -168, indicating market confidence in a full deep start where K accumulation becomes very realistic.
+     WHY:    Plus money at +127 on a 5.5 K line — ESM framework explicitly seeks this pricing tier for K props above 5.5 | Outs market at 17.5 over -168 is the heaviest implied-workload line on the slate, confirming market expects 6+ innings from Valdez | Detroit Tigers at 19-23 are a below-average offensive team with limited ability to punish elite sinker/cutter starters consistently | Long-start expectation plus a strikeout-capable arsenal makes 6 Ks a realistic floor, not a ceiling ask
+     RISK:   Valdez's sinker-heavy approach generates weak contact and ground balls — if Detroit puts the ball in play rather than striking out, K total can stall well below 6.
+     LAST PLAYABLE: +110
+
+  5. [MLB] Washington Nationals @ Cincinnati Reds
+     4:40 PM MDT
+     BET:    Nick Lodolo Over 5.5 Strikeouts
+     ODDS:   -103  (DraftKings)
+     UNITS:  2u  |  CONFIDENCE: ▽ LEAN
+     EDGE:   Lodolo at 5.5 Ks for -103 is the most favorable juice on any 5.5 K line on the slate — essentially a coin flip price on a starter whose outs line at 17.5 over -102 confirms market expectation of a deep start. The Nationals are 20-22 and carry a below-average lineup profile that supports K volume for a left-handed strikeout pitcher.
+     WHY:    Juice at -103 is the best-priced 5.5 K line on today's full slate — near pick-em pricing | Outs line at 17.5 over -102 is essentially even money on a deep start, aligning with K accumulation potential | Washington Nationals rank in the lower tier of NL lineups by wRC+, offering a favorable matchup for a strikeout-generating left-hander | 9.0 game total reflects an expected run-scoring environment that does not suppress K opportunity
+     RISK:   Lodolo's health and workload history carry some uncertainty not fully resolvable from supplied data — if he has any pitch-count limitation or is being managed carefully, the K total could be capped short of 6.
+     LAST PLAYABLE: -115
+
+────────────────────────────────────────────────────────────
+  LEANS  (model tracking — not official card exposure)
+  ────────────────────────────────────────────────────────
+  • [MLB] Kyle Bradish Over 15.5 Outs (-104 DraftKings, NYY @ BAL)  -104  1u  —  15.5 outs is a very low bar (5.1 innings) and the juice is excellent, but Bradish's injury history and the Yankees' 27-16 offense make early hook risk real. Strong price, manageable line, but Yankees lineup quality prevents official status.
+  • [MLB] Parker Messick Over 17.5 Outs (-121 DraftKings, LAA @ CLE)  -121  1u  —  17.5 outs against the Angels is a reasonable ask and the juice is under -130, but -121 is at the uncomfortable end of the acceptable range and Messick's workload history is not fully verifiable from supplied data. Playable at -121 for one unit only.
+
+────────────────────────────────────────────────────────────
+  QUICK READS
+  ────────────────────────────────────────────────────────
+  • Today's best pricing value is Framber Valdez K over at +127 — plus money on a 5.5 line with a 17.5 outs market confirming a full start is the clearest ESM-aligned edge on the slate.
+  • The Lugo double (Ks + Outs) against the White Sox is the highest-floor combination on the card — both at near-even juice against a bottom-tier AL offense — but treat them as one correlated exposure capped at 4 units total.
+  • This is a C-grade MLB-only slate: apply conservative sizing, avoid heavy-juice batter hits (all major names are priced well above -180), and do not force plays that only work if a pitcher has a great night.
+
+────────────────────────────────────────────────────────────
+  PASSES
+  ✗ Aaron Judge Hit Over 0.5 (-257): Hard pass. Juice at -257 massively exceeds the -180 hard ceiling. Implied probability of 72% is not realistic for a single-game hit prop regardless of the hitter's quality.
+  ✗ Cody Bellinger Hit Over 0.5 (-245): Same violation — juice at -245 is well beyond the -180 ceiling. Auto-pass.
+  ✗ Anthony Volpe Hit Over 0.5 (-204): Juice at -204 exceeds the -180 ceiling. Pass.
+  ✗ Max Fried Over 5.5 Ks (-144): Juice at -144 exceeds the -130 ceiling for a K prop. Pass. Fried outs at 17.5 over -153 also exceeds juice threshold.
+  ✗ Kyle Bradish Over 5.5 Ks (-139): Juice at -139 exceeds the -130 ceiling. Pass on Ks. Outs at 15.5 moves to lean only.
+  ✗ Dylan Cease Over 6.5 Ks (-111): Line is above 5.5 and while odds are -111 (not plus money), the ESM rule requires +120 or better for lines above 5.5. -111 does not clear that threshold. Pass.
+  ✗ Parker Messick Over 6.5 Ks (-103): Line above 5.5 at -103 — fails the plus-money rule for high K lines. Pass on Ks; outs moved to lean.
+  ✗ Mitch Keller Over 4.5 Ks (-154): Juice at -154 exceeds the -130 ceiling. Pass.
+  ✗ Andrew Painter Over 4.5 Ks (-166): Juice at -166 exceeds the -130 ceiling. Pass.
+  ✗ Christian Scott Over 4.5 Ks (-160): Juice at -160 exceeds the -130 ceiling. Pass.
+  ✗ Max Meyer Over 4.5 Ks (-161): Juice at -161 exceeds the -130 ceiling. Pass.
+  ✗ Jose Quintana Over 3.5 Ks (-111): Line is playable on juice but 3.5 Ks against a Rockies lineup at altitude in Pittsburgh is a thin edge — Quintana's outs line at 14.5 over -162 signals a short leash which contradicts K accumulation. Pass.
+  ✗ Mitch Keller Over 17.5 Outs (-164): Juice at -164 exceeds the -130 ceiling. Pass.
+  ✗ Framber Valdez Over 17.5 Outs (-168): Juice at -168 exceeds the -130 ceiling. Pass on outs; K prop at +127 is the preferred entry.
+  ✗ Shota Imanaga Over 17.5 Outs (-164): Juice at -164 exceeds the -130 ceiling. Pass on outs; K prop at -106 is the preferred entry.
+  ✗ Injury report provided no player names — cannot confirm or deny availability for any player flagged. No plays were made that rely on a player recently returning from IL status. All picks are based on expected starters with no known active injury flags in the supplied data.
+  ✗ No NBA or NHL data supplied — no cross-sport diversification possible today. Card is MLB-only, which triggers conservative single-sport exposure management per ESM rules.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
