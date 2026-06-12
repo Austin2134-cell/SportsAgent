@@ -178,6 +178,24 @@ npm install
 npm run dev
 ```
 
+## Where Things Live (Keyword Index)
+
+| If you're looking for... | Go to |
+|---|---|
+| Learning module, performance memory, win/loss stats by market | `backend/learning/memory.py` |
+| Betting rules, juice ceiling, unit sizing, edge thresholds | `backend/esm/system_prompt.py` |
+| Odds, lines, player props (The Odds API) | `backend/esm/odds_client.py` |
+| Active sports, prop markets, API keys config | `backend/esm/config.py` |
+| Injury/team context, scoreboard (ESPN) | `backend/esm/stats_client.py` |
+| Grading bets, auto-grading via box scores, W/L results | `backend/services/grader.py` |
+| Daily card generation, Claude API call | `backend/services/agent_runner.py` |
+| API routes, admin endpoints, invite codes, scheduler jobs | `backend/main.py` |
+| Auth, JWT validation, admin check | `backend/auth.py` |
+| Supabase client setup | `backend/database.py` |
+| DB schema, tables, RLS policies | `supabase/schema.sql` |
+| Frontend pages (dashboard, login, history, preferences) | `frontend/app/` |
+| API calls from frontend | `frontend/lib/api.ts` |
+
 ## Cross-Device / Session Sync
 
 - All code changes are committed and pushed to GitHub — pull on any device to sync
