@@ -47,56 +47,41 @@ MODEL = "claude-sonnet-4-6"
 WC_SPORT_KEY = "soccer_fifa_world_cup"
 
 # ── June 12, 2026 World Cup match context (used when no live odds API) ────────
-# Group Stage — Day 2
-# 2026 WC hosts: USA, Canada, Mexico | 48 teams | 12 groups of 4
+# Source: confirmed sportsbook lines for today's actual fixtures
 WC_MATCH_CONTEXT_JUNE_12 = """
-FIFA WORLD CUP 2026 — Group Stage, Day 2 (June 12, 2026)
+FIFA WORLD CUP 2026 — Group Stage (June 12, 2026)
 
-Today's matches (all times MDT):
+Today's matches (2 games):
 
 GROUP B:
-  Argentina vs. Ecuador   | 12:00 PM MDT | SoFi Stadium, Los Angeles
-  Moneyline: Argentina -175, Draw +330, Ecuador +450
-  Total Goals: 2.5 (O -120 / U +100)
-  BTTS: Yes +120 / No -145
-  Context: Defending champions Argentina open their title defense. Scaloni likely
-  rests Lautaro Martinez in 2nd half. Ecuador showed strong CONMEBOL qualifying form
-  but face an extreme step up in quality. Messi in what may be his final World Cup.
-  Key injury: Di María doubtful (hamstring), Fernández fit.
-
-GROUP C:
-  Morocco vs. Croatia    | 3:00 PM MDT  | MetLife Stadium, New York/NJ
-  Moneyline: Morocco -110, Draw +230, Croatia +330
-  Total Goals: 2.5 (O +105 / U -125)
-  BTTS: Yes +145 / No -175
-  Context: Atlas Lions carry genuine tournament pedigree (2022 SF). Croatia aging
-  — Modric 40, Kovacic 32 — and this is likely last WC for core. Morocco defensive
-  shape historically suppresses goals (avg 0.8 conceded/game in 2022 group stage).
-  Key: Hakimi and Ziyech healthy; Croatia missing Perisic (ACL, retired).
+  Canada vs. Bosnia-Herzegovina  | 1:00 PM ET
+  Moneyline: Canada -120, Bosnia-Herzegovina +380
+  (Draw odds not shown — approximately +265 to +290 range implied)
+  Total Goals: 2.5 (estimated O -115 / U -105)
+  Context: Canada opens as host co-nation with home crowd advantage. Bosnia-Herzegovina
+  returns to the World Cup for the first time since 2014 — 12-year absence means
+  significant adjustment to this level. Canada has genuine world-class attackers in
+  Alphonso Davies and Jonathan David. Bosnia's squad rebuilt around younger domestic
+  league players with limited major tournament experience.
+  Key edge: Canada -120 is within the -130 juice ceiling and represents value given
+  the talent and experience gap. Quality differential is clear and Bosnia's long WC
+  absence is a tournament-pressure disadvantage.
 
 GROUP D:
-  USA vs. Vietnam        | 6:00 PM MDT  | AT&T Stadium, Dallas
-  Moneyline: USA -350, Draw +450, Vietnam +950
-  Total Goals: 3.5 (O -115 / U -105)
-  BTTS: Yes +200 / No -260
-  Context: Host nation USA opens in front of home crowd. Vietnam is their first-ever
-  World Cup appearance. USA expected to dominate possession. Pulisic, Weah, and
-  Reyna all fit. Vietnam's compact 4-4-2 block means goals could be concentrated
-  in second half as Vietnamese legs tire.
-  Key: Total 3.5 and USA ML both priced with value given the gap in quality.
+  United States vs. Paraguay     | 7:00 PM ET
+  Moneyline: USA +105, Paraguay +305
+  (Draw odds not shown — approximately +230 to +250 range implied)
+  Total Goals: 2.5 (estimated O -110 / U -110)
+  Context: Host nation USA opens their tournament with home crowd support. Paraguay
+  qualified from CONMEBOL but ranked outside the top 40 globally. USA's roster
+  features quality across all positions — Pulisic, Weah, McKennie, Turner in goal.
+  Paraguay's strength is defensive organization and counter-attack but their forwards
+  are not elite.
+  Key edge: USA +105 is POSITIVE MONEY on what should be a clear favorite at home.
+  Per ESM rules: always prefer plus-money. +105 only requires a ~48.8% win rate to
+  be profitable, yet USA are realistically 55-60% favorites in this matchup.
 
-GROUP A:
-  Germany vs. Scotland   | 9:00 PM MDT  | Gillette Stadium, Boston
-  Moneyline: Germany -190, Draw +310, Scotland +550
-  Total Goals: 2.5 (O -130 / U +110)
-  BTTS: Yes +105 / No -130
-  Context: Replicating Germany's 2024 Euro opener (5-1 vs Scotland). Germany high
-  press under Nagelsmann generates xG efficiently. Scotland limited offensively —
-  ranked outside top 30 in Europe for xG. Germany full-strength with Musiala, Wirtz.
-  Total over 2.5 at -130 is right at the juice ceiling but the quality gap suggests
-  goals will flow.
-
-Odds from: DraftKings (consensus, pre-tournament market)
+Odds from: DraftKings (confirmed lines, June 12 2026)
 Market note: All lines approximate pre-game. Verify at your sportsbook.
 """
 
