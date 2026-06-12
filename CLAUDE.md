@@ -130,6 +130,28 @@ Each official play now outputs:
 - **Grading is automatic** — `grader.py` uses ESPN box scores. Non-player-prop bets (spreads, moneylines, totals) can't be auto-graded and appear at `/api/admin/pending-bets` for manual review.
 - **Performance monitoring** — after the migration is run and a few days of cards generate with memory context, watch ROI trend. The new EV-first + professional mandate framing should produce fewer but sharper plays.
 
+## Last Session Ended (June 12, 2026)
+
+**Status:** All code is built and pushed. One manual step remains before the system is fully live.
+
+**The single blocking task:**
+1. Go to Supabase dashboard → SQL Editor → New query, run:
+```sql
+CREATE TABLE IF NOT EXISTS agent_memory (
+  id         UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id    UUID REFERENCES profiles(id) ON DELETE CASCADE UNIQUE,
+  stats      JSONB DEFAULT '{}',
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE agent_memory ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can view own memory" ON agent_memory FOR SELECT USING (auth.uid() = user_id);
+```
+2. Then call `POST /api/admin/grade-all` (with admin auth token) to seed memory from existing graded bets.
+
+Once those two steps are done, the learning loop is fully active. The agent will read its own performance history every morning and adjust sizing/filters accordingly.
+
+**Everything else is already live on branch `claude/recurring-task-creation-dpaexc` — open PR exists in GitHub.**
+
 ## Environment Variables (backend)
 
 ```
