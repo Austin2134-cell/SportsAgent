@@ -57,7 +57,7 @@ def grade_all_pending(db):
         else:
             manual += 1
     if affected_users:
-        from services.memory import refresh_memory
+        from learning.memory import refresh_memory
         for uid in affected_users:
             refresh_memory(db, uid)
     return {"graded": graded, "manual": manual}

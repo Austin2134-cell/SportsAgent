@@ -29,9 +29,10 @@ SportsAgent/
 │   │   ├── odds_client.py   # Wraps The Odds API
 │   │   ├── stats_client.py  # Wraps ESPN API
 │   │   └── config.py        # Active sports, prop markets, API keys
-│   └── services/
-│       ├── agent_runner.py  # Per-user card generation (calls Claude)
-│       ├── grader.py        # Auto-grades pending bets via ESPN box scores
+│   ├── services/
+│   │   ├── agent_runner.py  # Per-user card generation (calls Claude)
+│   │   └── grader.py        # Auto-grades pending bets via ESPN box scores
+│   └── learning/
 │       └── memory.py        # Performance stats: compute, store, format for prompt
 ├── frontend/                # Next.js app
 └── supabase/
@@ -100,7 +101,7 @@ After running: trigger `POST /api/admin/grade-all` once to seed memory from exis
 - Added `POST /api/admin/weekly-digest` endpoint to trigger manually
 
 ### 2. Agent Learning System
-- **`backend/services/memory.py`** (new) — computes 90-day rolling stats from graded bets: win rate by market, sport, confidence tier, odds bucket, and last 10 losses
+- **`backend/learning/memory.py`** (new) — computes 90-day rolling stats from graded bets: win rate by market, sport, confidence tier, odds bucket, and last 10 losses
 - **`backend/services/grader.py`** — now calls `refresh_memory()` after grading, so stats update automatically every morning
 - **`backend/services/agent_runner.py`** — reads performance context and injects it into each daily prompt above the market data; ESM system prompt now uses `cache_control: {"type": "ephemeral"}` for ~90% token cost reduction
 

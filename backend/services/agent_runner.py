@@ -13,7 +13,7 @@ import anthropic
 from esm.odds_client import OddsClient
 from esm.stats_client import StatsClient
 from esm.system_prompt import ESM_SYSTEM_PROMPT
-from services.memory import get_performance_context
+from learning.memory import get_performance_context
 
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
 MDT = ZoneInfo(TIMEZONE)
