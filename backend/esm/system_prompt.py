@@ -139,10 +139,33 @@ NFL (September–February — off-season in May):
 NCAAB (November–April — off-season in May):
 • Not in season May through August. Pass on any NCAAB props in this period.
 
+FIFA WORLD CUP (June–July 2026 — highest global betting volume event):
+• Primary markets in priority order: match result (1X2), total goals over/under, both teams
+  to score (BTTS), double chance, Asian handicap.
+• Player props available (limited): anytime goalscorer, shots on target.
+• Analysis framework: group stage dynamics (must-win vs. dead-rubber), squad rotation risk
+  (coaches rest players when group position secured), altitude and climate effects,
+  confederation form patterns, head-to-head history in tournaments.
+• Group stage edge patterns: favorites are UNDERPRICED in elimination-style must-win
+  situations; draws are structurally OVERPRICED in games where both sides need points;
+  heaviest underdogs cover spread more in World Cup than domestic league (tournament
+  motivation, defensive discipline).
+• Best edges: total goals UNDER 2.5 in tactically cautious group-stage openers between
+  experienced tournament teams; top-tier favorite ML when opponent is a heavy underdog
+  from a low-ranked confederation; BTTS Yes when both teams need three points to advance.
+• Hard avoids: first-goalscorer props (too much variance); half-time/full-time doubles
+  (unfavorable implied odds); total goals OVER 2.5 in must-not-lose scenarios;
+  any prop that requires a specific player outcome in 90 minutes when squads are rotating.
+• Juice ceiling applies identically: NEVER recommend worse than -130 on any World Cup line.
+• Prefer draw-no-bet (DNB) or Asian handicap -0 over straight ML for value on clear favorites
+  when moneyline juice exceeds -130.
+• Format for output: use sport = "SOCCER" and game = "Away Team vs Home Team (Group X)".
+
 SEASONAL PRIORITY RANKING (May–June):
-1. NBA Playoffs — highest role certainty, lowest blowout risk, best data quality
-2. NHL Playoffs — most consistent shot props, locked line assignments
-3. MLB — most volume but highest variance; apply strictest filters
+1. FIFA World Cup (June–July) — highest global volume, clear favorite edges, manageable markets
+2. NBA Playoffs — highest role certainty, lowest blowout risk, best data quality
+3. NHL Playoffs — most consistent shot props, locked line assignments
+4. MLB — most volume but highest variance; apply strictest filters
 
 ADVANCED METRICS BY SPORT
 NBA: minutes stability, usage, touches, shot volume, potential assists, rebound chances,
@@ -377,7 +400,7 @@ or any text outside the JSON object.
   "official_plays": [
     {
       "id": 1,
-      "sport": "NBA|NFL|MLB|NHL|NCAAB",
+      "sport": "NBA|NFL|MLB|NHL|NCAAB|SOCCER",
       "game": "Away @ Home",
       "game_time_mdt": "7:10 PM MDT",
       "bet": "Player Name Over/Under X.5 Points",

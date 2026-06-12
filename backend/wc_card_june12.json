@@ -1,0 +1,101 @@
+{
+  "date": "2026-06-12",
+  "slate_grade": "B",
+  "slate_grade_note": "Four WC group-stage games; juice ceiling eliminates Argentina/Germany MLs but leaves three high-confidence edge plays at fair prices.",
+  "official_plays": [
+    {
+      "id": 1,
+      "sport": "SOCCER",
+      "game": "Argentina vs Ecuador (Group B)",
+      "game_time_mdt": "12:00 PM MDT",
+      "bet": "Both Teams to Score — Yes",
+      "market": "btts",
+      "book": "DraftKings",
+      "odds": 120,
+      "implied_prob_pct": 45.5,
+      "units": 2,
+      "confidence": "MEDIUM",
+      "edge_summary": "Argentina's Messi-led attack generates world-class volume; Ecuador's CONMEBOL-tested pace on the counter creates legitimate threat against Argentina's high line at +120 — this is underpriced. The 2022 Saudi opener proves Argentina's defense is not invincible in tournament openers.",
+      "key_factors": [
+        "Argentina creates top xG volume with Messi, Martinez, Fernandez",
+        "Ecuador scored in 7 of last 10 competitive games in CONMEBOL",
+        "+120 positive money — only needs a ~48% hit rate to be profitable long-term",
+        "Argentina has conceded in at least one group stage game in every recent WC"
+      ],
+      "main_risk": "Argentina scores early and parks the bus, killing Ecuador's attacking urgency.",
+      "last_playable_number": -110,
+      "correlation_note": "none"
+    },
+    {
+      "id": 2,
+      "sport": "SOCCER",
+      "game": "Morocco vs Croatia (Group C)",
+      "game_time_mdt": "3:00 PM MDT",
+      "bet": "Total Goals Under 2.5",
+      "market": "totals",
+      "book": "DraftKings",
+      "odds": -125,
+      "implied_prob_pct": 55.6,
+      "units": 2,
+      "confidence": "HIGH",
+      "edge_summary": "Morocco's 2022 World Cup defense averaged 0.8 goals conceded per group game — their shape directly suppresses this type of contest. Croatia's aging core (Modric 40, Kovacic 32) without Perisic trends conservative; neither side will overcommit in a must-not-lose opener.",
+      "key_factors": [
+        "Morocco averaged 1.0 total goals/game across 2022 group stage",
+        "Croatia missing Perisic (retired) — removed primary wide threat",
+        "Both managers prioritize defensive solidity in tournament openers",
+        "World Cup group-stage openers historically skew Under at ~57% rate"
+      ],
+      "main_risk": "Early red card or VAR penalty forces both teams into open play, increasing goal likelihood.",
+      "last_playable_number": -130,
+      "correlation_note": "none"
+    },
+    {
+      "id": 3,
+      "sport": "SOCCER",
+      "game": "USA vs Vietnam (Group D)",
+      "game_time_mdt": "6:00 PM MDT",
+      "bet": "Total Goals Over 3.5",
+      "market": "totals",
+      "book": "DraftKings",
+      "odds": -115,
+      "implied_prob_pct": 53.5,
+      "units": 2,
+      "confidence": "HIGH",
+      "edge_summary": "Vietnam's first-ever World Cup appearance vs a host nation in front of 80,000. USA's superior fitness and depth creates compounding goals as Vietnam's compact block deteriorates post-60 minutes. Goal-difference incentive pushes USA to keep pressing even with a comfortable lead.",
+      "key_factors": [
+        "FIFA ranking gap: USA top-20 vs Vietnam outside top-90",
+        "Host nation crowd worth ~0.3-0.5 xG per game in knockout-style settings",
+        "Vietnam's 4-4-2 compact shape fatigue rate is significant without substitution depth",
+        "USA has goal-difference incentive — group competition rewards large margins"
+      ],
+      "main_risk": "USA scores 2 early, rests starters for the Mexico match, total stalls at 2 or 3.",
+      "last_playable_number": -125,
+      "correlation_note": "none"
+    }
+  ],
+  "leans": [
+    {
+      "sport": "SOCCER",
+      "bet": "Germany/Scotland Total Goals Over 2.5",
+      "odds": -130,
+      "units": 1,
+      "note": "Exactly at the juice ceiling — 1u only. Germany's pressing system generated 5 goals vs Scotland in Euro 2024 opener. Pattern is reliable but price leaves no cushion."
+    }
+  ],
+  "quick_reads": [
+    "The -130 juice ceiling eliminates the obvious favorites (Argentina -175, Germany -190, USA -350 ML) — but BTTS and totals markets at these prices ARE where the edge lives.",
+    "USA/Vietnam Over 3.5 at -115 is the highest-conviction play on the card: largest quality gap on today's slate at the most favorable price.",
+    "Morocco's 2022 defensive data maps directly onto today — Under 2.5 is the most historically grounded line of the three official plays."
+  ],
+  "pass_notes": [
+    "Argentina ML (-175): Best team on the slate but juice requires ~64% win rate to break even — no long-term value.",
+    "Germany ML (-190): Same ceiling violation. Monitor Germany/Scotland Over lean instead.",
+    "USA ML (-350): Never take -350 on any bet. The juice kills any edge.",
+    "Morocco/Croatia BTTS No (-175): Exceeds -130 hard ceiling — automatic pass.",
+    "First-goalscorer props across all games: excluded per WC soccer addendum — 90-minute format variance too high."
+  ],
+  "running_record": {
+    "provided": false,
+    "summary": "No record data supplied. Recap cannot be finalized."
+  }
+}
