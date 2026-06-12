@@ -1,3 +1,8 @@
+"""
+grader.py — auto-grades pending bets against ESPN box scores and refreshes
+agent performance memory for any users with newly graded bets.
+"""
+
 import re
 import requests
 from datetime import date
