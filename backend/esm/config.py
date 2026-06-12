@@ -9,6 +9,7 @@ ACTIVE_SPORTS = [
     "icehockey_nhl",
     "americanfootball_nfl",
     "basketball_ncaab",
+    "soccer_fifa_world_cup",
 ]
 
 PROP_MARKETS = {
@@ -46,6 +47,10 @@ PROP_MARKETS = {
         "player_points",
         "player_rebounds",
         "player_assists",
+    ],
+    "soccer_fifa_world_cup": [
+        "player_goal_scorer_anytime",
+        "player_shots_on_target",
     ],
 }
 

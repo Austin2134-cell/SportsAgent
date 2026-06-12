@@ -1,0 +1,70 @@
+{
+  "date": "2026-06-12",
+  "slate_grade": "B",
+  "slate_grade_note": "Only 2 games today but both offer clean edges — USA +105 ML is a standout plus-money value on a host nation, Canada -120 is within the ceiling against a 12-year WC absentee.",
+  "official_plays": [
+    {
+      "id": 1,
+      "sport": "SOCCER",
+      "game": "USA vs Paraguay (Group D)",
+      "game_time_mdt": "5:00 PM MDT",
+      "bet": "USA Moneyline",
+      "market": "h2h",
+      "book": "DraftKings",
+      "odds": 105,
+      "implied_prob_pct": 48.8,
+      "units": 2,
+      "confidence": "HIGH",
+      "edge_summary": "The ESM framework's clearest rule: always prefer plus-money. USA at +105 is positive money on a host nation that is realistically a 55-60% favorite — the market is offering a 6-10 point edge in implied probability right out of the gate. Home crowd, full-strength squad, and a Paraguay side ranked outside the top 40.",
+      "key_factors": [
+        "USA +105 = positive money on the better team — only needs 48.8% win rate to profit long-term",
+        "Host nation playing on home soil with full crowd support (structural advantage)",
+        "Paraguay ranked outside FIFA top 40, limited attacking quality against quality defense",
+        "USA roster depth (Pulisic, Weah, McKennie) gives Berhalter rotation and tactical flexibility",
+        "CONMEBOL qualifiers played; Paraguay not peaking, USA sharpened in final friendlies"
+      ],
+      "main_risk": "Paraguay parks the bus early, holds for a draw — group stage point-accumulation strategy.",
+      "last_playable_number": -110,
+      "correlation_note": "none"
+    },
+    {
+      "id": 2,
+      "sport": "SOCCER",
+      "game": "Canada vs Bosnia-Herzegovina (Group B)",
+      "game_time_mdt": "11:00 AM MDT",
+      "bet": "Canada Moneyline",
+      "market": "h2h",
+      "book": "DraftKings",
+      "odds": -120,
+      "implied_prob_pct": 54.5,
+      "units": 2,
+      "confidence": "MEDIUM",
+      "edge_summary": "Canada -120 is comfortably within the -130 juice ceiling and represents fair value against a Bosnia side that has not appeared in a World Cup since 2014. Twelve years away from this stage is a significant rust and adjustment factor. Alphonso Davies and Jonathan David give Canada genuine threats that Bosnia's rebuilt squad has never faced at this level.",
+      "key_factors": [
+        "Canada -120 well within hard ceiling; clean price on the quality side",
+        "Bosnia-Herzegovina absent from World Cup since 2014 — 12-year gap in major tournament experience",
+        "Canada co-hosting 2026 — home crowd factor in their opener",
+        "Alphonso Davies (Bayern Munich) and Jonathan David (Lille) are top-tier attackers",
+        "Bosnia squad rebuilt with younger players who lack major tournament pressure experience"
+      ],
+      "main_risk": "Bosnia's defensive discipline neutralizes Canada's attack through 90 minutes; low-scoring game ends 0-0 or 1-1.",
+      "last_playable_number": -128,
+      "correlation_note": "none"
+    }
+  ],
+  "leans": [],
+  "quick_reads": [
+    "USA +105 is today's standout play — positive money on a host nation is exactly what the ESM framework is built to find. The market is underpricing USA by 6-10 implied probability points.",
+    "Canada -120 is the only other game on the slate. Within the ceiling, clear quality advantage, and Bosnia's 12-year WC absence is a legitimate edge factor.",
+    "Thin slate (2 games) — do not force extra plays. Two clean edges at 2u each is the right card size for today."
+  ],
+  "pass_notes": [
+    "No totals or BTTS plays: exact totals lines not confirmed from live source — will not fabricate lines per ESM data integrity rules.",
+    "Paraguay ML +305: No credible edge case to back Paraguay to beat USA at home.",
+    "Bosnia ML +380: Same — no edge case justifying backing a 12-year WC absentee against a host co-nation."
+  ],
+  "running_record": {
+    "provided": false,
+    "summary": "No record data supplied. Recap cannot be finalized."
+  }
+}

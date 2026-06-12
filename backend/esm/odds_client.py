@@ -28,11 +28,12 @@ SGO_BASE = "https://api.sportsgameodds.com/v2"
 
 # Map our internal sport key → SGO leagueID
 SPORT_TO_SGO_LEAGUE = {
-    "basketball_nba":       "NBA",
-    "baseball_mlb":         "MLB",
-    "icehockey_nhl":        "NHL",
-    "americanfootball_nfl": "NFL",
-    "basketball_ncaab":     "NCAAB",
+    "basketball_nba":           "NBA",
+    "baseball_mlb":             "MLB",
+    "icehockey_nhl":            "NHL",
+    "americanfootball_nfl":     "NFL",
+    "basketball_ncaab":         "NCAAB",
+    "soccer_fifa_world_cup":    "FIFA_WORLD_CUP",
 }
 
 # Map SGO statID → our market key, keyed by sport
@@ -77,10 +78,15 @@ SGO_STAT_MAP = {
         "rebounds":                 "player_rebounds",
         "assists":                  "player_assists",
     },
+    "soccer_fifa_world_cup": {
+        "goals":                    "player_goal_scorer_anytime",
+        "shotsOnTarget":            "player_shots_on_target",
+        "shots_on_target":          "player_shots_on_target",
+    },
 }
 
 # Sport suffixes embedded in SGO entity IDs (to strip when parsing player names)
-_SGO_SPORT_TOKENS = {"NBA", "MLB", "NHL", "NFL", "NCAAB", "NCAAF", "MLS"}
+_SGO_SPORT_TOKENS = {"NBA", "MLB", "NHL", "NFL", "NCAAB", "NCAAF", "MLS", "WC", "FIFAWC"}
 
 HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json"}
 
