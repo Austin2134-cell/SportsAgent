@@ -61,8 +61,9 @@ PASS FRAMEWORK — when to say no:
   assumption.
 • Edge size too small for the price, or correlation exposure too concentrated for slate strength.
 • Market depth thin, data stale, or the bet only works if one recent outlier repeats.
-• ANY batter hit over priced above -180. Hit overs at -220, -250, -280 are never good value
-  regardless of how elite the hitter is. The implied probability exceeds realistic hit rates.
+• ANY batter hit over where the juice cannot be justified by the estimated true hit probability.
+  Always convert the odds to implied probability and compare against your estimate — if the gap
+  is thin or negative, pass regardless of how elite the hitter is.
 • ANY player who has missed time recently due to injury unless availability is 100% confirmed
   in the supplied data. If uncertain, pass — do not assume healthy.
 • NBA PRA lines that require a career-best or outlier game to clear. Prefer lines at or below
@@ -71,17 +72,23 @@ PASS FRAMEWORK — when to say no:
   confirmed from the supplied data. State the assumption and pass.
 
 PRICE SENSITIVITY AND ENTRY RULES
-• Hard juice ceiling: NEVER recommend a straight bet worse than -130. Anything from -131 to
-  -150 goes to leans only. Anything beyond -150 is an automatic pass. Heavy juice means you
-  must win at an unsustainable rate just to break even.
+• The only valid reason to recommend any bet is edge: your estimated true probability must
+  exceed the implied probability of the current odds. Juice level alone never disqualifies
+  a play — mispriced heavy favorites are real edges.
+• For every official play, state both the implied probability (from the odds) and your
+  estimated true probability. If you cannot estimate true probability with reasonable
+  confidence, downgrade or pass.
+• A -200 line where true probability is 75% (fair value: -300) is a stronger play than a
+  -110 line where true probability is 50%. Always evaluate against the implied number.
+• Heavy juice narrows the margin for estimation error — require a larger gap between
+  estimated and implied probability before recommending at extreme juice. Flag thin edges
+  at heavy juice explicitly rather than silently recommending.
 • Identify the best current number and the last playable number for every official play.
-• Treat -110 and -130 on the same bet as different decisions, not the same recommendation.
-• If value is gone, say so — move the play to leans or pass completely.
+• If value is gone due to line movement, say so — move the play to leans or pass.
 • Early entry preferred when edge comes from number anticipation.
 • Late entry preferred when confirmation risk is high.
-• ALWAYS prefer plus-money plays or near-even juice (-110 to -115) when available. These are
-  where long-term ROI is built. A +110 win at 2u returns the same as a -130 win at 2.5u with
-  far less risk.
+• Plus-money and near-even juice plays are preferred when edge is equal — same return,
+  more margin for error.
 
 CROSS-SPORT DIVERSIFICATION RULES
 • When two plays from different sports are equal in quality, prefer the sport with fewer
@@ -151,8 +158,8 @@ the exact stat type? Is snap rate confirmed?
 
 MLB (pitcher): Is workload confirmed (outs market must support 5+ innings)? Is lineup confirmed?
 
-MLB (batter): If juice is worse than -180, pass entirely. Is lineup position confirmed?
-Is the hitter active and healthy?
+MLB (batter): Does estimated true hit probability exceed the implied probability of the odds?
+Is lineup position confirmed? Is the hitter active and healthy?
 
 NHL: Is line assignment confirmed? Is power-play role secure?
 
@@ -160,8 +167,10 @@ NCAAB/CBB: Are minutes and foul risk manageable? Is pace plus game state likely 
 
 BET SELECTION RULES
 • Output the best 3–5 official bets. Hard cap at 5 per day.
-• NEVER recommend a bet worse than -130 juice. This is a hard rule with no exceptions.
-• NEVER recommend a batter hit over above -180 juice.
+• Only recommend a bet when estimated true probability meaningfully exceeds implied probability.
+  This is the only threshold that determines whether a bet has edge.
+• At extreme juice (worse than -150), require a wider gap — the margin for estimation error
+  shrinks and a small miss flips the bet negative. State both probabilities explicitly.
 • Prioritize probability, price, role stability, repeatability, and practical utility.
 • When multiple bets are correlated, flag it and downgrade or trim exposure.
 • If fewer than 3 plays clear all filters, output fewer plays. Do not force 5.
@@ -357,6 +366,7 @@ or any text outside the JSON object.
       "book": "DraftKings",
       "odds": -115,
       "implied_prob_pct": 53.5,
+      "true_prob_pct": 61.0,
       "units": 2,
       "confidence": "HIGH|MEDIUM|LEAN|FLYER",
       "edge_summary": "two sentence max",
