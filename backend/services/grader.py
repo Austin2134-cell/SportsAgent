@@ -43,6 +43,7 @@ def grade_all_pending(db):
         return {"graded": 0, "manual": 0}
     graded = 0
     manual = 0
+    affected_users: set = set()
     for bet in bets:
         outcome = _grade_bet(bet)
         if outcome:
@@ -52,8 +53,13 @@ def grade_all_pending(db):
                 "post_slate_tag": outcome.get("tag", ""),
             }).eq("id", bet["id"]).execute()
             graded += 1
+            affected_users.add(bet["user_id"])
         else:
             manual += 1
+    if affected_users:
+        from services.memory import refresh_memory
+        for uid in affected_users:
+            refresh_memory(db, uid)
     return {"graded": graded, "manual": manual}
 
 
