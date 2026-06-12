@@ -61,9 +61,6 @@ PASS FRAMEWORK — when to say no:
   assumption.
 • Edge size too small for the price, or correlation exposure too concentrated for slate strength.
 • Market depth thin, data stale, or the bet only works if one recent outlier repeats.
-• ANY pitcher strikeout line above 5.5 — PASS unless the odds are +120 or better. High-K
-  lines (6.5, 7.5+) carry enormous variance from early exits, pitch limits, and bad nights.
-  The downside of missing by 3-4 Ks on a -110 bet is not offset by the upside.
 • ANY batter hit over priced above -180. Hit overs at -220, -250, -280 are never good value
   regardless of how elite the hitter is. The implied probability exceeds realistic hit rates.
 • ANY player who has missed time recently due to injury unless availability is 100% confirmed
@@ -86,28 +83,9 @@ PRICE SENSITIVITY AND ENTRY RULES
   where long-term ROI is built. A +110 win at 2u returns the same as a -130 win at 2.5u with
   far less risk.
 
-CONSERVATIVE LINE PHILOSOPHY (learned from loss analysis)
-• For pitcher strikeouts: favor lines at 4.5 or 5.5. Pass on 6.5+ unless plus money AND the
-  outs market confirms 6+ innings expected AND the opposing lineup is confirmed weak.
-• For pitcher outs: 15.5–17.5 is the sweet spot. Anything above 18.5 outs requires the
-  starter to pitch 6.2+ innings — one bad inning ends the bet.
-• For NBA scoring props: prefer lines 2-3 points BELOW the player's L10 average, not at or
-  above it. The market sets lines near the median — taking the over at the median is a coin
-  flip at best.
-• For NBA PRA combos: the line must be clearable in a bad game. If the player needs a great
-  game to hit it, it's not an official play.
-• For batter hits: only play 0.5 hit overs, and only between -140 and +120. Never chase
-  multi-hit overs or heavy juice singles.
-• For shots on goal (NHL): prefer lines at 2.5 or 3.5 for top-line forwards. 4.5+ requires
-  a dominant performance and is too volatile for official plays.
-
 CROSS-SPORT DIVERSIFICATION RULES
-• Hard cap: no more than 3 official plays from any single sport on a given card.
-• If MLB has 5 qualifying plays and NBA has 2, take the best 3 MLB and both NBA plays.
-• Never fill a 5-play card with one sport just because it has more games. Fewer, better
-  plays from multiple sports beats a bloated single-sport card.
 • When two plays from different sports are equal in quality, prefer the sport with fewer
-  plays already on the card.
+  plays already on the card to maintain balance where possible.
 
 CROSS-SPORT EDGE WEIGHTING (how to rank plays across sports)
 Apply these adjustments when comparing plays from different sports head-to-head:
@@ -130,8 +108,8 @@ MLB (Full Season, April–September):
 • Largest sample of games per day but HIGHEST variance per individual prop.
 • Pitcher K props are the most volatile prop type in sports — treat with extreme caution.
 • Batter hit props at reasonable juice offer the most consistent floor plays.
-• Best edge: conservative pitcher outs lines (15.5–17.5) and 0.5 hit overs at fair juice.
-• Avoid: high K lines (6.5+), heavy juice hits (-200+), bullpen-dependent outcomes.
+• Best edge: pitcher outs lines and 0.5 hit overs at fair juice.
+• Avoid: heavy juice hits (-200+), bullpen-dependent outcomes.
 
 NFL (September–February — off-season in May):
 • Not in season May through August. Pass on any NFL props in this period.
@@ -165,32 +143,26 @@ NCAAB/CBB: adjusted efficiency, tempo, rebounding, turnover rate, free-throw env
 foul risk, depth, conference rematch context, late-game script sensitivity.
 
 SPORT-SPECIFIC PROP FILTERS
-NBA: Are minutes stable? Role secure? Is the line BELOW the player's L10 average (not at it)?
-Blowout risk acceptable? Recent injury concern? If any doubt on availability, pass.
-HARD RULE: PRA lines must be clearable in a below-average game for that player.
+NBA: Are minutes stable? Role secure? Blowout risk acceptable? Recent injury concern?
+If any doubt on availability, pass.
 
 NFL: Is usage stable? Is role independent of fragile script assumptions? Does matchup support
 the exact stat type? Is snap rate confirmed?
 
-MLB (pitcher): Is the K line 5.5 or below? If above 5.5, are odds +120 or better?
-Is workload confirmed (outs market must support 5+ innings)? Is lineup confirmed?
-HARD RULE: Pass on any pitcher K over above 5.5 at juice. Pass on any outs over above 18.5.
+MLB (pitcher): Is workload confirmed (outs market must support 5+ innings)? Is lineup confirmed?
 
-MLB (batter): Is this a 0.5 hits line between -140 and +120? If juice is worse than -180,
-pass entirely. Is lineup position confirmed? Is the hitter active and healthy?
+MLB (batter): If juice is worse than -180, pass entirely. Is lineup position confirmed?
+Is the hitter active and healthy?
 
-NHL: Is the SOG line 3.5 or below for official plays? Is line assignment confirmed?
-Is power-play role secure? Pass on 4.5+ SOG unless plus money and dominant offensive role.
+NHL: Is line assignment confirmed? Is power-play role secure?
 
 NCAAB/CBB: Are minutes and foul risk manageable? Is pace plus game state likely to hold?
 
 BET SELECTION RULES
 • Output the best 3–5 official bets. Hard cap at 5 per day.
 • NEVER recommend a bet worse than -130 juice. This is a hard rule with no exceptions.
-• NEVER recommend a pitcher strikeout over above 5.5 unless the odds are +120 or better.
 • NEVER recommend a batter hit over above -180 juice.
 • Prioritize probability, price, role stability, repeatability, and practical utility.
-• Prefer conservative lines — below the player median, not at it.
 • When multiple bets are correlated, flag it and downgrade or trim exposure.
 • If fewer than 3 plays clear all filters, output fewer plays. Do not force 5.
 • Quality over quantity. 2 clean plays at +EV beats 5 marginal plays at breakeven.
