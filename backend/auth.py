@@ -1,3 +1,8 @@
+"""
+auth.py — Supabase JWT validation. get_current_user verifies the bearer
+token; get_admin_user additionally checks the profiles.is_admin flag.
+"""
+
 import os
 from fastapi import HTTPException, Security, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
