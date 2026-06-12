@@ -45,6 +45,16 @@ SportsAgent/
 | `run_daily_cards` | Daily 9:30 AM MT | Grades yesterday's bets → generates today's card for all active users |
 | `run_weekly_digest` | Monday 8:00 AM MT | Logs 7-day record for all active users |
 
+## Agent Philosophy (as of June 2026)
+
+The agent is framed as a **professional sports gambler whose livelihood depends on the bankroll**. The singular goal is week-over-week profitability — not finding interesting picks. Key principles baked into the system prompt:
+
+- **0-play days are valid** — passing on a weak slate protects capital
+- **Never chase losses** — losing streaks trigger tighter filters and smaller unit sizes
+- **Fractional Kelly sizing** — units scaled by edge gap (true prob minus implied prob): strong edge (10%+) = 2.5–3u, solid (5–9%) = 2u, moderate (2–4%) = 1–1.5u, thin = lean only
+- **EV-first, no arbitrary juice ceilings** — a mispriced -200 line is better than a correctly priced -110 line. All plays show `implied_prob_pct`, `true_prob_pct`, and `edge_gap_pct`
+- **Market-level learning** — if memory shows a market losing consistently, avoid it until data recovers
+
 ## Key Architecture Decisions
 
 **Agent is stateless per-call by design** — Claude gets a fresh context each day built from:
@@ -83,11 +93,42 @@ CREATE POLICY "Users can view own memory" ON agent_memory FOR SELECT USING (auth
 
 After running: trigger `POST /api/admin/grade-all` once to seed memory from existing graded bets.
 
+## What Was Built This Session (June 2026)
+
+### 1. Weekly Performance Digest
+- Added `run_weekly_digest()` to `main.py` — fires every Monday 8 AM MT, logs 7-day W-L-P, net units, ROI for all active users
+- Added `POST /api/admin/weekly-digest` endpoint to trigger manually
+
+### 2. Agent Learning System
+- **`backend/services/memory.py`** (new) — computes 90-day rolling stats from graded bets: win rate by market, sport, confidence tier, odds bucket, and last 10 losses
+- **`backend/services/grader.py`** — now calls `refresh_memory()` after grading, so stats update automatically every morning
+- **`backend/services/agent_runner.py`** — reads performance context and injects it into each daily prompt above the market data; ESM system prompt now uses `cache_control: {"type": "ephemeral"}` for ~90% token cost reduction
+
+### 3. ESM Prompt Overhaul
+Rules removed (were too restrictive for a mispricing model):
+- ~~Pitcher K line hard cap (5.5)~~
+- ~~3-play-per-sport hard cap~~
+- ~~Conservative line below-median mandate~~
+- ~~-130 juice ceiling on straight bets~~
+- ~~-180 batter hit ceiling~~
+
+Rules replaced with:
+- **EV-first framework** — estimated true probability must exceed implied probability. Juice level alone never disqualifies a play.
+- **Professional Survival Mandate (Section 0, highest priority)** — week-over-week profitability as singular goal, bankroll protection, fractional Kelly sizing, drawdown awareness, weekly performance context awareness
+
+### 4. Output Schema Updates
+Each official play now outputs:
+- `implied_prob_pct` — what the odds imply
+- `true_prob_pct` — agent's estimate
+- `edge_gap_pct` — the difference (drives unit sizing)
+- `edge_summary` — now required to note whether agent is in tight or standard operating mode
+
 ## Known Issues / Context
 
-- **Only MLB showing up** — Mid-June: NFL/NCAAB off-season, NBA/NHL playoffs over. The ESM system prompt also explicitly tells the agent to pass on NFL/NCAAB May–August. This is correct behavior, not a bug.
-- **Performance has been poor** — The learning system (memory.py) was just added to address this. Monitor ROI after the memory table is seeded and a few days of cards run with context.
-- **Grading is automatic** — `grader.py` uses ESPN box scores. Bets that can't be auto-graded (no ESPN match, non-player-prop markets) are left as "pending" and show up at `/api/admin/pending-bets` for manual grading.
+- **Only MLB showing up** — Mid-June: NFL/NCAAB off-season, NBA/NHL playoffs over. Correct behavior, not a bug. NBA/NHL will return in Oct/Nov.
+- **Pending Supabase migration** — `agent_memory` table must still be created manually (see migration below). Until done, learning loop is not active.
+- **Grading is automatic** — `grader.py` uses ESPN box scores. Non-player-prop bets (spreads, moneylines, totals) can't be auto-graded and appear at `/api/admin/pending-bets` for manual review.
+- **Performance monitoring** — after the migration is run and a few days of cards generate with memory context, watch ROI trend. The new EV-first + professional mandate framing should produce fewer but sharper plays.
 
 ## Environment Variables (backend)
 
