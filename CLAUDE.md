@@ -29,9 +29,10 @@ SportsAgent/
 │   │   ├── odds_client.py   # Wraps The Odds API
 │   │   ├── stats_client.py  # Wraps ESPN API
 │   │   └── config.py        # Active sports, prop markets, API keys
-│   └── services/
-│       ├── agent_runner.py  # Per-user card generation (calls Claude)
-│       ├── grader.py        # Auto-grades pending bets via ESPN box scores
+│   ├── services/
+│   │   ├── agent_runner.py  # Per-user card generation (calls Claude)
+│   │   └── grader.py        # Auto-grades pending bets via ESPN box scores
+│   └── learning/
 │       └── memory.py        # Performance stats: compute, store, format for prompt
 ├── frontend/                # Next.js app
 └── supabase/
@@ -100,7 +101,7 @@ After running: trigger `POST /api/admin/grade-all` once to seed memory from exis
 - Added `POST /api/admin/weekly-digest` endpoint to trigger manually
 
 ### 2. Agent Learning System
-- **`backend/services/memory.py`** (new) — computes 90-day rolling stats from graded bets: win rate by market, sport, confidence tier, odds bucket, and last 10 losses
+- **`backend/learning/memory.py`** (new) — computes 90-day rolling stats from graded bets: win rate by market, sport, confidence tier, odds bucket, and last 10 losses
 - **`backend/services/grader.py`** — now calls `refresh_memory()` after grading, so stats update automatically every morning
 - **`backend/services/agent_runner.py`** — reads performance context and injects it into each daily prompt above the market data; ESM system prompt now uses `cache_control: {"type": "ephemeral"}` for ~90% token cost reduction
 
@@ -181,7 +182,7 @@ npm run dev
 
 | If you're looking for... | Go to |
 |---|---|
-| Learning module, performance memory, win/loss stats by market | `backend/services/memory.py` |
+| Learning module, performance memory, win/loss stats by market | `backend/learning/memory.py` |
 | Betting rules, juice ceiling, unit sizing, edge thresholds | `backend/esm/system_prompt.py` |
 | Odds, lines, player props (The Odds API) | `backend/esm/odds_client.py` |
 | Active sports, prop markets, API keys config | `backend/esm/config.py` |
@@ -194,10 +195,6 @@ npm run dev
 | DB schema, tables, RLS policies | `supabase/schema.sql` |
 | Frontend pages (dashboard, login, history, preferences) | `frontend/app/` |
 | API calls from frontend | `frontend/lib/api.ts` |
-
-## Open / In-Flight Work
-
-- **PR #1** (`claude/recurring-task-creation-dpaexc`): Agent learning module (`memory.py`) + weekly digest + major ESM prompt rewrite (removes hard guardrails like juice ceilings in favor of pure EV-based sizing). Requires manual `agent_memory` table migration in Supabase before the learning loop is active — see migration SQL above.
 
 ## Cross-Device / Session Sync
 

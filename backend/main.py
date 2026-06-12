@@ -31,6 +31,7 @@ scheduler = AsyncIOScheduler(timezone=TIMEZONE)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     scheduler.add_job(run_daily_cards, "cron", hour=9, minute=30, id="daily_cards")
+    scheduler.add_job(run_weekly_digest, "cron", day_of_week="mon", hour=8, minute=0, id="weekly_digest")
     scheduler.start()
     yield
     scheduler.shutdown()
@@ -169,6 +170,12 @@ async def admin_grade(body: GradeRequest, admin: dict = Depends(get_admin_user))
     return {"message": "Bet graded"}
 
 
+@app.post("/api/admin/weekly-digest")
+async def admin_weekly_digest(admin: dict = Depends(get_admin_user)):
+    summaries = await run_weekly_digest()
+    return {"message": "Weekly digest complete", "users_processed": len(summaries), "summaries": summaries}
+
+
 @app.post("/api/admin/grade-all")
 async def admin_grade_all(admin: dict = Depends(get_admin_user)):
     from services.grader import grade_all_pending
@@ -217,6 +224,33 @@ async def run_daily_cards(target_date: str = None, specific_user_id: str = None)
             print(f"[EdgeBet] Card generated for {uid}")
         except Exception as e:
             print(f"[EdgeBet] Error for {uid}: {e}")
+
+
+async def run_weekly_digest():
+    from datetime import timedelta
+    today = date.today()
+    week_start = (today - timedelta(days=7)).isoformat()
+    users_result = db.table("profiles").select("id, email, full_name").eq("is_active", True).execute()
+    users = users_result.data or []
+    summaries = []
+    for user_row in users:
+        uid = user_row["id"]
+        try:
+            bets_result = (
+                db.table("bets").select("*")
+                .eq("user_id", uid)
+                .neq("result", "pending")
+                .gte("date", week_start)
+                .lt("date", today.isoformat())
+                .execute()
+            )
+            record = _calculate_record(bets_result.data or [])
+            summaries.append({"user_id": uid, "email": user_row.get("email", ""), **record})
+            print(f"[EdgeBet][WeeklyDigest] {user_row.get('email', uid)}: {record['record_str']} {record['units_str']} ({record['roi_pct']}% ROI)")
+        except Exception as e:
+            print(f"[EdgeBet][WeeklyDigest] Error for {uid}: {e}")
+    print(f"[EdgeBet][WeeklyDigest] Completed for {len(summaries)} users (week of {week_start})")
+    return summaries
 
 
 def _calculate_record(bets: list) -> dict:

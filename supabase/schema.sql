@@ -88,12 +88,21 @@ CREATE TABLE IF NOT EXISTS bets (
   created_at      TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- ── Agent Memory ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS agent_memory (
+  id         UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id    UUID REFERENCES profiles(id) ON DELETE CASCADE UNIQUE,
+  stats      JSONB DEFAULT '{}',
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- ── Row Level Security ──────────────────────────────────────────────────────
-ALTER TABLE profiles    ENABLE ROW LEVEL SECURITY;
-ALTER TABLE preferences ENABLE ROW LEVEL SECURITY;
-ALTER TABLE cards       ENABLE ROW LEVEL SECURITY;
-ALTER TABLE bets        ENABLE ROW LEVEL SECURITY;
+ALTER TABLE profiles     ENABLE ROW LEVEL SECURITY;
+ALTER TABLE preferences  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE cards        ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bets         ENABLE ROW LEVEL SECURITY;
 ALTER TABLE invite_codes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE agent_memory ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Users can view own profile"   ON profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
@@ -101,6 +110,7 @@ CREATE POLICY "Users can manage own preferences" ON preferences FOR ALL USING (a
 CREATE POLICY "Users can view own cards" ON cards FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can view own bets"  ON bets  FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Anyone can read invite codes" ON invite_codes FOR SELECT USING (true);
+CREATE POLICY "Users can view own memory" ON agent_memory FOR SELECT USING (auth.uid() = user_id);
 
 INSERT INTO invite_codes (code, max_uses, is_active)
 VALUES ('EDGEBET2026', 10, true)

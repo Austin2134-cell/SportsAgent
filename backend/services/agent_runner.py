@@ -13,6 +13,7 @@ import anthropic
 from esm.odds_client import OddsClient
 from esm.stats_client import StatsClient
 from esm.system_prompt import ESM_SYSTEM_PROMPT
+from learning.memory import get_performance_context
 
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
 MDT = ZoneInfo(TIMEZONE)
@@ -39,7 +40,8 @@ def run_card_for_user(user_id: str, prefs: dict, target_date: str = None) -> dic
     print("[agent_runner] Fetching ESPN context...")
     espn_context = _build_espn_context(market_snapshot, today)
 
-    user_message = _build_user_message(today, market_snapshot, espn_context, max_plays, unit_size)
+    perf_context = get_performance_context(db, user_id)
+    user_message = _build_user_message(today, market_snapshot, espn_context, max_plays, unit_size, perf_context)
 
     print("[agent_runner] Running ESM analysis...")
     card = _call_claude(user_message)
@@ -116,14 +118,19 @@ def _build_espn_context(market_snapshot: dict, today: str) -> dict:
 
 
 def _build_user_message(
-    today: str, market_snapshot: dict, espn_context: dict, max_plays: int, unit_size: float
+    today: str, market_snapshot: dict, espn_context: dict,
+    max_plays: int, unit_size: float, perf_context: str = "",
 ) -> str:
     parts = [
         f"DATE: {today}",
         f"UNIT SIZE: ${unit_size:.0f} per unit",
         f"MAX OFFICIAL PLAYS: {max_plays}",
-        "\n--- LIVE MARKET DATA ---",
     ]
+
+    if perf_context:
+        parts.append(perf_context)
+
+    parts.append("\n--- LIVE MARKET DATA ---")
     if market_snapshot.get("sports"):
         parts.append(_summarize_market(market_snapshot))
     else:
@@ -204,9 +211,13 @@ def _call_claude(user_message: str) -> dict:
         response = client.messages.create(
             model=MODEL,
             max_tokens=16000,
-            system=ESM_SYSTEM_PROMPT,
+            system=[{"type": "text", "text": ESM_SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}],
             messages=[{"role": "user", "content": user_message}],
         )
+        cache_read = getattr(response.usage, "cache_read_input_tokens", 0) or 0
+        cache_create = getattr(response.usage, "cache_creation_input_tokens", 0) or 0
+        if cache_read or cache_create:
+            print(f"[agent_runner] Token cache — read: {cache_read}, created: {cache_create}")
     except anthropic.APIError as e:
         print(f"[agent_runner] Claude API error: {e}")
         return {}
