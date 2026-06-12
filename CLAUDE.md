@@ -94,48 +94,11 @@ CREATE POLICY "Users can view own memory" ON agent_memory FOR SELECT USING (auth
 
 After running: trigger `POST /api/admin/grade-all` once to seed memory from existing graded bets.
 
-## What Was Built This Session (June 2026)
+## Current Status / Next Step
 
-### 1. Weekly Performance Digest
-- Added `run_weekly_digest()` to `main.py` — fires every Monday 8 AM MT, logs 7-day W-L-P, net units, ROI for all active users
-- Added `POST /api/admin/weekly-digest` endpoint to trigger manually
+**Status:** Learning module, weekly digest, and the EV-first prompt rewrite are merged to `main` and live.
 
-### 2. Agent Learning System
-- **`backend/learning/memory.py`** (new) — computes 90-day rolling stats from graded bets: win rate by market, sport, confidence tier, odds bucket, and last 10 losses
-- **`backend/services/grader.py`** — now calls `refresh_memory()` after grading, so stats update automatically every morning
-- **`backend/services/agent_runner.py`** — reads performance context and injects it into each daily prompt above the market data; ESM system prompt now uses `cache_control: {"type": "ephemeral"}` for ~90% token cost reduction
-
-### 3. ESM Prompt Overhaul
-Rules removed (were too restrictive for a mispricing model):
-- ~~Pitcher K line hard cap (5.5)~~
-- ~~3-play-per-sport hard cap~~
-- ~~Conservative line below-median mandate~~
-- ~~-130 juice ceiling on straight bets~~
-- ~~-180 batter hit ceiling~~
-
-Rules replaced with:
-- **EV-first framework** — estimated true probability must exceed implied probability. Juice level alone never disqualifies a play.
-- **Professional Survival Mandate (Section 0, highest priority)** — week-over-week profitability as singular goal, bankroll protection, fractional Kelly sizing, drawdown awareness, weekly performance context awareness
-
-### 4. Output Schema Updates
-Each official play now outputs:
-- `implied_prob_pct` — what the odds imply
-- `true_prob_pct` — agent's estimate
-- `edge_gap_pct` — the difference (drives unit sizing)
-- `edge_summary` — now required to note whether agent is in tight or standard operating mode
-
-## Known Issues / Context
-
-- **Only MLB showing up** — Mid-June: NFL/NCAAB off-season, NBA/NHL playoffs over. Correct behavior, not a bug. NBA/NHL will return in Oct/Nov.
-- **Pending Supabase migration** — `agent_memory` table must still be created manually (see migration below). Until done, learning loop is not active.
-- **Grading is automatic** — `grader.py` uses ESPN box scores. Non-player-prop bets (spreads, moneylines, totals) can't be auto-graded and appear at `/api/admin/pending-bets` for manual review.
-- **Performance monitoring** — after the migration is run and a few days of cards generate with memory context, watch ROI trend. The new EV-first + professional mandate framing should produce fewer but sharper plays.
-
-## Last Session Ended (June 12, 2026)
-
-**Status:** All code is built and pushed. One manual step remains before the system is fully live.
-
-**The single blocking task:**
+**The single blocking task before the learning loop actually does anything:**
 1. Go to Supabase dashboard → SQL Editor → New query, run:
 ```sql
 CREATE TABLE IF NOT EXISTS agent_memory (
@@ -149,9 +112,34 @@ CREATE POLICY "Users can view own memory" ON agent_memory FOR SELECT USING (auth
 ```
 2. Then call `POST /api/admin/grade-all` (with admin auth token) to seed memory from existing graded bets.
 
-Once those two steps are done, the learning loop is fully active. The agent will read its own performance history every morning and adjust sizing/filters accordingly.
+Once those two steps are done, the agent will read its own performance history every morning and adjust sizing/filters accordingly.
 
-**Everything else is already live on branch `claude/recurring-task-creation-dpaexc` — open PR exists in GitHub.**
+## Known Issues / Context
+
+- **Only MLB showing up** — Mid-June: NFL/NCAAB off-season, NBA/NHL playoffs over. Correct behavior, not a bug. NBA/NHL will return in Oct/Nov.
+- **Pending Supabase migration** — `agent_memory` table must still be created manually (see "Current Status / Next Step" above). Until done, learning loop is not active.
+- **Grading is automatic** — `grader.py` uses ESPN box scores. Non-player-prop bets (spreads, moneylines, totals) can't be auto-graded and appear at `/api/admin/pending-bets` for manual review.
+- **Performance monitoring** — after the migration is run and a few days of cards generate with memory context, watch ROI trend. The new EV-first + professional mandate framing should produce fewer but sharper plays.
+
+## Open Pull Requests
+
+- **PR #2** — World Cup card generator + email delivery + Twitter/X social formatter. Open, not yet reviewed/merged.
+
+## Session Log
+
+Newest entries first. Each session should append a short entry here before ending.
+
+### 2026-06-12 (Session 2)
+- Merged **PR #1**: agent learning module, weekly digest, EV-first ESM prompt rewrite (removed juice ceilings / hard caps in favor of true-prob-vs-implied-prob sizing).
+- Restructured: moved `services/memory.py` → **`backend/learning/memory.py`** (its own top-level section) and updated all imports (`agent_runner.py`, `grader.py`).
+- Renamed PR #1 title for clarity ("Add agent learning module...").
+- Added `CLAUDE.md` to repo root (PR #3) and a keyword index + module docstrings (PR #4).
+- Reorganized this file into "Current Status / Next Step", "Open Pull Requests", and this running Session Log — going forward, update this log instead of overwriting prior context, so any device/session can resume from here.
+- **Next up:** run the Supabase `agent_memory` migration (see above), then review PR #2 (World Cup/email/Twitter).
+
+### 2026-06-12 (Session 1)
+- Built the learning module, weekly digest, and ESM prompt rewrite (became PR #1, merged in Session 2).
+- Built World Cup support + email/social formatting (became PR #2, still open).
 
 ## Environment Variables (backend)
 
