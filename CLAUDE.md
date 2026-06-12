@@ -184,6 +184,13 @@ npm run dev
 | Frontend pages (dashboard, login, history, preferences) | `frontend/app/` |
 | API calls from frontend | `frontend/lib/api.ts` |
 
+## Session Log Maintenance
+
+- Keep the **Session Log** above to roughly the **last 5-10 entries**. At the start of a session, if it's getting long:
+  - Fold any still-relevant facts from older entries into the permanent sections (Repo Structure, Current Status, Known Issues, Open PRs).
+  - Delete the entries you folded in, oldest first.
+- For an unusually long/complex session, write the full detail to `docs/sessions/YYYY-MM-DD.md` and link it from that day's log entry (e.g. `- 2026-06-12: ... (details: docs/sessions/2026-06-12.md)`). Most sessions don't need a separate file — the one-line summary in the log is enough.
+
 ## Cross-Device / Session Sync
 
 - All code changes are committed and pushed to GitHub — pull on any device to sync
