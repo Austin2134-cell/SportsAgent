@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EdgeBet — Repo Map</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #07090f;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 40px 24px 60px;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .logo-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .logo-text { font-size: 1.8rem; font-weight: 800; color: #f8fafc; letter-spacing: -0.02em; }
+    .header p { color: #475569; font-size: 0.9rem; }
+
+    /* ── Section labels ── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #475569;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #1e293b;
+    }
+
+    /* ── Architecture diagram ── */
+    .arch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 48px;
+    }
+
+    .arch-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .arch-box {
+      border-radius: 10px;
+      padding: 12px 18px;
+      text-align: center;
+      min-width: 120px;
+      position: relative;
+    }
+    .arch-box .label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .arch-box .sub {
+      font-size: 0.65rem;
+      margin-top: 3px;
+      opacity: 0.6;
+    }
+
+    .box-ext   { background: #0f1929; border: 1px solid #1d4ed8; }
+    .box-ext   .label { color: #60a5fa; }
+    .box-api   { background: #1a0f29; border: 1px solid #7c3aed; }
+    .box-api   .label { color: #a78bfa; }
+    .box-svc   { background: #0a1f14; border: 1px solid #16a34a; }
+    .box-svc   .label { color: #4ade80; }
+    .box-learn { background: #1a1429; border: 1px solid #9333ea; }
+    .box-learn .label { color: #c084fc; }
+    .box-db    { background: #14100a; border: 1px solid #d97706; }
+    .box-db    .label { color: #fbbf24; }
+    .box-fe    { background: #091f1f; border: 1px solid #0891b2; }
+    .box-fe    .label { color: #22d3ee; }
+
+    .arch-arrow {
+      color: #334155;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .arch-arrow-down {
+      color: #334155;
+      font-size: 1.1rem;
+      margin: 4px 0;
+      text-align: center;
+    }
+
+    /* ── Module grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+
+    .card {
+      background: #0d1117;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 18px;
+      transition: border-color 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card:hover { border-color: #334155; }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .card-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .card-meta { flex: 1; min-width: 0; }
+    .card-title { font-size: 0.9rem; font-weight: 600; color: #f1f5f9; }
+    .card-path {
+      font-size: 0.68rem;
+      font-family: "SF Mono", "Fira Code", monospace;
+      color: #475569;
+      margin-top: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .card-desc { font-size: 0.78rem; color: #94a3b8; line-height: 1.6; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      font-size: 0.65rem;
+      font-family: "SF Mono", "Fira Code", monospace;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+
+    /* color variants */
+    .v-blue  .card-icon { background:#1e3a5f22; color:#60a5fa; }
+    .v-blue  .tag       { background:#1e3a5f22; border-color:#1d4ed8; color:#93c5fd; }
+    .v-green .card-icon { background:#14352a22; color:#4ade80; }
+    .v-green .tag       { background:#14352a22; border-color:#166534; color:#86efac; }
+    .v-purple .card-icon{ background:#2d1f4e22; color:#c084fc; }
+    .v-purple .tag      { background:#2d1f4e22; border-color:#6b21a8; color:#d8b4fe; }
+    .v-orange .card-icon{ background:#3a201022; color:#fb923c; }
+    .v-orange .tag      { background:#3a201022; border-color:#9a3412; color:#fdba74; }
+    .v-cyan  .card-icon { background:#0c2d3822; color:#22d3ee; }
+    .v-cyan  .tag       { background:#0c2d3822; border-color:#0e7490; color:#67e8f9; }
+    .v-rose  .card-icon { background:#3b0f1a22; color:#fb7185; }
+    .v-rose  .tag       { background:#3b0f1a22; border-color:#9f1239; color:#fda4af; }
+    .v-amber .card-icon { background:#2e1f0822; color:#fbbf24; }
+    .v-amber .tag       { background:#2e1f0822; border-color:#92400e; color:#fcd34d; }
+    .v-slate .card-icon { background:#1e263622; color:#94a3b8; }
+    .v-slate .tag       { background:#1e263622; border-color:#334155; color:#cbd5e1; }
+
+    /* ── DB table ── */
+    .db-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .db-card {
+      background: #0d1117;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .db-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: "SF Mono", "Fira Code", monospace;
+      color: #c084fc;
+      margin-bottom: 6px;
+    }
+    .db-warn { color: #f59e0b; }
+    .db-desc { font-size: 0.72rem; color: #64748b; line-height: 1.55; }
+
+    /* ── Schedule ── */
+    .sched {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+    .sched-card {
+      background: #0d1117;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .sched-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      background: #14352a22;
+      color: #4ade80;
+    }
+    .sched-title { font-size: 0.85rem; font-weight: 600; color: #f1f5f9; margin-bottom: 3px; }
+    .sched-time { font-size: 0.7rem; font-family: "SF Mono","Fira Code",monospace; color: #fbbf24; margin-bottom: 6px; }
+    .sched-desc { font-size: 0.75rem; color: #94a3b8; line-height: 1.55; }
+
+    /* ── Stack pills ── */
+    .stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+    .stack-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: #0d1117;
+      border: 1px solid #1e293b;
+      border-radius: 99px;
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      color: #cbd5e1;
+    }
+    .stack-pill span { font-size: 0.65rem; color: #475569; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">🎯</div>
+      <div class="logo-text">EdgeBet</div>
+    </div>
+    <p>Sports betting advisory platform — visual repo map</p>
+  </div>
+
+  <!-- Tech Stack -->
+  <div class="section-label">Tech Stack</div>
+  <div class="stack">
+    <div class="stack-pill">⚡ FastAPI <span>Backend</span></div>
+    <div class="stack-pill">▲ Next.js 14 <span>Frontend</span></div>
+    <div class="stack-pill">🐘 Supabase <span>Database + Auth</span></div>
+    <div class="stack-pill">🤖 Claude API <span>AI Agent</span></div>
+    <div class="stack-pill">📅 APScheduler <span>Cron Jobs</span></div>
+    <div class="stack-pill">📊 The Odds API <span>Live Lines</span></div>
+    <div class="stack-pill">🏟️ ESPN API <span>Injuries + Scores</span></div>
+    <div class="stack-pill">🚂 Railway <span>Deployment</span></div>
+  </div>
+
+  <!-- Architecture Flow -->
+  <div class="section-label">System Architecture</div>
+  <div class="arch" style="margin-bottom:48px">
+
+    <!-- Row 1: External sources -->
+    <div class="arch-row">
+      <div class="arch-box box-ext"><div class="label">The Odds API</div><div class="sub">Live lines + props</div></div>
+      <div class="arch-arrow" style="opacity:0">→</div>
+      <div class="arch-box box-ext"><div class="label">ESPN API</div><div class="sub">Injuries + scores</div></div>
+      <div class="arch-arrow" style="opacity:0">→</div>
+      <div class="arch-box box-ext"><div class="label">Supabase</div><div class="sub">Preferences + memory</div></div>
+    </div>
+
+    <div class="arch-arrow-down">↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
+
+    <!-- Row 2: ESM layer -->
+    <div class="arch-row">
+      <div class="arch-box box-api"><div class="label">odds_client.py</div><div class="sub">esm/</div></div>
+      <div class="arch-arrow" style="opacity:0">→</div>
+      <div class="arch-box box-api"><div class="label">stats_client.py</div><div class="sub">esm/</div></div>
+      <div class="arch-arrow" style="opacity:0">→</div>
+      <div class="arch-box box-learn"><div class="label">memory.py</div><div class="sub">learning/</div></div>
+    </div>
+
+    <div class="arch-arrow-down">↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
+
+    <!-- Row 3: Agent runner -->
+    <div class="arch-row" style="justify-content:center">
+      <div class="arch-box box-svc" style="min-width:200px">
+        <div class="label">agent_runner.py</div>
+        <div class="sub">Assembles prompt → calls Claude API</div>
+      </div>
+    </div>
+
+    <div class="arch-arrow-down">↓</div>
+
+    <!-- Row 4: Claude -->
+    <div class="arch-row" style="justify-content:center">
+      <div class="arch-box box-api" style="min-width:200px; background:linear-gradient(135deg,#1a0f29,#2d1f4e); border-color:#7c3aed">
+        <div class="label" style="color:#c084fc">Claude (claude-sonnet-4-6)</div>
+        <div class="sub">system_prompt.py + live context</div>
+      </div>
+    </div>
+
+    <div class="arch-arrow-down">↓</div>
+
+    <!-- Row 5: DB + grader -->
+    <div class="arch-row" style="justify-content:center; gap:32px">
+      <div class="arch-box box-db"><div class="label">cards table</div><div class="sub">plays, leans, reads</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box box-svc"><div class="label">grader.py</div><div class="sub">ESPN box scores</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box box-db"><div class="label">bets table</div><div class="sub">W / L result</div></div>
+    </div>
+
+    <div class="arch-arrow-down">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
+
+    <!-- Row 6: memory refresh + frontend -->
+    <div class="arch-row" style="justify-content:center; gap:32px">
+      <div class="arch-box box-fe"><div class="label">Next.js Frontend</div><div class="sub">Dashboard / History</div></div>
+      <div class="arch-arrow" style="opacity:0">→</div>
+      <div class="arch-box box-learn"><div class="label">agent_memory table</div><div class="sub">90-day rolling stats → next prompt</div></div>
+    </div>
+
+  </div>
+
+  <!-- Backend Modules -->
+  <div class="section-label">Backend Modules — Python / FastAPI</div>
+  <div class="grid">
+
+    <div class="card v-blue">
+      <div class="card-top">
+        <div class="card-icon">🚀</div>
+        <div class="card-meta">
+          <div class="card-title">main.py</div>
+          <div class="card-path">backend/main.py</div>
+        </div>
+      </div>
+      <div class="card-desc">FastAPI app entry point. Defines all API routes, wires up APScheduler jobs, handles invite-code registration, and exposes admin endpoints.</div>
+      <div class="tags">
+        <span class="tag">API routes</span>
+        <span class="tag">Scheduler</span>
+        <span class="tag">Admin</span>
+        <span class="tag">Invite codes</span>
+      </div>
+    </div>
+
+    <div class="card v-green">
+      <div class="card-top">
+        <div class="card-icon">🤖</div>
+        <div class="card-meta">
+          <div class="card-title">agent_runner.py</div>
+          <div class="card-path">backend/services/agent_runner.py</div>
+        </div>
+      </div>
+      <div class="card-desc">Builds each user's daily prompt from odds + injuries + memory + preferences, calls the Claude API, and saves the structured card (plays, leans, quick reads) to Supabase.</div>
+      <div class="tags">
+        <span class="tag">Claude API</span>
+        <span class="tag">Card generation</span>
+        <span class="tag">Prompt assembly</span>
+      </div>
+    </div>
+
+    <div class="card v-rose">
+      <div class="card-top">
+        <div class="card-icon">📊</div>
+        <div class="card-meta">
+          <div class="card-title">grader.py</div>
+          <div class="card-path">backend/services/grader.py</div>
+        </div>
+      </div>
+      <div class="card-desc">Auto-grades pending bets against ESPN box scores and writes W/L results to the bets table. Then triggers memory.refresh_memory() to update rolling stats.</div>
+      <div class="tags">
+        <span class="tag">Auto-grading</span>
+        <span class="tag">ESPN scores</span>
+        <span class="tag">W/L results</span>
+      </div>
+    </div>
+
+    <div class="card v-purple">
+      <div class="card-top">
+        <div class="card-icon">🧠</div>
+        <div class="card-meta">
+          <div class="card-title">memory.py</div>
+          <div class="card-path">backend/learning/memory.py</div>
+        </div>
+      </div>
+      <div class="card-desc">Computes 90-day rolling stats by market, sport, confidence tier, and odds bucket. Writes to agent_memory table. Formats stats into next-day prompt so the agent self-adjusts sizing.</div>
+      <div class="tags">
+        <span class="tag">Rolling stats</span>
+        <span class="tag">ROI by market</span>
+        <span class="tag">Self-adjustment</span>
+        <span class="tag">Learning loop</span>
+      </div>
+    </div>
+
+    <div class="card v-cyan">
+      <div class="card-top">
+        <div class="card-icon">📝</div>
+        <div class="card-meta">
+          <div class="card-title">system_prompt.py</div>
+          <div class="card-path">backend/esm/system_prompt.py</div>
+        </div>
+      </div>
+      <div class="card-desc">The full ESM framework (~3,000 tokens, prompt-cached). Defines the agent as a professional gambler, sets Kelly sizing rules, edge thresholds, 0-play-day logic, and EV-first philosophy.</div>
+      <div class="tags">
+        <span class="tag">Agent identity</span>
+        <span class="tag">Kelly sizing</span>
+        <span class="tag">EV-first</span>
+        <span class="tag">Prompt cache</span>
+      </div>
+    </div>
+
+    <div class="card v-orange">
+      <div class="card-top">
+        <div class="card-icon">🎲</div>
+        <div class="card-meta">
+          <div class="card-title">odds_client.py</div>
+          <div class="card-path">backend/esm/odds_client.py</div>
+        </div>
+      </div>
+      <div class="card-desc">Wraps The Odds API. Fetches live spreads, moneylines, totals, and player props for all active sports. Feeds raw odds into the agent's daily context window.</div>
+      <div class="tags">
+        <span class="tag">The Odds API</span>
+        <span class="tag">Live lines</span>
+        <span class="tag">Player props</span>
+      </div>
+    </div>
+
+    <div class="card v-amber">
+      <div class="card-top">
+        <div class="card-icon">🏟️</div>
+        <div class="card-meta">
+          <div class="card-title">stats_client.py</div>
+          <div class="card-path">backend/esm/stats_client.py</div>
+        </div>
+      </div>
+      <div class="card-desc">Wraps the ESPN public API (no key needed). Fetches injury reports, team news, and scoreboard data. Used by both agent_runner (context) and grader (results).</div>
+      <div class="tags">
+        <span class="tag">ESPN API</span>
+        <span class="tag">Injury reports</span>
+        <span class="tag">Scoreboard</span>
+      </div>
+    </div>
+
+    <div class="card v-slate">
+      <div class="card-top">
+        <div class="card-icon">⚙️</div>
+        <div class="card-meta">
+          <div class="card-title">config.py</div>
+          <div class="card-path">backend/esm/config.py</div>
+        </div>
+      </div>
+      <div class="card-desc">Single source of truth for active sports, enabled prop markets, and API keys. Edit here to toggle sports on/off or add new market types without touching any other file.</div>
+      <div class="tags">
+        <span class="tag">Active sports</span>
+        <span class="tag">Prop markets</span>
+        <span class="tag">API keys</span>
+      </div>
+    </div>
+
+    <div class="card v-blue">
+      <div class="card-top">
+        <div class="card-icon">🔐</div>
+        <div class="card-meta">
+          <div class="card-title">auth.py</div>
+          <div class="card-path">backend/auth.py</div>
+        </div>
+      </div>
+      <div class="card-desc">JWT validation via Supabase. Exposes get_current_user() and require_admin() as FastAPI dependencies to protect any route that needs them.</div>
+      <div class="tags">
+        <span class="tag">JWT auth</span>
+        <span class="tag">Admin guard</span>
+        <span class="tag">Supabase auth</span>
+      </div>
+    </div>
+
+    <div class="card v-slate">
+      <div class="card-top">
+        <div class="card-icon">🗄️</div>
+        <div class="card-meta">
+          <div class="card-title">database.py</div>
+          <div class="card-path">backend/database.py</div>
+        </div>
+      </div>
+      <div class="card-desc">Supabase client singleton. Every module that needs a DB connection imports get_supabase() from here — initialized once at startup with SUPABASE_URL + SERVICE_KEY.</div>
+      <div class="tags">
+        <span class="tag">Supabase client</span>
+        <span class="tag">Singleton</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Frontend -->
+  <div class="section-label">Frontend — Next.js 14 + Tailwind</div>
+  <div class="grid">
+    <div class="card v-cyan">
+      <div class="card-top">
+        <div class="card-icon">🖥️</div>
+        <div class="card-meta">
+          <div class="card-title">frontend/app/</div>
+          <div class="card-path">frontend/app/</div>
+        </div>
+      </div>
+      <div class="card-desc">Next.js App Router pages: dashboard (today's card), login, history (past cards + record), and preferences (sports, unit size, risk level). Styled with Tailwind + lucide-react.</div>
+      <div class="tags">
+        <span class="tag">Dashboard</span>
+        <span class="tag">Login</span>
+        <span class="tag">History</span>
+        <span class="tag">Preferences</span>
+      </div>
+    </div>
+    <div class="card v-cyan">
+      <div class="card-top">
+        <div class="card-icon">🔌</div>
+        <div class="card-meta">
+          <div class="card-title">api.ts</div>
+          <div class="card-path">frontend/lib/api.ts</div>
+        </div>
+      </div>
+      <div class="card-desc">All fetch calls from the browser to the FastAPI backend live here. Single file to update base URLs, auth headers, and TypeScript response types.</div>
+      <div class="tags">
+        <span class="tag">API calls</span>
+        <span class="tag">Auth headers</span>
+        <span class="tag">TypeScript</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Database -->
+  <div class="section-label">Database — Supabase (PostgreSQL + RLS)</div>
+  <div class="db-grid">
+    <div class="db-card">
+      <div class="db-name">profiles</div>
+      <div class="db-desc">Extends auth.users. Stores email, full_name, is_admin, is_active flags per user.</div>
+    </div>
+    <div class="db-card">
+      <div class="db-name">preferences</div>
+      <div class="db-desc">Per-user betting settings: sports, bet_types, risk_level, max_plays, unit_size.</div>
+    </div>
+    <div class="db-card">
+      <div class="db-name">cards</div>
+      <div class="db-desc">Daily AI-generated cards: plays, leans, quick_reads, pass_notes, and raw JSON output.</div>
+    </div>
+    <div class="db-card">
+      <div class="db-name">bets</div>
+      <div class="db-desc">Individual wagers from each card. result starts as "pending", updated to W/L by grader.py.</div>
+    </div>
+    <div class="db-card">
+      <div class="db-name">invite_codes</div>
+      <div class="db-desc">Invite-only registration. A valid code is required to create a new account.</div>
+    </div>
+    <div class="db-card" style="border-color:#d97706">
+      <div class="db-name db-warn">agent_memory ⚠️</div>
+      <div class="db-desc">90-day rolling stats JSON per user. Table not yet created in production — run the SQL migration in Supabase to activate the learning loop.</div>
+    </div>
+  </div>
+
+  <!-- Scheduled Jobs -->
+  <div class="section-label">Scheduled Jobs</div>
+  <div class="sched">
+    <div class="sched-card">
+      <div class="sched-icon">📅</div>
+      <div>
+        <div class="sched-title">run_daily_cards</div>
+        <div class="sched-time">Every day · 9:30 AM MT</div>
+        <div class="sched-desc">Grades yesterday's bets via ESPN → refreshes agent memory stats → generates today's card for every active user via Claude.</div>
+      </div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-icon">📋</div>
+      <div>
+        <div class="sched-title">run_weekly_digest</div>
+        <div class="sched-time">Mondays · 8:00 AM MT</div>
+        <div class="sched-desc">Logs the 7-day win/loss record and unit P&L for all active users. Used to track week-over-week profitability trends.</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
