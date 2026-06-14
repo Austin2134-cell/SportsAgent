@@ -1,9 +1,3 @@
-"""
-main.py — FastAPI app entrypoint. Defines all API routes (cards, bets,
-preferences, admin), CORS, and the APScheduler jobs (daily card generation,
-weekly digest).
-"""
-
 import os
 from contextlib import asynccontextmanager
 from datetime import date, datetime

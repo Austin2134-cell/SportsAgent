@@ -1,8 +1,3 @@
-"""
-grader.py — auto-grades pending bets against ESPN box scores and refreshes
-agent performance memory for any users with newly graded bets.
-"""
-
 import re
 import requests
 from datetime import date
@@ -62,7 +57,7 @@ def grade_all_pending(db):
         else:
             manual += 1
     if affected_users:
-        from learning.memory import refresh_memory
+        from services.memory import refresh_memory
         for uid in affected_users:
             refresh_memory(db, uid)
     return {"graded": graded, "manual": manual}
@@ -118,7 +113,7 @@ def _parse_bet(bet_str):
 
 
 def _extract_player(bet_str):
-    match = re.match(r"^([A-Za-z\s\-\'\.]+?)\s+(Over|Under)\s+", bet_str, re.IGNORECASE)
+    match = re.match(r"^([A-Za-z\s\-\'\.']+?)\s+(Over|Under)\s+", bet_str, re.IGNORECASE)
     if match:
         name = match.group(1).strip()
         if len(name.split()) >= 2 and name[0].isupper():

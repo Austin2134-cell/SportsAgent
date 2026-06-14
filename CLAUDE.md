@@ -25,14 +25,13 @@ SportsAgent/
 │   ├── auth.py              # JWT auth via Supabase
 │   ├── database.py          # Supabase client singleton
 │   ├── esm/
-│   │   ├── system_prompt.py # Full ESM framework (~3000 tokens, prompt-cached)
+│   │   ├── system_prompt.py # Full ESM framework (~3500 tokens, prompt-cached)
 │   │   ├── odds_client.py   # Wraps The Odds API
 │   │   ├── stats_client.py  # Wraps ESPN API
 │   │   └── config.py        # Active sports, prop markets, API keys
-│   ├── services/
-│   │   ├── agent_runner.py  # Per-user card generation (calls Claude)
-│   │   └── grader.py        # Auto-grades pending bets via ESPN box scores
-│   └── learning/
+│   └── services/
+│       ├── agent_runner.py  # Per-user card generation (calls Claude)
+│       ├── grader.py        # Auto-grades pending bets via ESPN box scores
 │       └── memory.py        # Performance stats: compute, store, format for prompt
 ├── frontend/                # Next.js app
 └── supabase/
@@ -64,7 +63,7 @@ The agent is framed as a **professional sports gambler whose livelihood depends 
 3. Performance memory (90-day rolling stats from `agent_memory` table)
 4. User preferences (max plays, unit size, risk level, sports)
 
-**Prompt caching** — The static ESM system prompt (~3000 tokens) uses `cache_control: {"type": "ephemeral"}`. On repeat calls within the cache window, token cost drops ~90% for that section.
+**Prompt caching** — The static ESM system prompt uses `cache_control: {"type": "ephemeral"}`. On repeat calls within the cache window, token cost drops ~90% for that section.
 
 **Learning loop** — `grader.py` grades bets → calls `memory.refresh_memory()` → stats written to `agent_memory` table → next day's prompt includes performance history by market/sport/confidence/odds bucket + recent losses.
 
@@ -101,7 +100,7 @@ After running: trigger `POST /api/admin/grade-all` once to seed memory from exis
 - Added `POST /api/admin/weekly-digest` endpoint to trigger manually
 
 ### 2. Agent Learning System
-- **`backend/learning/memory.py`** (new) — computes 90-day rolling stats from graded bets: win rate by market, sport, confidence tier, odds bucket, and last 10 losses
+- **`backend/services/memory.py`** (new) — computes 90-day rolling stats from graded bets: win rate by market, sport, confidence tier, odds bucket, and last 10 losses
 - **`backend/services/grader.py`** — now calls `refresh_memory()` after grading, so stats update automatically every morning
 - **`backend/services/agent_runner.py`** — reads performance context and injects it into each daily prompt above the market data; ESM system prompt now uses `cache_control: {"type": "ephemeral"}` for ~90% token cost reduction
 
@@ -127,31 +126,19 @@ Each official play now outputs:
 ## Known Issues / Context
 
 - **Only MLB showing up** — Mid-June: NFL/NCAAB off-season, NBA/NHL playoffs over. Correct behavior, not a bug. NBA/NHL will return in Oct/Nov.
-- **Pending Supabase migration** — `agent_memory` table must still be created manually (see migration below). Until done, learning loop is not active.
+- **Pending Supabase migration** — `agent_memory` table must still be created manually (see migration above). Until done, learning loop is not active.
 - **Grading is automatic** — `grader.py` uses ESPN box scores. Non-player-prop bets (spreads, moneylines, totals) can't be auto-graded and appear at `/api/admin/pending-bets` for manual review.
 - **Performance monitoring** — after the migration is run and a few days of cards generate with memory context, watch ROI trend. The new EV-first + professional mandate framing should produce fewer but sharper plays.
 
-## Last Session Ended (June 12, 2026)
+## Last Session Ended (June 14, 2026)
 
-**Status:** All code is built and pushed. One manual step remains before the system is fully live.
+**Status:** All code is built and fully synced to GitHub. One manual step remains before the system is fully live.
 
 **The single blocking task:**
-1. Go to Supabase dashboard → SQL Editor → New query, run:
-```sql
-CREATE TABLE IF NOT EXISTS agent_memory (
-  id         UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id    UUID REFERENCES profiles(id) ON DELETE CASCADE UNIQUE,
-  stats      JSONB DEFAULT '{}',
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-ALTER TABLE agent_memory ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users can view own memory" ON agent_memory FOR SELECT USING (auth.uid() = user_id);
-```
-2. Then call `POST /api/admin/grade-all` (with admin auth token) to seed memory from existing graded bets.
+1. Go to Supabase dashboard → SQL Editor → New query, run the agent_memory migration above
+2. Then call `POST /api/admin/grade-all` (with admin auth token) to seed memory from existing graded bets
 
-Once those two steps are done, the learning loop is fully active. The agent will read its own performance history every morning and adjust sizing/filters accordingly.
-
-**Everything else is already live on branch `claude/recurring-task-creation-dpaexc` — open PR exists in GitHub.**
+Once those two steps are done, the learning loop is fully active.
 
 ## Environment Variables (backend)
 
@@ -178,26 +165,8 @@ npm install
 npm run dev
 ```
 
-## Where Things Live (Keyword Index)
-
-| If you're looking for... | Go to |
-|---|---|
-| Learning module, performance memory, win/loss stats by market | `backend/learning/memory.py` |
-| Betting rules, juice ceiling, unit sizing, edge thresholds | `backend/esm/system_prompt.py` |
-| Odds, lines, player props (The Odds API) | `backend/esm/odds_client.py` |
-| Active sports, prop markets, API keys config | `backend/esm/config.py` |
-| Injury/team context, scoreboard (ESPN) | `backend/esm/stats_client.py` |
-| Grading bets, auto-grading via box scores, W/L results | `backend/services/grader.py` |
-| Daily card generation, Claude API call | `backend/services/agent_runner.py` |
-| API routes, admin endpoints, invite codes, scheduler jobs | `backend/main.py` |
-| Auth, JWT validation, admin check | `backend/auth.py` |
-| Supabase client setup | `backend/database.py` |
-| DB schema, tables, RLS policies | `supabase/schema.sql` |
-| Frontend pages (dashboard, login, history, preferences) | `frontend/app/` |
-| API calls from frontend | `frontend/lib/api.ts` |
-
 ## Cross-Device / Session Sync
 
 - All code changes are committed and pushed to GitHub — pull on any device to sync
 - Supabase schema changes require a manual SQL run (not automatic)
-- Update the "Known Issues / Context" section above after significant sessions so the next session starts informed
+- Update the "Known Issues / Context" and "Last Session" sections above after significant sessions
