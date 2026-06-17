@@ -121,13 +121,32 @@ Once those two steps are done, the agent will read its own performance history e
 - **Grading is automatic** — `grader.py` uses ESPN box scores. Non-player-prop bets (spreads, moneylines, totals) can't be auto-graded and appear at `/api/admin/pending-bets` for manual review.
 - **Performance monitoring** — after the migration is run and a few days of cards generate with memory context, watch ROI trend. The new EV-first + professional mandate framing should produce fewer but sharper plays.
 
+## Production URLs
+
+| Service | URL |
+|---|---|
+| Frontend (Vercel) | `https://sports-agent-phi.vercel.app` |
+| Backend (Railway) | configured via `NEXT_PUBLIC_API_URL` in Vercel env vars |
+| Supabase | `https://nlfalrpuspdezfnlakrv.supabase.co` |
+
 ## Open Pull Requests
 
-None currently open. PR #2 was closed (superseded by PR #9, which merged to main).
+None currently open. PR #10 merged to main (Session 4).
 
 ## Session Log
 
 Newest entries first. Each session should append a short entry here before ending.
+
+### 2026-06-17 (Session 4)
+- Built and merged **PR #10**: email redesign, password reset page, WC pipeline polish.
+  - `backend/services/mailer.py` — full HTML email template rebuild to match ESM_Daily_Card_v2.pdf spec: "DAILY CARD" 42px title, "EDGE SPORTS MEDIA · PRECISION ANALYTICS" header, 5px gradient accent bar, amber section bars with left border + right play count badge, sport pill badges per sport, 22px bet name, 52px grade letter, passes with red left border, footer with full disclaimer.
+  - `frontend/app/reset-password/page.tsx` — new: handles Supabase `PASSWORD_RECOVERY` auth event; form to set new password; redirects to `/dashboard` on success.
+  - `frontend/public/card-preview.html` — static mock card for design preview at `/card-preview.html` on Vercel.
+  - `backend/run_world_cup_card.py` — fixed default email to `Austin.noyes21@gmail.com`.
+  - `.github/workflows/wc-card.yml` — removed hardcoded `ref: claude/claude-md-review-jye8vi` from checkout step so workflow always runs from `main`.
+- Fixed Gmail SMTP auth (BadCredentials): root cause was 2FA not enabled; fix was enabling 2FA + generating app password `zvczukgsbcdjvnsa`, stored in `EMAIL_SMTP_PASS` GitHub Secret.
+- Identified production Vercel URL: `https://sports-agent-phi.vercel.app`. Updated Supabase Site URL to match.
+- **Next up:** run the Supabase `agent_memory` migration (still pending — see "Current Status / Next Step" above).
 
 ### 2026-06-17 (Session 3)
 - Built and merged **PR #9**: complete World Cup card pipeline — superseded the older PR #2 (now closed).
@@ -139,7 +158,6 @@ Newest entries first. Each session should append a short entry here before endin
   - `backend/run_world_cup_card.py` — new standalone runner: TOA → SGO fallback, dynamic tournament day calc, Claude ESM call, console card print, Twitter thread print, optional email delivery.
   - `.github/workflows/wc-card.yml` — new: `workflow_dispatch` (date/email/no_email inputs) + daily schedule `30 15 * * *` (9:30 AM MDT). Runs on `ubuntu-latest` to bypass remote-environment network egress restrictions. All API keys from GitHub Secrets.
 - First successful end-to-end GitHub Actions run: June 17 card generated + emailed to anoyes@spokeo.com (2m 1s, green).
-- **Next up:** run the Supabase `agent_memory` migration (still pending — see "Current Status / Next Step" above).
 
 ### 2026-06-12 (Session 2)
 - Merged **PR #1**: agent learning module, weekly digest, EV-first ESM prompt rewrite (removed juice ceilings / hard caps in favor of true-prob-vs-implied-prob sizing).
@@ -196,6 +214,8 @@ npm run dev
 | WC GitHub Actions workflow | `.github/workflows/wc-card.yml` |
 | Email delivery (HTML card) | `backend/services/mailer.py` |
 | Twitter/X thread formatter | `backend/services/social.py` |
+| Password reset page (Supabase recovery flow) | `frontend/app/reset-password/page.tsx` |
+| Card design preview (static HTML) | `frontend/public/card-preview.html` |
 
 ## Session Log Maintenance
 
