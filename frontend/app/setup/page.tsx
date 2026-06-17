@@ -12,6 +12,14 @@ const BET_TYPES = [
 ];
 const RISK_LEVELS = ["LOW", "MEDIUM", "HIGH"];
 
+const DEFAULT_SPORTS = [
+  { id: "MLB", label: "MLB", season_active: true },
+  { id: "WC", label: "World Cup Soccer", season_active: true },
+  { id: "NBA", label: "NBA", season_active: false },
+  { id: "NHL", label: "NHL", season_active: false },
+  { id: "NFL", label: "NFL", season_active: false },
+];
+
 export default function SetupPage() {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
@@ -38,9 +46,11 @@ export default function SetupPage() {
       setToken(data.session.access_token);
       api.getAgent(data.session.access_token).then((res) => {
         if (res.provisioned) router.push("/agent");
-      });
+      }).catch(() => { /* backend unreachable — stay on setup */ });
     });
-    api.getSports().then((res) => setSports(res.sports || []));
+    api.getSports()
+      .then((res) => setSports(res.sports?.length ? res.sports : DEFAULT_SPORTS))
+      .catch(() => setSports(DEFAULT_SPORTS));
   }, [router]);
 
   const unitSize = Math.round(form.bankroll_starting * form.unit_pct);
