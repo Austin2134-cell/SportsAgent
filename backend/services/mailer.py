@@ -63,73 +63,74 @@ def _play_html(play: dict) -> str:
     stats_row = ""
     if implied or true_p or edge:
         stats_row = f"""
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:14px;">
         <tr>
-          <td style="width:33%;text-align:center;padding:8px 4px;
-                     background:#0a0f1e;border-radius:4px;">
-            <div style="font-size:10px;color:#475569;text-transform:uppercase;
-                        letter-spacing:.08em;margin-bottom:2px;">Implied</div>
-            <div style="font-size:15px;font-weight:700;color:#94a3b8;">{implied}%</div>
+          <td style="width:33%;text-align:center;padding:10px 6px;
+                     background:#0a0f1e;border-radius:6px;">
+            <div style="font-size:11px;color:#475569;text-transform:uppercase;
+                        letter-spacing:.08em;margin-bottom:4px;">Implied</div>
+            <div style="font-size:18px;font-weight:700;color:#94a3b8;">{implied}%</div>
           </td>
           <td style="width:4%;"></td>
-          <td style="width:33%;text-align:center;padding:8px 4px;
-                     background:#0a0f1e;border-radius:4px;">
-            <div style="font-size:10px;color:#475569;text-transform:uppercase;
-                        letter-spacing:.08em;margin-bottom:2px;">True Prob</div>
-            <div style="font-size:15px;font-weight:700;color:{color};">{true_p}%</div>
+          <td style="width:33%;text-align:center;padding:10px 6px;
+                     background:#0a0f1e;border-radius:6px;">
+            <div style="font-size:11px;color:#475569;text-transform:uppercase;
+                        letter-spacing:.08em;margin-bottom:4px;">True Prob</div>
+            <div style="font-size:18px;font-weight:700;color:{color};">{true_p}%</div>
           </td>
           <td style="width:4%;"></td>
-          <td style="width:33%;text-align:center;padding:8px 4px;
-                     background:#0a0f1e;border-radius:4px;">
-            <div style="font-size:10px;color:#475569;text-transform:uppercase;
-                        letter-spacing:.08em;margin-bottom:2px;">Edge</div>
-            <div style="font-size:15px;font-weight:700;color:#00e5a0;">+{edge}%</div>
+          <td style="width:33%;text-align:center;padding:10px 6px;
+                     background:#0a0f1e;border-radius:6px;">
+            <div style="font-size:11px;color:#475569;text-transform:uppercase;
+                        letter-spacing:.08em;margin-bottom:4px;">Edge</div>
+            <div style="font-size:18px;font-weight:700;color:#00e5a0;">+{edge}%</div>
           </td>
         </tr>
       </table>"""
     return f"""
     <table width="100%" cellpadding="0" cellspacing="0"
-           style="background:{bg};border:1px solid {color}22;
-                  border-left:3px solid {color};border-radius:8px;
-                  margin-bottom:14px;overflow:hidden;">
-      <tr><td style="padding:16px 18px;">
+           style="background:{bg};border:1px solid {color}33;
+                  border-left:4px solid {color};border-radius:8px;
+                  margin-bottom:18px;overflow:hidden;">
+      <tr><td style="padding:20px 22px;">
         <!-- Sport / game / conf badge -->
-        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
           <tr>
             <td>
-              <span style="font-size:11px;font-weight:700;color:#475569;
+              <span style="font-size:12px;font-weight:700;color:#475569;
                            text-transform:uppercase;letter-spacing:.08em;">
                 {play.get('sport','')}
               </span>
-              <span style="font-size:11px;color:#334155;margin:0 6px;">·</span>
-              <span style="font-size:11px;color:#64748b;">
+              <span style="font-size:12px;color:#334155;margin:0 8px;">·</span>
+              <span style="font-size:13px;color:#64748b;">
                 {play.get('game','')}
               </span>
             </td>
             <td align="right">
-              <span style="font-size:10px;font-weight:800;color:{color};
+              <span style="font-size:11px;font-weight:800;color:{color};
                            text-transform:uppercase;letter-spacing:.1em;
-                           background:{color}22;padding:3px 8px;border-radius:3px;">
+                           background:{color}22;padding:4px 10px;border-radius:4px;">
                 {conf}
               </span>
             </td>
           </tr>
         </table>
-        <!-- Bet + odds -->
-        <div style="font-size:17px;font-weight:800;color:#f1f5f9;
-                    letter-spacing:-.01em;margin-bottom:4px;">
+        <!-- Bet -->
+        <div style="font-size:20px;font-weight:800;color:#f1f5f9;
+                    letter-spacing:-.01em;margin-bottom:6px;line-height:1.2;">
           {play.get('bet','')}
         </div>
-        <div style="font-size:13px;color:#64748b;margin-bottom:12px;">
-          <span style="color:{color};font-weight:700;font-size:15px;">{odds_str}</span>
-          &nbsp;·&nbsp; {play.get('units', 2)}u
+        <!-- Odds / units / book -->
+        <div style="font-size:15px;color:#64748b;margin-bottom:16px;">
+          <span style="color:{color};font-weight:800;font-size:18px;">{odds_str}</span>
+          &nbsp;&nbsp;{play.get('units', 2)}u
           &nbsp;·&nbsp; {play.get('book','DraftKings')}
           {"&nbsp;·&nbsp; " + play.get('game_time_mdt','') if play.get('game_time_mdt') else ""}
         </div>
         {stats_row}
         <!-- Edge summary -->
-        <div style="font-size:13px;color:#94a3b8;line-height:1.55;
-                    border-top:1px solid #1e293b;padding-top:10px;">
+        <div style="font-size:14px;color:#94a3b8;line-height:1.65;
+                    border-top:1px solid #1e293b;padding-top:12px;">
           {play.get('edge_summary','')}
         </div>
       </td></tr>
@@ -141,22 +142,22 @@ def _lean_html(lean: dict) -> str:
     odds_str = f"+{odds}" if odds > 0 else str(odds)
     return f"""
     <table width="100%" cellpadding="0" cellspacing="0"
-           style="background:#0d1424;border-left:2px solid #f59e0b;
-                  border-radius:4px;margin-bottom:8px;">
-      <tr><td style="padding:10px 14px;">
+           style="background:#0d1424;border-left:3px solid #f59e0b;
+                  border-radius:6px;margin-bottom:10px;">
+      <tr><td style="padding:12px 16px;">
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
             <td>
-              <span style="font-size:11px;font-weight:700;color:#f59e0b;
+              <span style="font-size:12px;font-weight:700;color:#f59e0b;
                            text-transform:uppercase;letter-spacing:.06em;">
                 {lean.get('sport','')}
               </span>
-              <span style="font-size:13px;color:#cbd5e1;margin-left:8px;">
+              <span style="font-size:15px;color:#cbd5e1;margin-left:10px;">
                 {lean.get('bet','')}
               </span>
             </td>
             <td align="right">
-              <span style="font-size:13px;font-weight:700;color:#f59e0b;">{odds_str}</span>
+              <span style="font-size:16px;font-weight:700;color:#f59e0b;">{odds_str}</span>
             </td>
           </tr>
         </table>
@@ -176,16 +177,16 @@ def build_html_email(card: dict, card_date: str = None) -> str:
     leans_html = "".join(_lean_html(l) for l in card.get("leans", []))
 
     qr_items = "".join(
-        f'<tr><td style="padding:6px 0;border-bottom:1px solid #111827;">'
-        f'<span style="color:#00c3ff;margin-right:8px;">›</span>'
-        f'<span style="font-size:13px;color:#94a3b8;line-height:1.5;">{qr}</span>'
+        f'<tr><td style="padding:8px 0;border-bottom:1px solid #111827;">'
+        f'<span style="color:#00c3ff;margin-right:10px;font-size:16px;">›</span>'
+        f'<span style="font-size:14px;color:#94a3b8;line-height:1.6;">{qr}</span>'
         f'</td></tr>'
         for qr in card.get("quick_reads", [])
     )
     pass_items = "".join(
-        f'<tr><td style="padding:5px 0;">'
-        f'<span style="color:#ef4444;margin-right:8px;font-size:11px;">✕</span>'
-        f'<span style="font-size:12px;color:#475569;">{p}</span>'
+        f'<tr><td style="padding:6px 0;">'
+        f'<span style="color:#ef4444;margin-right:10px;font-size:13px;">✕</span>'
+        f'<span style="font-size:13px;color:#475569;">{p}</span>'
         f'</td></tr>'
         for p in card.get("pass_notes", [])
     )
@@ -207,13 +208,25 @@ def build_html_email(card: dict, card_date: str = None) -> str:
 
     play_count = len(plays)
     no_plays_html = """
-        <div style="text-align:center;padding:28px 0;">
-          <div style="font-size:32px;margin-bottom:8px;">—</div>
-          <div style="font-size:14px;color:#334155;">No official plays today.</div>
-          <div style="font-size:12px;color:#1e293b;margin-top:4px;">
+        <div style="text-align:center;padding:36px 0;">
+          <div style="font-size:16px;color:#334155;margin-bottom:6px;">
+            No official plays today.
+          </div>
+          <div style="font-size:14px;color:#1e293b;">
             Protecting capital is part of the edge.
           </div>
         </div>"""
+
+    def section_header(label, rule_color):
+        return (
+            f'<table width="100%" cellpadding="0" cellspacing="0">'
+            f'<tr><td style="padding:22px 0 14px;">'
+            f'<div style="font-size:12px;font-weight:800;color:#2a4a6a;'
+            f'text-transform:uppercase;letter-spacing:.18em;">{label}</div>'
+            f'<div style="height:1px;background:linear-gradient(90deg,{rule_color}55 0%,{rule_color}00 100%);'
+            f'margin-top:8px;"></div>'
+            f'</td></tr></table>'
+        )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -226,133 +239,84 @@ def build_html_email(card: dict, card_date: str = None) -> str:
              font-family:'Segoe UI',Helvetica,Arial,sans-serif;">
 
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#060b16;">
-<tr><td align="center" style="padding:20px 12px 32px;">
+<tr><td align="center" style="padding:24px 12px 40px;">
 
   <table width="600" cellpadding="0" cellspacing="0"
          style="max-width:600px;width:100%;">
 
-    <!-- ═══ HEADER BANNER ═══ -->
+    <!-- ═══ HEADER ═══ -->
     <tr><td style="background:#080e1c;border-radius:10px 10px 0 0;
-                   border:1px solid #0f1e38;border-bottom:none;
-                   padding:0;">
+                   border:1px solid #0f1e38;border-bottom:none;padding:0;">
 
-      <!-- Top accent line: gradient from teal → green -->
-      <div style="height:3px;background:linear-gradient(90deg,#00c3ff 0%,#00e5a0 100%);
+      <!-- Gradient accent bar -->
+      <div style="height:4px;background:linear-gradient(90deg,#00c3ff 0%,#00e5a0 100%);
                   border-radius:10px 10px 0 0;"></div>
 
       <table width="100%" cellpadding="0" cellspacing="0"
-             style="padding:22px 28px 20px;">
+             style="padding:26px 30px 24px;">
         <tr>
-          <!-- ESM logotype -->
+          <!-- Brand wordmark -->
           <td valign="middle">
-            <table cellpadding="0" cellspacing="0">
-              <tr>
-                <!-- Circuit dot cluster -->
-                <td valign="middle" style="padding-right:12px;">
-                  <table cellpadding="0" cellspacing="2">
-                    <tr>
-                      <td style="width:5px;height:5px;background:#00c3ff;
-                                 border-radius:50%;"></td>
-                      <td style="width:5px;height:5px;background:#00e5a0;
-                                 border-radius:50%;"></td>
-                    </tr>
-                    <tr>
-                      <td style="width:5px;height:5px;background:#0f2a4a;
-                                 border-radius:50%;"></td>
-                      <td style="width:5px;height:5px;background:#00c3ff;
-                                 border-radius:50%;"></td>
-                    </tr>
-                  </table>
-                </td>
-                <td valign="middle">
-                  <div style="font-size:32px;font-weight:900;letter-spacing:-.03em;
-                              line-height:1;">
-                    <span style="color:#00c3ff;">E</span><span style="color:#00d4b0;">S</span><span style="color:#00e5a0;">M</span>
-                  </div>
-                  <div style="font-size:9px;color:#1e4060;text-transform:uppercase;
-                              letter-spacing:.18em;margin-top:1px;">
-                    Edge Sports Media
-                  </div>
-                </td>
-              </tr>
-            </table>
+            <div style="font-size:36px;font-weight:900;color:#f1f5f9;
+                        letter-spacing:-.04em;line-height:1;">ESM</div>
+            <div style="font-size:11px;color:#2a4a6a;text-transform:uppercase;
+                        letter-spacing:.2em;margin-top:3px;">Edge Sports Media</div>
           </td>
 
-          <!-- Date + grade badge -->
+          <!-- Grade badge -->
           <td align="right" valign="middle">
-            <div style="font-size:11px;color:#1e4060;text-transform:uppercase;
-                        letter-spacing:.1em;margin-bottom:6px;">{card_date}</div>
-            <div style="display:inline-block;background:{grade_color}18;
-                        border:1px solid {grade_color}55;border-radius:6px;
-                        padding:6px 14px;text-align:center;">
-              <div style="font-size:10px;color:{grade_color};text-transform:uppercase;
-                          letter-spacing:.12em;font-weight:700;">Slate Grade</div>
-              <div style="font-size:26px;font-weight:900;color:{grade_color};
-                          line-height:1.1;">{grade}</div>
-              <div style="font-size:10px;color:{grade_color}aa;font-weight:700;
-                          text-transform:uppercase;letter-spacing:.1em;">{grade_label}</div>
-            </div>
+            <div style="font-size:12px;color:#2a4a6a;text-transform:uppercase;
+                        letter-spacing:.12em;margin-bottom:8px;">{card_date}</div>
+            <table cellpadding="0" cellspacing="0" align="right">
+              <tr><td style="background:{grade_color}18;border:1px solid {grade_color}44;
+                             border-radius:8px;padding:10px 20px;text-align:center;">
+                <div style="font-size:11px;color:{grade_color};text-transform:uppercase;
+                            letter-spacing:.14em;font-weight:700;margin-bottom:4px;">
+                  Slate Grade
+                </div>
+                <div style="font-size:38px;font-weight:900;color:{grade_color};
+                            line-height:1;">{grade}</div>
+                <div style="font-size:12px;color:{grade_color}bb;font-weight:700;
+                            text-transform:uppercase;letter-spacing:.12em;
+                            margin-top:4px;">{grade_label}</div>
+              </td></tr>
+            </table>
           </td>
         </tr>
 
-        <!-- Grade note -->
-        {"" if not grade_note else f'<tr><td colspan="2" style="padding-top:14px;"><div style="font-size:12px;color:#334155;line-height:1.55;border-top:1px solid #0f1e38;padding-top:12px;">{grade_note}</div></td></tr>'}
+        {"" if not grade_note else f'<tr><td colspan="2" style="padding-top:16px;"><div style="font-size:14px;color:#334155;line-height:1.6;border-top:1px solid #0f1e38;padding-top:14px;">{grade_note}</div></td></tr>'}
       </table>
     </td></tr>
 
     <!-- ═══ BODY ═══ -->
     <tr><td style="background:#080e1c;border:1px solid #0f1e38;
-                   border-top:none;border-bottom:none;padding:0 28px 4px;">
+                   border-top:none;border-bottom:none;padding:0 30px 8px;">
 
       {record_html}
 
-      <!-- Section: Official Plays -->
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr><td style="padding:18px 0 12px;">
-          <table width="100%" cellpadding="0" cellspacing="0">
-            <tr>
-              <td>
-                <span style="font-size:10px;font-weight:800;color:#1e4060;
-                             text-transform:uppercase;letter-spacing:.15em;">
-                  Official Plays
-                </span>
-              </td>
-              <td align="right">
-                <span style="font-size:10px;color:#0f2a4a;font-weight:700;
-                             text-transform:uppercase;letter-spacing:.1em;">
-                  {play_count} play{"s" if play_count != 1 else ""}
-                </span>
-              </td>
-            </tr>
-          </table>
-          <!-- teal rule -->
-          <div style="height:1px;background:linear-gradient(90deg,#00c3ff44 0%,#00c3ff00 100%);
-                      margin-top:6px;"></div>
-        </td></tr>
-      </table>
+      {section_header(f"Official Plays &nbsp; <span style='color:#1e4060;font-weight:600;font-size:11px;'>{play_count} play{'s' if play_count != 1 else ''}</span>", "#00c3ff")}
 
       {plays_html if plays_html else no_plays_html}
 
     </td></tr>
 
-    {"<!-- Leans --><tr><td style='background:#080e1c;border:1px solid #0f1e38;border-top:none;border-bottom:none;padding:0 28px 16px;'><div style='font-size:10px;font-weight:800;color:#1e4060;text-transform:uppercase;letter-spacing:.15em;margin-bottom:4px;'>Leans</div><div style=\'height:1px;background:linear-gradient(90deg,#f59e0b44 0%,#f59e0b00 100%);margin-bottom:12px;\'></div>" + leans_html + "</td></tr>" if has_leans else ""}
+    {"<tr><td style='background:#080e1c;border:1px solid #0f1e38;border-top:none;border-bottom:none;padding:0 30px 20px;'>" + section_header("Leans", "#f59e0b") + leans_html + "</td></tr>" if has_leans else ""}
 
-    {"<!-- Quick Reads --><tr><td style='background:#080e1c;border:1px solid #0f1e38;border-top:none;border-bottom:none;padding:0 28px 20px;'><div style='font-size:10px;font-weight:800;color:#1e4060;text-transform:uppercase;letter-spacing:.15em;margin-bottom:4px;'>Quick Reads</div><div style='height:1px;background:linear-gradient(90deg,#00c3ff44 0%,#00c3ff00 100%);margin-bottom:10px;'></div><table width='100%' cellpadding='0' cellspacing='0'>" + qr_items + "</table></td></tr>" if has_qr else ""}
+    {"<tr><td style='background:#080e1c;border:1px solid #0f1e38;border-top:none;border-bottom:none;padding:0 30px 20px;'>" + section_header("Quick Reads", "#00c3ff") + "<table width='100%' cellpadding='0' cellspacing='0'>" + qr_items + "</table></td></tr>" if has_qr else ""}
 
-    {"<!-- Pass Notes --><tr><td style='background:#080e1c;border:1px solid #0f1e38;border-top:none;border-bottom:none;padding:0 28px 20px;'><div style='font-size:10px;font-weight:800;color:#1e4060;text-transform:uppercase;letter-spacing:.15em;margin-bottom:4px;'>Passes</div><div style='height:1px;background:linear-gradient(90deg,#ef444444 0%,#ef444400 100%);margin-bottom:8px;'></div><table width='100%' cellpadding='0' cellspacing='0'>" + pass_items + "</table></td></tr>" if has_passes else ""}
+    {"<tr><td style='background:#080e1c;border:1px solid #0f1e38;border-top:none;border-bottom:none;padding:0 30px 20px;'>" + section_header("Passes", "#ef4444") + "<table width='100%' cellpadding='0' cellspacing='0'>" + pass_items + "</table></td></tr>" if has_passes else ""}
 
     <!-- ═══ FOOTER ═══ -->
     <tr><td style="background:#04080f;border:1px solid #0f1e38;border-top:none;
-                   border-radius:0 0 10px 10px;padding:16px 28px 18px;">
+                   border-radius:0 0 10px 10px;padding:18px 30px 20px;">
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td>
-            <div style="font-size:11px;font-weight:800;letter-spacing:.08em;">
-              <span style="color:#00c3ff;">E</span><span style="color:#00d4b0;">S</span><span style="color:#00e5a0;">M</span>
-            </div>
+            <div style="font-size:14px;font-weight:800;color:#1e3a5a;
+                        letter-spacing:.04em;">ESM</div>
           </td>
           <td align="right">
-            <div style="font-size:9px;color:#0f1e38;line-height:1.5;text-align:right;">
+            <div style="font-size:11px;color:#0f1e38;line-height:1.6;text-align:right;">
               For informational purposes only. Gambling involves risk.<br/>
               Always verify odds at your sportsbook before placing.
             </div>
