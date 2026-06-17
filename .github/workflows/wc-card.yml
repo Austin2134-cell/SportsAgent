@@ -9,7 +9,7 @@ on:
         required: false
         default: ""
       email:
-        description: "Recipient email. Leave blank for default (anoyes@spokeo.com)."
+        description: "Recipient email. Leave blank for default (Austin.noyes21@gmail.com)."
         required: false
         default: ""
       no_email:
@@ -33,8 +33,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          ref: claude/claude-md-review-jye8vi
 
       - name: Set up Python
         uses: actions/setup-python@v5

@@ -96,7 +96,7 @@ After running: trigger `POST /api/admin/grade-all` once to seed memory from exis
 
 ## Current Status / Next Step
 
-**Status:** Learning module, weekly digest, and the EV-first prompt rewrite are merged to `main` and live.
+**Status:** Learning module, weekly digest, EV-first prompt rewrite, and **World Cup card pipeline** are all merged to `main` and live. WC cards run daily at 9:30 AM MDT via GitHub Actions (`wc-card.yml`) and can be triggered manually from the Actions tab.
 
 **The single blocking task before the learning loop actually does anything:**
 1. Go to Supabase dashboard → SQL Editor → New query, run:
@@ -123,23 +123,32 @@ Once those two steps are done, the agent will read its own performance history e
 
 ## Open Pull Requests
 
-- **PR #2** — World Cup card generator + email delivery + Twitter/X social formatter. Open, not yet reviewed/merged.
+None currently open. PR #2 was closed (superseded by PR #9, which merged to main).
 
 ## Session Log
 
 Newest entries first. Each session should append a short entry here before ending.
 
+### 2026-06-17 (Session 3)
+- Built and merged **PR #9**: complete World Cup card pipeline — superseded the older PR #2 (now closed).
+  - `backend/esm/system_prompt.py` — rewrote FIFA WC section with tiered market hierarchy: DNB (Tier 1, 65-75% hit rate), U2.5 Goals (Tier 1, 57-62%), straight ML only within -130 (Tier 2), leans only for Double Chance / BTTS / AH -0.5. Embedded 3-way vig removal math so Claude can evaluate DNB value vs straight ML on every play. Added situational filters (opener/must-win/dead rubber/host nations/altitude). Soccer is now sport = "SOCCER" in schema.
+  - `backend/esm/config.py` — added `soccer_fifa_world_cup` to ACTIVE_SPORTS and PROP_MARKETS (`player_goal_scorer_anytime`, `player_shots_on_target`).
+  - `backend/esm/odds_client.py` — added WC SGO league mapping, soccer stat maps, "WC"/"FIFAWC" SGO sport tokens.
+  - `backend/services/mailer.py` — new: HTML email delivery via SMTP or SendGrid; dark-theme card template; falls back to `/tmp/esm_card_DATE.html`.
+  - `backend/services/social.py` — new: Twitter/X thread formatter (280-char enforced per tweet, WC hashtags, one tweet per play).
+  - `backend/run_world_cup_card.py` — new standalone runner: TOA → SGO fallback, dynamic tournament day calc, Claude ESM call, console card print, Twitter thread print, optional email delivery.
+  - `.github/workflows/wc-card.yml` — new: `workflow_dispatch` (date/email/no_email inputs) + daily schedule `30 15 * * *` (9:30 AM MDT). Runs on `ubuntu-latest` to bypass remote-environment network egress restrictions. All API keys from GitHub Secrets.
+- First successful end-to-end GitHub Actions run: June 17 card generated + emailed to anoyes@spokeo.com (2m 1s, green).
+- **Next up:** run the Supabase `agent_memory` migration (still pending — see "Current Status / Next Step" above).
+
 ### 2026-06-12 (Session 2)
 - Merged **PR #1**: agent learning module, weekly digest, EV-first ESM prompt rewrite (removed juice ceilings / hard caps in favor of true-prob-vs-implied-prob sizing).
-- Restructured: moved `services/memory.py` → **`backend/learning/memory.py`** (its own top-level section) and updated all imports (`agent_runner.py`, `grader.py`).
-- Renamed PR #1 title for clarity ("Add agent learning module...").
+- Restructured: moved `services/memory.py` → **`backend/learning/memory.py`** and updated all imports.
 - Added `CLAUDE.md` to repo root (PR #3) and a keyword index + module docstrings (PR #4).
-- Reorganized this file into "Current Status / Next Step", "Open Pull Requests", and this running Session Log — going forward, update this log instead of overwriting prior context, so any device/session can resume from here.
-- **Next up:** run the Supabase `agent_memory` migration (see above), then review PR #2 (World Cup/email/Twitter).
 
 ### 2026-06-12 (Session 1)
 - Built the learning module, weekly digest, and ESM prompt rewrite (became PR #1, merged in Session 2).
-- Built World Cup support + email/social formatting (became PR #2, still open).
+- Built World Cup support + email/social formatting (became PR #2, superseded by PR #9).
 
 ## Environment Variables (backend)
 
@@ -183,6 +192,10 @@ npm run dev
 | DB schema, tables, RLS policies | `supabase/schema.sql` |
 | Frontend pages (dashboard, login, history, preferences) | `frontend/app/` |
 | API calls from frontend | `frontend/lib/api.ts` |
+| World Cup standalone card runner | `backend/run_world_cup_card.py` |
+| WC GitHub Actions workflow | `.github/workflows/wc-card.yml` |
+| Email delivery (HTML card) | `backend/services/mailer.py` |
+| Twitter/X thread formatter | `backend/services/social.py` |
 
 ## Session Log Maintenance
 

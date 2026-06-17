@@ -240,8 +240,8 @@ def _print_card(card: dict) -> None:
 
 def main():
     parser = argparse.ArgumentParser(description="Generate ESM World Cup daily card")
-    parser.add_argument("--email", default="anoyes@spokeo.com",
-                        help="Recipient email address (default: anoyes@spokeo.com)")
+    parser.add_argument("--email", default="Austin.noyes21@gmail.com",
+                        help="Recipient email address (default: Austin.noyes21@gmail.com)")
     parser.add_argument("--date", default=date.today().isoformat(),
                         help="Target date YYYY-MM-DD (default: today in MT)")
     parser.add_argument("--max-plays", type=int, default=5)
