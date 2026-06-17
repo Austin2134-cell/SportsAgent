@@ -33,8 +33,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          ref: claude/claude-md-review-jye8vi
 
       - name: Set up Python
         uses: actions/setup-python@v5
