@@ -9,7 +9,7 @@ on:
         required: false
         default: ""
       email:
-        description: "Recipient email. Leave blank for default (anoyes@spokeo.com)."
+        description: "Recipient email. Leave blank for default (Austin.noyes21@gmail.com)."
         required: false
         default: ""
       no_email:
