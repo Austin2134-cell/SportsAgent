@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
-  title: "EdgeBet — AI Sports Intelligence",
-  description: "Agentic AI sports betting analysis powered by the ESM framework",
+  title: "AgentEdge — Sports Betting AI Agent",
+  description: "Your personal AI sports betting agent by EdgeSportsMedia. Continuous market analysis, living memory, auto bankroll sizing.",
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

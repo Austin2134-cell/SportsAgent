@@ -1,7 +1,6 @@
 """
-main.py — FastAPI app entrypoint. Defines all API routes (cards, bets,
-preferences, admin), CORS, and the APScheduler jobs (daily card generation,
-weekly digest).
+main.py — FastAPI app entrypoint. AgentEdge API: per-user agents, cards,
+bets, preferences, admin, and scheduled market polling + agent scans.
 """
 
 import os
@@ -21,6 +20,12 @@ from database import db
 from auth import get_current_user, get_admin_user
 from services.grader import grade_all_pending
 from services.agent_runner import run_card_for_user
+from agent.provision import provision_agent, get_agent_status
+from agent.kernel import run_agent_scan
+from agent.sports import get_all_supported_sports
+from workers.market_poller import poll_markets, poll_morning_toa_snapshot, run_all_agent_scans
+from esm.api_budget import POLL_INTERVAL_MINUTES, AGENT_SCAN_INTERVAL_MINUTES, budget_summary
+from esm.odds_client import OddsClient
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
@@ -30,14 +35,51 @@ scheduler = AsyncIOScheduler(timezone=TIMEZONE)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    scheduler.add_job(run_daily_cards, "cron", hour=9, minute=30, id="daily_cards")
+    scheduler.add_job(_scheduled_morning_toa, "cron", hour=9, minute=25, id="morning_toa_snapshot")
+    scheduler.add_job(_scheduled_morning_agents, "cron", hour=9, minute=30, id="morning_agent_run")
+    scheduler.add_job(run_daily_cards, "cron", hour=9, minute=35, id="daily_cards")
     scheduler.add_job(run_weekly_digest, "cron", day_of_week="mon", hour=8, minute=0, id="weekly_digest")
+    scheduler.add_job(_scheduled_market_poll, "interval", minutes=POLL_INTERVAL_MINUTES, id="market_poll")
+    scheduler.add_job(_scheduled_agent_scans, "interval", minutes=AGENT_SCAN_INTERVAL_MINUTES, id="agent_scans")
     scheduler.start()
     yield
     scheduler.shutdown()
 
 
-app = FastAPI(title="EdgeBet API", version="1.0.0", lifespan=lifespan)
+async def _scheduled_morning_toa():
+    try:
+        result = poll_morning_toa_snapshot(db)
+        print(f"[AgentEdge] Morning TOA snapshot: {result}")
+    except Exception as e:
+        print(f"[AgentEdge] Morning TOA snapshot error: {e}")
+
+
+async def _scheduled_morning_agents():
+    """Grade pending bets, then run agent scans against fresh morning TOA cache."""
+    try:
+        grade_result = grade_all_pending(db)
+        print(f"[AgentEdge] Morning grade: {grade_result}")
+        run_all_agent_scans(db)
+    except Exception as e:
+        print(f"[AgentEdge] Morning agent run error: {e}")
+
+
+async def _scheduled_market_poll():
+    try:
+        poll_markets(db)
+    except Exception as e:
+        print(f"[AgentEdge] Market poll error: {e}")
+
+
+async def _scheduled_agent_scans():
+    try:
+        grade_all_pending(db)
+        run_all_agent_scans(db)
+    except Exception as e:
+        print(f"[AgentEdge] Agent scan error: {e}")
+
+
+app = FastAPI(title="AgentEdge API", version="2.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -56,11 +98,26 @@ class RegisterRequest(BaseModel):
 
 
 class PreferencesUpdate(BaseModel):
-    sports: list[str] = ["MLB", "NBA", "NHL"]
+    sports: list[str] = ["MLB", "NBA", "NHL", "NFL", "WC"]
     bet_types: list[str] = ["player_props", "straight"]
     risk_level: str = "MEDIUM"
     max_plays: int = 5
-    unit_size: float = 50
+    unit_size: Optional[float] = None
+    include_parlays: bool = False
+    notification_email: Optional[str] = None
+    bankroll_starting: Optional[float] = None
+    unit_pct: Optional[float] = None
+    max_daily_pct: Optional[float] = None
+
+
+class AgentSetupRequest(BaseModel):
+    bankroll_starting: float = 1000
+    unit_pct: float = 0.02
+    max_daily_pct: float = 0.06
+    sports: list[str] = ["MLB", "WC"]
+    bet_types: list[str] = ["player_props", "straight"]
+    risk_level: str = "MEDIUM"
+    max_plays: int = 5
     include_parlays: bool = False
     notification_email: Optional[str] = None
 
@@ -158,6 +215,59 @@ async def get_profile(user: dict = Depends(get_current_user)):
     return {"profile": result.data}
 
 
+@app.get("/api/sports")
+async def list_sports():
+    return {"sports": get_all_supported_sports()}
+
+
+@app.get("/api/agent")
+async def get_agent(user: dict = Depends(get_current_user)):
+    prefs_result = db.table("preferences").select("*").eq("user_id", user["id"]).execute()
+    prefs = prefs_result.data[0] if prefs_result.data else {}
+    return get_agent_status(db, user["id"], prefs)
+
+
+@app.post("/api/agent/setup")
+async def setup_agent(body: AgentSetupRequest, user: dict = Depends(get_current_user)):
+    if body.bankroll_starting < 100:
+        raise HTTPException(status_code=400, detail="Minimum bankroll is $100")
+    if body.unit_pct < 0.005 or body.unit_pct > 0.05:
+        raise HTTPException(status_code=400, detail="Unit size must be 0.5%–5% of bankroll")
+    result = provision_agent(db, user["id"], body.model_dump())
+    return result
+
+
+@app.get("/api/agent/feed")
+async def get_agent_feed(limit: int = 50, user: dict = Depends(get_current_user)):
+    from agent.memory_store import get_feed, get_hypotheses, get_beliefs
+    return {
+        "feed": get_feed(db, user["id"], limit),
+        "hypotheses": get_hypotheses(db, user["id"]),
+        "beliefs": get_beliefs(db, user["id"]),
+    }
+
+
+@app.post("/api/agent/scan")
+async def trigger_agent_scan(user: dict = Depends(get_current_user)):
+    agent = db.table("agent_instances").select("status").eq("user_id", user["id"]).execute()
+    if not agent.data or agent.data[0].get("status") != "active":
+        raise HTTPException(status_code=400, detail="Agent not provisioned or not active")
+    result = run_agent_scan(db, user["id"], trigger_type="manual_scan")
+    return {"message": "Scan complete", "result": result}
+
+
+@app.put("/api/agent/pause")
+async def pause_agent(user: dict = Depends(get_current_user)):
+    db.table("agent_instances").update({"status": "paused"}).eq("user_id", user["id"]).execute()
+    return {"message": "Agent paused"}
+
+
+@app.put("/api/agent/resume")
+async def resume_agent(user: dict = Depends(get_current_user)):
+    db.table("agent_instances").update({"status": "active"}).eq("user_id", user["id"]).execute()
+    return {"message": "Agent resumed"}
+
+
 @app.post("/api/admin/run-card")
 async def admin_run_card(target_date: Optional[str] = None, user_id: Optional[str] = None, admin: dict = Depends(get_admin_user)):
     await run_daily_cards(target_date=target_date, specific_user_id=user_id)
@@ -201,15 +311,28 @@ async def admin_pending_bets(admin: dict = Depends(get_admin_user)):
     return {"bets": result.data or []}
 
 
+@app.post("/api/admin/morning-toa-poll")
+async def admin_morning_toa_poll(admin: dict = Depends(get_admin_user)):
+    """Manually trigger the daily TOA morning snapshot."""
+    return poll_morning_toa_snapshot(db)
+
+
+@app.get("/api/admin/api-usage")
+async def admin_api_usage(admin: dict = Depends(get_admin_user)):
+    """Odds API quota status and projected burn rates."""
+    return budget_summary(OddsClient.get_usage())
+
+
 @app.get("/health")
 async def health():
     return {"status": "ok", "time": datetime.now().isoformat()}
 
 
 async def run_daily_cards(target_date: str = None, specific_user_id: str = None):
+    """Legacy daily card job — skips users with active AgentEdge instances (handled by morning agent run)."""
     today = target_date or date.today().isoformat()
     grade_result = grade_all_pending(db)
-    print(f"[EdgeBet] Graded: {grade_result}")
+    print(f"[AgentEdge] Graded: {grade_result}")
     if specific_user_id:
         users_result = db.table("profiles").select("id").eq("id", specific_user_id).eq("is_active", True).execute()
     else:
@@ -217,13 +340,17 @@ async def run_daily_cards(target_date: str = None, specific_user_id: str = None)
     users = users_result.data or []
     for user_row in users:
         uid = user_row["id"]
+        agent = db.table("agent_instances").select("status").eq("user_id", uid).execute()
+        if agent.data and agent.data[0].get("status") == "active":
+            print(f"[AgentEdge] Skipping legacy card for {uid} — AgentEdge instance active")
+            continue
         try:
             prefs_result = db.table("preferences").select("*").eq("user_id", uid).execute()
             prefs = prefs_result.data[0] if prefs_result.data else {}
             run_card_for_user(uid, prefs, target_date=today)
-            print(f"[EdgeBet] Card generated for {uid}")
+            print(f"[AgentEdge] Legacy card generated for {uid}")
         except Exception as e:
-            print(f"[EdgeBet] Error for {uid}: {e}")
+            print(f"[AgentEdge] Error for {uid}: {e}")
 
 
 async def run_weekly_digest():

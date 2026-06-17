@@ -24,8 +24,8 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm fade-in">
         <div className="text-center mb-8">
-          <Link href="/" className="text-[#00d084] text-2xl font-bold tracking-widest glow-green">EDGEBET</Link>
-          <p className="text-[#71717a] text-xs mt-2 tracking-widest">CREATE YOUR ACCOUNT</p>
+          <Link href="/" className="text-[#00d084] text-2xl font-bold tracking-widest glow-green">AGENTEDGE</Link>
+          <p className="text-[#71717a] text-xs mt-2 tracking-widest">CREATE YOUR AGENT</p>
         </div>
         <form onSubmit={handleRegister} className="space-y-4">
           {[

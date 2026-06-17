@@ -14,7 +14,8 @@ interface Play {
   book: string;
   units: number;
   confidence: string;
-  why: string;
+  why?: string;
+  edge_summary?: string;
   line_movement?: string;
   sharp_action?: string;
   injury_news?: string;
@@ -75,7 +76,7 @@ function PlayCard({ play, index }: { play: Play; index: number }) {
         <div className="border-t border-[#222] px-4 pb-4 pt-3 space-y-2">
           <div>
             <span className="text-[10px] text-[#71717a] tracking-widest">ANALYSIS</span>
-            <p className="text-xs text-[#e4e4e7] mt-1 leading-relaxed">{play.why}</p>
+            <p className="text-xs text-[#e4e4e7] mt-1 leading-relaxed">{play.edge_summary || play.why}</p>
           </div>
           {play.line_movement && (
             <div>
@@ -163,11 +164,12 @@ export default function DashboardPage() {
       {/* Header */}
       <header className="border-b border-[#222] px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 bg-[#0a0a0a] z-10">
         <div className="flex items-center gap-3">
-          <span className="text-[#00d084] font-bold tracking-widest glow-green">EDGEBET</span>
+          <span className="text-[#00d084] font-bold tracking-widest glow-green">AGENTEDGE</span>
           <span className="text-[#2a2a2a] text-xs hidden sm:block">|</span>
-          <span className="text-[#71717a] text-xs tracking-widest hidden sm:block">DAILY CARD</span>
+          <span className="text-[#71717a] text-xs tracking-widest hidden sm:block">POSITIONS</span>
         </div>
         <div className="flex items-center gap-4">
+          <Link href="/agent" className="text-xs text-[#71717a] hover:text-[#00d084] transition-colors tracking-wider">AGENT</Link>
           <Link href="/history" className="text-xs text-[#71717a] hover:text-[#00d084] transition-colors tracking-wider">HISTORY</Link>
           <Link href="/preferences" className="text-xs text-[#71717a] hover:text-[#00d084] transition-colors tracking-wider">PREFS</Link>
           <button onClick={handleSignOut} className="text-xs text-[#71717a] hover:text-[#ff4d4d] transition-colors tracking-wider">OUT</button>
@@ -191,8 +193,9 @@ export default function DashboardPage() {
         {!loading && !card && (
           <div className="text-center py-16">
             <div className="text-[#00d084] text-3xl mb-4">◈</div>
-            <div className="text-sm text-[#e4e4e7] mb-2">No card yet today</div>
-            <div className="text-xs text-[#71717a]">Check back at 9:30 AM MT for today&apos;s analysis</div>
+            <p className="text-[#71717a] text-sm">No positions yet today.</p>
+            <p className="text-[#2a2a2a] text-xs mt-2">Your agent will recommend plays when it finds edge.</p>
+            <Link href="/agent" className="inline-block mt-4 text-xs text-[#00d084] hover:underline tracking-widest">VIEW AGENT FEED →</Link>
           </div>
         )}
 
