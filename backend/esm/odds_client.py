@@ -1,14 +1,13 @@
 """
 Unified Odds Client.
 
-Primary source  : The Odds API  (500 req/month free, resets monthly)
-Fallback source : SportsGameOdds (2,500 objects/month free, player props incl.)
+Primary source  : SportsGameOdds (2,500 objects/month free — 1 req = all markets per event)
+Fallback source : The Odds API (500 credits/month free — expensive for props)
 
-Flow:
-  1. Attempt The Odds API with existing key.
-  2. If quota is exhausted (401/422) or key is missing, switch to
-     SportsGameOdds automatically.
-  3. Both sources return the same snapshot dict consumed by esm_agent.py.
+Strategy (see esm/api_budget.py):
+  - SGO primary for continuous polling (cost-efficient)
+  - TOA fallback for mainlines; props only when credit budget allows
+  - Shared snapshot cache — never fetch per-user (see snapshot_cache.py)
 
 Sign up for a free SportsGameOdds key at https://sportsgameodds.com
 Add SGO_API_KEY=<your_key> to your .env file.
@@ -19,6 +18,16 @@ import requests
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 from esm.config import ODDS_API_KEY, SGO_API_KEY, ACTIVE_SPORTS, PROP_MARKETS, DEFAULT_BOOK
+from esm.api_budget import (
+    ApiUsageState,
+    ODDS_PRIMARY_SOURCE,
+    TOA_MAX_CREDITS_PER_SNAPSHOT,
+    TOA_MAINLINE_MARKETS,
+    TOA_PROPS_PER_GAME_RESERVE,
+    should_use_toa,
+    should_fetch_toa_props,
+    should_use_sgo,
+)
 
 # ── The Odds API ───────────────────────────────────────────────────────────────
 ODDS_API_BASE = "https://api.the-odds-api.com/v4"
@@ -97,37 +106,111 @@ HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json"}
 
 class OddsClient:
     """
-    Auto-selects data source. Exposes the single method build_market_snapshot()
-    which is the only surface used by esm_agent.py.
+    Auto-selects data source based on api_budget config.
+    Exposes build_market_snapshot() and usage state for monitoring.
     """
+
+    # Shared usage state across instances (last known quota from API headers)
+    _usage = ApiUsageState()
 
     def __init__(self):
         self.requests_remaining = None
-        self._source = None  # "theoddsapi" or "sgo"
+        self._source = None
+        self._credits_spent = 0
 
-    # ── main entry point ───────────────────────────────────────────────────────
+    @classmethod
+    def get_usage(cls) -> ApiUsageState:
+        return cls._usage
 
-    def build_market_snapshot(self, target_date: Optional[str] = None) -> dict:
+    def build_market_snapshot(
+        self,
+        target_date: Optional[str] = None,
+        sport_keys: Optional[list[str]] = None,
+        force_source: Optional[str] = None,
+    ) -> dict:
         today = target_date or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        sports_filter = sport_keys or ACTIVE_SPORTS
 
-        # Try The Odds API first
-        if ODDS_API_KEY:
-            snapshot = _toa_build_snapshot(today, self)
+        if force_source == "toa":
+            snapshot = self._try_toa_only(today, sports_filter)
+        elif force_source == "sgo":
+            snapshot = self._try_sgo_only(today, sports_filter)
+        elif ODDS_PRIMARY_SOURCE == "sgo":
+            snapshot = self._try_sgo_then_toa(today, sports_filter)
+        else:
+            snapshot = self._try_toa_then_sgo(today, sports_filter)
+
+        if not snapshot.get("sports"):
+            print("[OddsClient] No odds data from either source.")
+            return {"date": today, "sports": {}, "requests_remaining_after": "N/A", "source": None}
+
+        return snapshot
+
+    def _try_toa_only(self, today: str, sports_filter: list[str]) -> dict:
+        if not ODDS_API_KEY:
+            print("[OddsClient] TOA forced but no ODDS_API_KEY set.")
+            return {"date": today, "sports": {}}
+        if not should_use_toa(self._usage, TOA_MAINLINE_MARKETS):
+            print("[OddsClient] TOA below reserve — skipping forced snapshot.")
+            return {"date": today, "sports": {}}
+        snapshot = _toa_build_snapshot(today, self, sports_filter)
+        if snapshot.get("sports"):
+            self._source = "theoddsapi"
+            snapshot["source"] = "theoddsapi"
+            snapshot["requests_remaining_after"] = self._usage.toa_remaining
+        return snapshot
+
+    def _try_sgo_only(self, today: str, sports_filter: list[str]) -> dict:
+        if not SGO_API_KEY:
+            return {"date": today, "sports": {}}
+        if not should_use_sgo(self._usage):
+            return {"date": today, "sports": {}}
+        snapshot = _sgo_build_snapshot(today, sports_filter, self)
+        if snapshot.get("sports"):
+            self._source = "sgo"
+            snapshot["source"] = "sgo"
+            snapshot["requests_remaining_after"] = self._usage.sgo_objects_remaining
+        return snapshot
+
+    def _try_sgo_then_toa(self, today: str, sports_filter: list[str]) -> dict:
+        if SGO_API_KEY and should_use_sgo(self._usage):
+            snapshot = _sgo_build_snapshot(today, sports_filter, self)
+            if snapshot.get("sports"):
+                self._source = "sgo"
+                snapshot["source"] = "sgo"
+                snapshot["requests_remaining_after"] = self._usage.sgo_objects_remaining
+                return snapshot
+            print("[OddsClient] SGO returned no data — trying The Odds API...")
+
+        if ODDS_API_KEY and should_use_toa(self._usage):
+            snapshot = _toa_build_snapshot(today, self, sports_filter)
             if snapshot.get("sports"):
                 self._source = "theoddsapi"
+                snapshot["source"] = "theoddsapi"
+                snapshot["requests_remaining_after"] = self._usage.toa_remaining
+                return snapshot
+
+        return {"date": today, "sports": {}}
+
+    def _try_toa_then_sgo(self, today: str, sports_filter: list[str]) -> dict:
+        if ODDS_API_KEY and should_use_toa(self._usage):
+            snapshot = _toa_build_snapshot(today, self, sports_filter)
+            if snapshot.get("sports"):
+                self._source = "theoddsapi"
+                snapshot["source"] = "theoddsapi"
+                snapshot["requests_remaining_after"] = self._usage.toa_remaining
                 return snapshot
             print("[OddsClient] The Odds API quota exhausted or returned no data.")
 
-        # Fall back to SportsGameOdds
-        if SGO_API_KEY:
-            print("[OddsClient] Switching to SportsGameOdds (free fallback)...")
-            snapshot = _sgo_build_snapshot(today)
+        if SGO_API_KEY and should_use_sgo(self._usage):
+            print("[OddsClient] Switching to SportsGameOdds...")
+            snapshot = _sgo_build_snapshot(today, sports_filter, self)
             self._source = "sgo"
-            snapshot["requests_remaining_after"] = "SGO (objects-based quota)"
+            snapshot["source"] = "sgo"
+            snapshot["requests_remaining_after"] = self._usage.sgo_objects_remaining
             return snapshot
 
-        print("[OddsClient] No odds API keys available. Running with ESPN context only.")
-        return {"date": today, "sports": {}, "requests_remaining_after": "N/A"}
+        return {"date": today, "sports": {}}
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -139,9 +222,21 @@ def _toa_get(endpoint: str, params: dict, client: OddsClient) -> Optional[dict |
     try:
         resp = requests.get(f"{ODDS_API_BASE}{endpoint}", params=params,
                             headers=HEADERS, timeout=15)
-        client.requests_remaining = int(resp.headers.get("x-requests-remaining", 0))
+        remaining = resp.headers.get("x-requests-remaining")
+        used = resp.headers.get("x-requests-used")
+        last_cost = resp.headers.get("x-requests-last")
+        if remaining is not None:
+            client.requests_remaining = int(remaining)
+            OddsClient._usage.toa_remaining = int(remaining)
+        if used is not None:
+            OddsClient._usage.toa_used = int(used)
+        if last_cost is not None:
+            cost = int(last_cost)
+            OddsClient._usage.toa_last_cost = cost
+            client._credits_spent += cost
         if resp.status_code in (401, 402, 422):
-            return None   # quota exhausted signal
+            OddsClient._usage.warnings.append(f"TOA quota exhausted (HTTP {resp.status_code})")
+            return None
         resp.raise_for_status()
         return resp.json()
     except Exception as e:
@@ -149,18 +244,25 @@ def _toa_get(endpoint: str, params: dict, client: OddsClient) -> Optional[dict |
         return None
 
 
-def _toa_build_snapshot(today: str, client: OddsClient) -> dict:
+def _toa_build_snapshot(today: str, client: OddsClient, sports_filter: list[str]) -> dict:
     snapshot = {"date": today, "sports": {}}
+    client._credits_spent = 0
 
-    # Get active sports
     active_keys_data = _toa_get("/sports", {"all": "false"}, client)
     if active_keys_data is None:
         return snapshot
     active_sport_keys = {s["key"] for s in active_keys_data}
 
-    for sport in ACTIVE_SPORTS:
-        if sport not in active_sport_keys:
+    fetch_props = should_fetch_toa_props(OddsClient._usage)
+
+    for sport in sports_filter:
+        if sport not in ACTIVE_SPORTS or sport not in active_sport_keys:
             continue
+        if client._credits_spent + TOA_MAINLINE_MARKETS > TOA_MAX_CREDITS_PER_SNAPSHOT:
+            OddsClient._usage.warnings.append(f"TOA snapshot cap reached — skipped {sport}")
+            break
+        if not should_use_toa(OddsClient._usage, TOA_MAINLINE_MARKETS):
+            break
 
         games = _toa_get(f"/sports/{sport}/odds", {
             "regions": "us",
@@ -187,27 +289,34 @@ def _toa_build_snapshot(today: str, client: OddsClient) -> dict:
                 "props": {},
             }
 
-            # Fetch props if quota allows
-            remaining = client.requests_remaining
-            if remaining is None or remaining > 10:
-                prop_markets = PROP_MARKETS.get(sport, [])
-                batches = [prop_markets[i:i+4] for i in range(0, len(prop_markets), 4)]
-                for batch in batches:
-                    prop_data = _toa_get(
-                        f"/sports/{sport}/events/{game['id']}/odds", {
-                            "regions": "us",
-                            "markets": ",".join(batch),
-                            "oddsFormat": "american",
-                            "dateFormat": "iso",
-                            "bookmakers": "draftkings,fanduel,betmgm",
-                        }, client)
-                    if prop_data:
-                        game_entry["props"].update(_toa_extract_props(prop_data, batch))
+            if fetch_props and should_use_toa(OddsClient._usage, 1):
+                remaining = client.requests_remaining
+                if remaining is None or remaining > TOA_PROPS_PER_GAME_RESERVE:
+                    prop_markets = PROP_MARKETS.get(sport, [])
+                    batches = [prop_markets[i:i+4] for i in range(0, len(prop_markets), 4)]
+                    for batch in batches:
+                        if client._credits_spent + len(batch) > TOA_MAX_CREDITS_PER_SNAPSHOT:
+                            break
+                        if not should_use_toa(OddsClient._usage, len(batch)):
+                            break
+                        prop_data = _toa_get(
+                            f"/sports/{sport}/events/{game['id']}/odds", {
+                                "regions": "us",
+                                "markets": ",".join(batch),
+                                "oddsFormat": "american",
+                                "dateFormat": "iso",
+                                "bookmakers": "draftkings,fanduel,betmgm",
+                            }, client)
+                        if prop_data:
+                            game_entry["props"].update(_toa_extract_props(prop_data, batch))
 
             sport_data["games"].append(game_entry)
 
         snapshot["sports"][sport] = sport_data
 
+    OddsClient._usage.last_snapshot_credits = client._credits_spent
+    OddsClient._usage.last_source = "theoddsapi"
+    snapshot["credits_spent"] = client._credits_spent
     snapshot["requests_remaining_after"] = client.requests_remaining
     return snapshot
 
@@ -287,16 +396,18 @@ def _toa_extract_props(prop_data: dict, markets: list[str]) -> dict:
 # SportsGameOdds implementation
 # ──────────────────────────────────────────────────────────────────────────────
 
-def _sgo_get(endpoint: str, params: dict) -> Optional[dict]:
+def _sgo_get(endpoint: str, params: dict, client: Optional[OddsClient] = None) -> Optional[dict]:
     params["apiKey"] = SGO_API_KEY
     try:
         resp = requests.get(f"{SGO_BASE}{endpoint}", params=params,
                             headers=HEADERS, timeout=20)
         if resp.status_code == 401:
             print("[OddsClient/SGO] Invalid or missing SGO_API_KEY.")
+            OddsClient._usage.warnings.append("SGO auth failed (401)")
             return None
         if resp.status_code == 429:
-            print("[OddsClient/SGO] SGO rate limit hit.")
+            print("[OddsClient/SGO] SGO rate limit hit (429).")
+            OddsClient._usage.warnings.append("SGO rate limit (429)")
             return None
         resp.raise_for_status()
         return resp.json()
@@ -305,19 +416,35 @@ def _sgo_get(endpoint: str, params: dict) -> Optional[dict]:
         return None
 
 
-def _sgo_build_snapshot(today: str) -> dict:
-    snapshot = {"date": today, "sports": {}}
+def _sgo_fetch_usage() -> None:
+    """Populate SGO quota from /account/usage endpoint."""
+    data = _sgo_get("/account/usage", {})
+    if not data:
+        return
+    # SGO returns nested usage — handle common shapes
+    usage = data.get("data", data)
+    if isinstance(usage, dict):
+        objects = usage.get("objects") or usage.get("monthlyObjects") or {}
+        if isinstance(objects, dict):
+            OddsClient._usage.sgo_objects_remaining = objects.get("remaining")
+            OddsClient._usage.sgo_objects_used = objects.get("used")
+        requests_info = usage.get("requests") or usage.get("rateLimit") or {}
+        if isinstance(requests_info, dict):
+            OddsClient._usage.sgo_requests_remaining_min = requests_info.get("remaining")
 
-    # Build league filter from active sports
+
+def _sgo_build_snapshot(today: str, sports_filter: list[str], client: OddsClient) -> dict:
+    snapshot = {"date": today, "sports": {}}
+    _sgo_fetch_usage()
+
     sgo_leagues = [
         SPORT_TO_SGO_LEAGUE[s]
-        for s in ACTIVE_SPORTS
+        for s in sports_filter
         if s in SPORT_TO_SGO_LEAGUE
     ]
     if not sgo_leagues:
         return snapshot
 
-    # Fetch today's events with odds
     today_start = f"{today}T00:00:00Z"
     tomorrow    = (datetime.strptime(today, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
     today_end   = f"{tomorrow}T00:00:00Z"
@@ -327,18 +454,26 @@ def _sgo_build_snapshot(today: str) -> dict:
         "startsAfter": today_start,
         "startsBefore": today_end,
         "oddsAvailable": "true",
-    })
+    }, client)
     if not data:
         print("[OddsClient/SGO] No event data returned.")
         return snapshot
 
     events = data.get("data", data) if isinstance(data, dict) else data
+    if not isinstance(events, list):
+        events = []
 
-    # Group events by sport key
+    # Track object consumption (1 object per event)
+    OddsClient._usage.last_snapshot_credits = len(events)
+    OddsClient._usage.last_source = "sgo"
+    if OddsClient._usage.sgo_objects_remaining is not None:
+        OddsClient._usage.sgo_objects_remaining = max(
+            0, OddsClient._usage.sgo_objects_remaining - len(events)
+        )
+
     sport_events: dict[str, list] = {}
     for event in events:
         league_id = event.get("leagueID", "")
-        # Reverse-map SGO league → our sport key
         sport_key = next(
             (k for k, v in SPORT_TO_SGO_LEAGUE.items() if v == league_id), None
         )
@@ -373,6 +508,7 @@ def _sgo_build_snapshot(today: str) -> dict:
         if sport_data["games"]:
             snapshot["sports"][sport_key] = sport_data
 
+    snapshot["objects_consumed"] = len(events)
     return snapshot
 
 

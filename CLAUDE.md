@@ -1,8 +1,32 @@
-# EdgeBet — Claude Code Context
+# AgentEdge — Claude Code Context
 
 ## What This Is
 
-EdgeBet is a sports betting advisory platform. It runs an AI agent (Claude) once per day per user, analyzes live odds and injury data, and produces a structured daily card of up to 5 official wagers. Users track their record over time.
+**AgentEdge** (by EdgeSportsMedia) is a per-user sports betting AI agent platform. Each user provisions their own agent with a bankroll, sports preferences, and risk profile. The agent runs continuously — polling markets, writing to a live feed, tracking hypotheses, recommending positions, and learning from outcomes.
+
+Legacy name "EdgeBet" may still appear in some deployment URLs.
+
+## Agent Architecture (v2)
+
+```
+Shared layer:  market poller (every 15 min) → market_snapshots
+Per-user:      agent scan (every 30 min) → episodes / hypotheses / positions / beliefs
+On signup:     /setup wizard → agent_instances + seeded beliefs
+UI:            /agent cockpit (live feed) | /dashboard (positions) | /history
+```
+
+Key backend modules:
+- `backend/agent/kernel.py` — per-user scan loop
+- `backend/agent/provision.py` — agent setup on onboarding
+- `backend/agent/bankroll.py` — auto unit sizing from bankroll %
+- `backend/agent/sports.py` — sport registry (MLB, NBA, NHL, NFL, WC)
+- `backend/workers/market_poller.py` — shared odds polling
+
+**Pending migration:** Run `supabase/migrations/001_agentedge.sql` in Supabase SQL Editor.
+
+## What This Was (EdgeBet v1)
+
+EdgeBet was a sports betting advisory platform. It ran an AI agent (Claude) once per day per user, analyzed live odds and injury data, and produced a structured daily card of up to 5 official wagers. Users track their record over time.
 
 ## Stack
 

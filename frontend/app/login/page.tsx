@@ -16,14 +16,24 @@ export default function LoginPage() {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) { setError(error.message); setLoading(false); }
-    else { router.push("/dashboard"); }
+    else {
+      const t = (await supabase.auth.getSession()).data.session?.access_token;
+      if (t) {
+        try {
+          const agent = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/agent`, {
+            headers: { Authorization: `Bearer ${t}` },
+          }).then(r => r.json());
+          router.push(agent.provisioned ? "/agent" : "/setup");
+        } catch { router.push("/setup"); }
+      } else { router.push("/setup"); }
+    }
   }
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm fade-in">
         <div className="text-center mb-8">
-          <Link href="/" className="text-[#00d084] text-2xl font-bold tracking-widest glow-green">EDGEBET</Link>
-          <p className="text-[#71717a] text-xs mt-2 tracking-widest">SIGN IN TO YOUR ACCOUNT</p>
+          <Link href="/" className="text-[#00d084] text-2xl font-bold tracking-widest glow-green">AGENTEDGE</Link>
+          <p className="text-[#71717a] text-xs mt-2 tracking-widest">SIGN IN TO YOUR AGENT</p>
         </div>
         <form onSubmit={handleLogin} className="space-y-4">
           <div>

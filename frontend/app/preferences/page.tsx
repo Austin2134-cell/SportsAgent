@@ -5,7 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import { api } from "@/lib/api";
 
-const SPORTS = ["NBA", "MLB", "NHL", "NFL", "NCAAB", "NCAAF"];
+const SPORTS = ["MLB", "NBA", "NHL", "NFL", "WC"];
 const BET_TYPES = [
   { key: "player_props", label: "PLAYER PROPS" },
   { key: "straight", label: "STRAIGHT BETS" },
