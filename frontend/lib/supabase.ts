@@ -1,6 +1,10 @@
 import { createBrowserClient } from "@supabase/ssr";
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+import { getSupabaseConfig } from "./env";
+
 export function createClient() {
-  return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const config = getSupabaseConfig();
+  if (!config) {
+    throw new Error("Supabase is not configured. Check Vercel environment variables.");
+  }
+  return createBrowserClient(config.url, config.anonKey);
 }

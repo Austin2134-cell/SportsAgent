@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import { api } from "@/lib/api";
+import { CONFIG_ERROR, getSupabaseConfig } from "@/lib/env";
 
 const BET_TYPES = [
   { key: "player_props", label: "PLAYER PROPS" },
@@ -12,11 +13,20 @@ const BET_TYPES = [
 ];
 const RISK_LEVELS = ["LOW", "MEDIUM", "HIGH"];
 
+const DEFAULT_SPORTS = [
+  { id: "MLB", label: "MLB", season_active: true },
+  { id: "WC", label: "World Cup Soccer", season_active: true },
+  { id: "NBA", label: "NBA", season_active: false },
+  { id: "NHL", label: "NHL", season_active: false },
+  { id: "NFL", label: "NFL", season_active: false },
+];
+
 export default function SetupPage() {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
   const [step, setStep] = useState(1);
-  const [sports, setSports] = useState<{ id: string; label: string; season_active: boolean }[]>([]);
+  const [sports, setSports] = useState(DEFAULT_SPORTS);
+  const [configError, setConfigError] = useState("");
   const [form, setForm] = useState({
     bankroll_starting: 1000,
     unit_pct: 0.02,
@@ -32,15 +42,26 @@ export default function SetupPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getSession().then(({ data }) => {
-      if (!data.session) { router.push("/login"); return; }
-      setToken(data.session.access_token);
-      api.getAgent(data.session.access_token).then((res) => {
-        if (res.provisioned) router.push("/agent");
-      });
-    });
-    api.getSports().then((res) => setSports(res.sports || []));
+    if (!getSupabaseConfig()) {
+      setConfigError(CONFIG_ERROR);
+      return;
+    }
+    try {
+      const supabase = createClient();
+      supabase.auth.getSession().then(({ data }) => {
+        if (!data.session) { router.push("/login"); return; }
+        setToken(data.session.access_token);
+        api.getAgent(data.session.access_token).then((res) => {
+          if (res.provisioned) router.push("/agent");
+        }).catch(() => { /* backend unreachable — stay on setup */ });
+      }).catch(() => setConfigError(CONFIG_ERROR));
+    } catch {
+      setConfigError(CONFIG_ERROR);
+      return;
+    }
+    api.getSports()
+      .then((res) => setSports(res.sports?.length ? res.sports : DEFAULT_SPORTS))
+      .catch(() => setSports(DEFAULT_SPORTS));
   }, [router]);
 
   const unitSize = Math.round(form.bankroll_starting * form.unit_pct);
@@ -83,7 +104,13 @@ export default function SetupPage() {
           <p className="text-[#71717a] text-xs mt-2 tracking-widest">CONFIGURE YOUR AGENT — STEP {step} OF 3</p>
         </div>
 
-        {step === 1 && (
+        {configError && (
+          <div className="bg-[#ff4d4d]/10 border border-[#ff4d4d]/30 rounded px-4 py-3 text-xs text-[#ff4d4d] mb-6 leading-relaxed">
+            {configError}
+          </div>
+        )}
+
+        {!configError && step === 1 && (
           <div className="space-y-5">
             <h2 className="text-sm font-bold text-[#e4e4e7] tracking-widest">BANKROLL</h2>
             <p className="text-xs text-[#71717a]">Your agent auto-calculates unit size from your bankroll. No manual unit sizing.</p>
@@ -117,7 +144,7 @@ export default function SetupPage() {
           </div>
         )}
 
-        {step === 2 && (
+        {!configError && step === 2 && (
           <div className="space-y-5">
             <h2 className="text-sm font-bold text-[#e4e4e7] tracking-widest">SPORTS & MARKETS</h2>
             <div>
@@ -156,7 +183,7 @@ export default function SetupPage() {
           </div>
         )}
 
-        {step === 3 && (
+        {!configError && step === 3 && (
           <div className="space-y-5">
             <h2 className="text-sm font-bold text-[#e4e4e7] tracking-widest">RISK & LAUNCH</h2>
             <div>
