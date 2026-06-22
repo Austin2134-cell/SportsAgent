@@ -54,37 +54,13 @@ def run_card_for_user(user_id: str, prefs: dict, target_date: str = None) -> dic
         official_plays = official_plays[:max_plays]
         card["official_plays"] = official_plays
 
-    card_result = db.table("cards").insert({
-        "user_id": user_id,
-        "date": today,
-        "slate_grade": card.get("slate_grade"),
-        "slate_note": card.get("slate_grade_note", ""),
-        "plays": card.get("official_plays", []),
-        "leans": card.get("leans", []),
-        "quick_reads": card.get("quick_reads", []),
-        "pass_notes": card.get("pass_notes", []),
-        "raw_card": card,
-    }).execute()
+    card["date"] = today
 
-    card_id = card_result.data[0]["id"] if card_result.data else None
-
-    for play in official_plays:
-        db.table("bets").insert({
-            "user_id": user_id,
-            "card_id": card_id,
-            "date": today,
-            "sport": play.get("sport", ""),
-            "game": play.get("game", ""),
-            "bet": play.get("bet", ""),
-            "market": play.get("market", ""),
-            "odds": int(play.get("odds", -110)),
-            "book": play.get("book", "DraftKings"),
-            "units": float(play.get("units", 2)),
-            "confidence": play.get("confidence", "MEDIUM"),
-            "result": "pending",
-            "units_result": 0,
-            "notes": play.get("edge_summary", ""),
-        }).execute()
+    from services.card_store import persist_esm_card
+    card_id = persist_esm_card(db, user_id, card, source="esm")
+    if not card_id:
+        print(f"[agent_runner] Failed to persist card for {user_id}")
+        return {}
 
     print(f"[agent_runner] Card + {len(official_plays)} bets written for {user_id}")
     return card

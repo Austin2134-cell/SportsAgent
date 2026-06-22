@@ -372,4 +372,7 @@ def _persist_positions(
             "notes": pos.get("edge_summary", ""),
         }).execute()
 
+    from services.sheets_sync import maybe_sync_sheets
+    maybe_sync_sheets(db, reason="agent-scan")
+
     return units_used
