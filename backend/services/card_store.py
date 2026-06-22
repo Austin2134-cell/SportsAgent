@@ -4,6 +4,7 @@ Used by agent_runner and the World Cup daily card runner.
 """
 
 import os
+import re
 from typing import Optional
 
 
@@ -21,8 +22,14 @@ def resolve_user_id(db, email: Optional[str] = None) -> Optional[str]:
     return None
 
 
+def _normalize_game(game: str) -> str:
+    g = re.sub(r"\s*\([^)]+\)\s*$", "", (game or "").strip())
+    g = g.replace(" @ ", " vs ").replace(" at ", " vs ").replace(" v ", " vs ")
+    return re.sub(r"\s+", " ", g).lower()
+
+
 def _bet_key(play: dict) -> tuple:
-    return (play.get("game", ""), play.get("bet", ""))
+    return (_normalize_game(play.get("game", "")), (play.get("bet") or "").strip().lower())
 
 
 def persist_esm_card(db, user_id: str, card: dict, *, source: str = "esm") -> Optional[str]:
