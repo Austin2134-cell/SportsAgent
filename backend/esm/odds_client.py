@@ -13,10 +13,12 @@ Sign up for a free SportsGameOdds key at https://sportsgameodds.com
 Add SGO_API_KEY=<your_key> to your .env file.
 """
 
+import os
 import re
 import requests
 from datetime import datetime, timezone, timedelta
 from typing import Optional
+from zoneinfo import ZoneInfo
 from esm.config import ODDS_API_KEY, SGO_API_KEY, ACTIVE_SPORTS, PROP_MARKETS, DEFAULT_BOOK
 from esm.api_budget import (
     ApiUsageState,
@@ -35,15 +37,18 @@ ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 # ── SportsGameOdds API ─────────────────────────────────────────────────────────
 SGO_BASE = "https://api.sportsgameodds.com/v2"
 
-# Map our internal sport key → SGO leagueID
+# Map our internal sport key → SGO leagueID.
+# World Cup is NOT on SGO free tier (GET /leagues has no WC league) — use TOA_ONLY_SPORTS.
 SPORT_TO_SGO_LEAGUE = {
     "basketball_nba":           "NBA",
     "baseball_mlb":             "MLB",
     "icehockey_nhl":            "NHL",
     "americanfootball_nfl":     "NFL",
     "basketball_ncaab":         "NCAAB",
-    "soccer_fifa_world_cup":    "FIFA_WORLD_CUP",
 }
+
+# Sports that must be fetched from The Odds API (not available on our SGO plan).
+TOA_ONLY_SPORTS = frozenset({"soccer_fifa_world_cup"})
 
 # Map SGO statID → our market key, keyed by sport
 SGO_STAT_MAP = {
@@ -98,6 +103,7 @@ SGO_STAT_MAP = {
 _SGO_SPORT_TOKENS = {"NBA", "MLB", "NHL", "NFL", "NCAAB", "NCAAF", "MLS", "WC", "FIFAWC"}
 
 HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json"}
+TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -173,24 +179,40 @@ class OddsClient:
         return snapshot
 
     def _try_sgo_then_toa(self, today: str, sports_filter: list[str]) -> dict:
-        if SGO_API_KEY and should_use_sgo(self._usage):
-            snapshot = _sgo_build_snapshot(today, sports_filter, self)
-            if snapshot.get("sports"):
+        sgo_sports = [s for s in sports_filter if s not in TOA_ONLY_SPORTS and s in SPORT_TO_SGO_LEAGUE]
+        toa_only = [s for s in sports_filter if s in TOA_ONLY_SPORTS]
+        snapshot = {"date": today, "sports": {}}
+
+        if SGO_API_KEY and should_use_sgo(self._usage) and sgo_sports:
+            sgo_snapshot = _sgo_build_snapshot(today, sgo_sports, self)
+            snapshot = _merge_snapshots(snapshot, sgo_snapshot)
+            if sgo_snapshot.get("sports"):
                 self._source = "sgo"
                 snapshot["source"] = "sgo"
                 snapshot["requests_remaining_after"] = self._usage.sgo_objects_remaining
-                return snapshot
-            print("[OddsClient] SGO returned no data — trying The Odds API...")
+            elif sgo_sports:
+                print("[OddsClient] SGO returned no data — trying The Odds API for remaining sports...")
 
-        if ODDS_API_KEY and should_use_toa(self._usage):
-            snapshot = _toa_build_snapshot(today, self, sports_filter)
-            if snapshot.get("sports"):
-                self._source = "theoddsapi"
-                snapshot["source"] = "theoddsapi"
-                snapshot["requests_remaining_after"] = self._usage.toa_remaining
-                return snapshot
+        toa_sports = list(toa_only)
+        if not snapshot.get("sports"):
+            # SGO returned nothing — fall back to TOA for the full slate.
+            toa_sports = list(dict.fromkeys(toa_sports + sports_filter))
+        else:
+            toa_sports.extend(
+                s for s in sgo_sports if s not in snapshot.get("sports", {})
+            )
+            toa_sports = list(dict.fromkeys(toa_sports))
 
-        return {"date": today, "sports": {}}
+        if toa_sports and ODDS_API_KEY and should_use_toa(self._usage):
+            toa_snapshot = _toa_build_snapshot(today, self, toa_sports)
+            snapshot = _merge_snapshots(snapshot, toa_snapshot)
+            if toa_snapshot.get("sports"):
+                self._source = self._source or "theoddsapi"
+                snapshot["source"] = snapshot.get("source") or "theoddsapi"
+                if self._source == "theoddsapi":
+                    snapshot["requests_remaining_after"] = self._usage.toa_remaining
+
+        return snapshot
 
     def _try_toa_then_sgo(self, today: str, sports_filter: list[str]) -> dict:
         if ODDS_API_KEY and should_use_toa(self._usage):
@@ -216,6 +238,20 @@ class OddsClient:
 # ──────────────────────────────────────────────────────────────────────────────
 # The Odds API implementation (unchanged logic from original odds_client.py)
 # ──────────────────────────────────────────────────────────────────────────────
+
+def _toa_day_window_utc(target_date: str) -> tuple[str, str]:
+    """Convert a calendar date in TIMEZONE to UTC commenceTimeFrom/To for The Odds API."""
+    tz = ZoneInfo(TIMEZONE)
+    day = datetime.strptime(target_date, "%Y-%m-%d").date()
+    start_local = datetime(day.year, day.month, day.day, 0, 0, 0, tzinfo=tz)
+    end_local = start_local + timedelta(days=1)
+    start_utc = start_local.astimezone(timezone.utc)
+    end_utc = end_local.astimezone(timezone.utc)
+    return (
+        start_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        end_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+    )
+
 
 def _toa_get(endpoint: str, params: dict, client: OddsClient) -> Optional[dict | list]:
     params["apiKey"] = ODDS_API_KEY
@@ -254,6 +290,7 @@ def _toa_build_snapshot(today: str, client: OddsClient, sports_filter: list[str]
     active_sport_keys = {s["key"] for s in active_keys_data}
 
     fetch_props = should_fetch_toa_props(OddsClient._usage)
+    commence_from, commence_to = _toa_day_window_utc(today)
 
     for sport in sports_filter:
         if sport not in ACTIVE_SPORTS or sport not in active_sport_keys:
@@ -270,16 +307,14 @@ def _toa_build_snapshot(today: str, client: OddsClient, sports_filter: list[str]
             "oddsFormat": "american",
             "dateFormat": "iso",
             "bookmakers": "draftkings,fanduel,betmgm",
+            "commenceTimeFrom": commence_from,
+            "commenceTimeTo": commence_to,
         }, client)
         if not games:
             continue
 
-        today_games = [g for g in games if g.get("commence_time", "").startswith(today)]
-        if not today_games:
-            continue
-
         sport_data = {"games": []}
-        for game in today_games:
+        for game in games:
             game_entry = {
                 "event_id": game["id"],
                 "home_team":     game["home_team"],
@@ -323,7 +358,7 @@ def _toa_build_snapshot(today: str, client: OddsClient, sports_filter: list[str]
 
 def _toa_extract_best_lines(game: dict) -> dict:
     best = {
-        "home_ml": None, "away_ml": None,
+        "home_ml": None, "away_ml": None, "draw_ml": None,
         "home_spread": None, "away_spread": None, "spread_line": None,
         "total": None, "over_odds": None, "under_odds": None,
         "books_checked": [],
@@ -339,10 +374,13 @@ def _toa_extract_best_lines(game: dict) -> dict:
         for market in book.get("markets", []):
             if market["key"] == "h2h" and best["home_ml"] is None:
                 for outcome in market["outcomes"]:
-                    if outcome["name"] == game["home_team"]:
+                    name = outcome["name"]
+                    if name == game["home_team"]:
                         best["home_ml"] = outcome["price"]
-                    else:
+                    elif name == game["away_team"]:
                         best["away_ml"] = outcome["price"]
+                    elif name.lower() == "draw":
+                        best["draw_ml"] = outcome["price"]
             elif market["key"] == "spreads" and best["spread_line"] is None:
                 for outcome in market["outcomes"]:
                     if outcome["name"] == game["home_team"]:
@@ -433,46 +471,62 @@ def _sgo_fetch_usage() -> None:
             OddsClient._usage.sgo_requests_remaining_min = requests_info.get("remaining")
 
 
+def _merge_snapshots(base: dict, extra: dict) -> dict:
+    """Merge sport entries from extra into base snapshot."""
+    merged = {"date": base.get("date") or extra.get("date"), "sports": dict(base.get("sports", {}))}
+    for sport_key, sport_data in extra.get("sports", {}).items():
+        merged["sports"][sport_key] = sport_data
+    for key in ("source", "credits_spent", "objects_consumed", "requests_remaining_after"):
+        if extra.get(key) is not None:
+            merged[key] = extra[key]
+    return merged
+
+
 def _sgo_build_snapshot(today: str, sports_filter: list[str], client: OddsClient) -> dict:
     snapshot = {"date": today, "sports": {}}
     _sgo_fetch_usage()
 
-    sgo_leagues = [
-        SPORT_TO_SGO_LEAGUE[s]
-        for s in sports_filter
-        if s in SPORT_TO_SGO_LEAGUE
+    sgo_sports = [
+        s for s in sports_filter
+        if s in SPORT_TO_SGO_LEAGUE and s not in TOA_ONLY_SPORTS
     ]
-    if not sgo_leagues:
+    if not sgo_sports:
         return snapshot
 
     today_start = f"{today}T00:00:00Z"
     tomorrow    = (datetime.strptime(today, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
     today_end   = f"{tomorrow}T00:00:00Z"
 
-    data = _sgo_get("/events/", {
-        "leagueID":    ",".join(sgo_leagues),
-        "startsAfter": today_start,
-        "startsBefore": today_end,
-        "oddsAvailable": "true",
-    }, client)
-    if not data:
+    all_events: list = []
+    # One request per league — a bad/unsupported leagueID must not fail the whole batch.
+    for sport_key in sgo_sports:
+        league_id = SPORT_TO_SGO_LEAGUE[sport_key]
+        data = _sgo_get("/events/", {
+            "leagueID": league_id,
+            "startsAfter": today_start,
+            "startsBefore": today_end,
+            "oddsAvailable": "true",
+        }, client)
+        if not data:
+            print(f"[OddsClient/SGO] No event data for {league_id}.")
+            continue
+        events = data.get("data", data) if isinstance(data, dict) else data
+        if isinstance(events, list):
+            all_events.extend(events)
+
+    if not all_events:
         print("[OddsClient/SGO] No event data returned.")
         return snapshot
 
-    events = data.get("data", data) if isinstance(data, dict) else data
-    if not isinstance(events, list):
-        events = []
-
-    # Track object consumption (1 object per event)
-    OddsClient._usage.last_snapshot_credits = len(events)
+    OddsClient._usage.last_snapshot_credits = len(all_events)
     OddsClient._usage.last_source = "sgo"
     if OddsClient._usage.sgo_objects_remaining is not None:
         OddsClient._usage.sgo_objects_remaining = max(
-            0, OddsClient._usage.sgo_objects_remaining - len(events)
+            0, OddsClient._usage.sgo_objects_remaining - len(all_events)
         )
 
     sport_events: dict[str, list] = {}
-    for event in events:
+    for event in all_events:
         league_id = event.get("leagueID", "")
         sport_key = next(
             (k for k, v in SPORT_TO_SGO_LEAGUE.items() if v == league_id), None
@@ -508,7 +562,7 @@ def _sgo_build_snapshot(today: str, sports_filter: list[str], client: OddsClient
         if sport_data["games"]:
             snapshot["sports"][sport_key] = sport_data
 
-    snapshot["objects_consumed"] = len(events)
+    snapshot["objects_consumed"] = len(all_events)
     return snapshot
 
 
