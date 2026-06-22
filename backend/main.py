@@ -38,6 +38,7 @@ async def lifespan(app: FastAPI):
     scheduler.add_job(_scheduled_morning_toa, "cron", hour=9, minute=25, id="morning_toa_snapshot")
     scheduler.add_job(_scheduled_morning_agents, "cron", hour=9, minute=30, id="morning_agent_run")
     scheduler.add_job(run_daily_cards, "cron", hour=9, minute=35, id="daily_cards")
+    scheduler.add_job(_scheduled_sheets_sync, "cron", hour=10, minute=0, id="sheets_sync")
     scheduler.add_job(run_weekly_digest, "cron", day_of_week="mon", hour=8, minute=0, id="weekly_digest")
     scheduler.add_job(_scheduled_market_poll, "interval", minutes=POLL_INTERVAL_MINUTES, id="market_poll")
     scheduler.add_job(_scheduled_agent_scans, "interval", minutes=AGENT_SCAN_INTERVAL_MINUTES, id="agent_scans")
@@ -77,6 +78,14 @@ async def _scheduled_agent_scans():
         run_all_agent_scans(db)
     except Exception as e:
         print(f"[AgentEdge] Agent scan error: {e}")
+
+
+async def _scheduled_sheets_sync():
+    try:
+        from services.sheets_sync import maybe_sync_sheets
+        maybe_sync_sheets(db, reason="scheduled")
+    except Exception as e:
+        print(f"[AgentEdge] Sheets sync error: {e}")
 
 
 app = FastAPI(title="AgentEdge API", version="2.0.0", lifespan=lifespan)
@@ -290,6 +299,14 @@ async def admin_weekly_digest(admin: dict = Depends(get_admin_user)):
 async def admin_grade_all(admin: dict = Depends(get_admin_user)):
     from services.grader import grade_all_pending
     return grade_all_pending(db)
+
+
+@app.post("/api/admin/sync-sheets")
+async def admin_sync_sheets(admin: dict = Depends(get_admin_user)):
+    from services.sheets_sync import is_configured, sync_bets_to_sheet
+    if not is_configured():
+        raise HTTPException(status_code=400, detail="Google Sheets not configured (GOOGLE_SHEET_ID + credentials)")
+    return sync_bets_to_sheet(db)
 
 
 @app.get("/api/admin/users")

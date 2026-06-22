@@ -1,6 +1,8 @@
 """
 grader.py — auto-grades pending bets against ESPN box scores and refreshes
 agent performance memory for any users with newly graded bets.
+
+Supports US player props (NBA/MLB/NHL/NFL) and soccer markets (DNB, ML, totals, BTTS).
 """
 
 import re
@@ -16,6 +18,8 @@ SPORT_MAP = {
     "MLB": ("baseball", "mlb"),
     "NHL": ("hockey", "nhl"),
     "NFL": ("football", "nfl"),
+    "SOCCER": ("soccer", "fifa.world"),
+    "WC": ("soccer", "fifa.world"),
 }
 
 MARKET_TO_ESPN_STAT = {
@@ -38,6 +42,11 @@ MARKET_TO_ESPN_STAT = {
     "player_assists": ["A"],
     "player_shots_on_goal": ["SOG"],
 }
+
+SOCCER_MARKETS = frozenset({
+    "draw_no_bet", "dnb", "h2h", "moneyline", "match_result",
+    "totals", "total_goals", "over_under", "btts", "both_teams_to_score",
+})
 
 
 def grade_all_pending(db):
@@ -65,13 +74,16 @@ def grade_all_pending(db):
         from learning.memory import refresh_memory
         for uid in affected_users:
             refresh_memory(db, uid)
+    if graded:
+        from services.sheets_sync import maybe_sync_sheets
+        maybe_sync_sheets(db, reason="post-grade")
     return {"graded": graded, "manual": manual}
 
 
 def _grade_bet(bet: dict) -> Optional[dict]:
     sport = bet.get("sport", "").upper()
     bet_str = bet.get("bet", "")
-    market = bet.get("market", "")
+    market = (bet.get("market") or "").lower()
     game = bet.get("game", "")
     bet_date = bet.get("date", "")
     odds = int(bet.get("odds", -110))
@@ -80,6 +92,10 @@ def _grade_bet(bet: dict) -> Optional[dict]:
     if not espn_info:
         return None
     espn_sport, espn_league = espn_info
+
+    if sport in ("SOCCER", "WC") or market in SOCCER_MARKETS or _looks_like_soccer_bet(bet_str):
+        return _grade_soccer_bet(bet_str, market, game, bet_date, odds, units, espn_sport, espn_league)
+
     event = _find_event(espn_sport, espn_league, game, bet_date)
     if not event:
         return None
@@ -110,6 +126,222 @@ def _grade_bet(bet: dict) -> Optional[dict]:
     return {"result": result, "units_result": round(units_result, 2), "tag": tag}
 
 
+def _looks_like_soccer_bet(bet_str: str) -> bool:
+    lower = bet_str.lower()
+    soccer_signals = (
+        "draw no bet", "dnb", "total goals", "both teams to score", "btts",
+        "match result", " ml", "moneyline", "asian handicap 0",
+    )
+    return any(sig in lower for sig in soccer_signals)
+
+
+def _grade_soccer_bet(
+    bet_str: str,
+    market: str,
+    game: str,
+    bet_date: str,
+    odds: int,
+    units: float,
+    espn_sport: str,
+    espn_league: str,
+) -> Optional[dict]:
+    event = _find_event(espn_sport, espn_league, game, bet_date)
+    if not event:
+        return None
+    box = _get_box(espn_sport, espn_league, event["id"])
+    if not box:
+        return None
+    comp = box.get("header", {}).get("competitions", [{}])[0]
+    status = comp.get("status", {})
+    if status.get("type", {}).get("state") != "post":
+        return None
+
+    scores = _get_match_scores(comp)
+    if scores is None:
+        return None
+    home_team, away_team, home_score, away_score = scores
+
+    outcome = _resolve_soccer_outcome(bet_str, market, home_team, away_team, home_score, away_score)
+    if outcome is None:
+        return None
+
+    result, tag_extra = outcome
+    if result == "P":
+        return {"result": "P", "units_result": 0.0, "tag": tag_extra or ""}
+    if result == "W":
+        return {
+            "result": "W",
+            "units_result": calculate_win_units(units, odds),
+            "tag": tag_extra or "",
+        }
+    return {"result": "L", "units_result": -units, "tag": tag_extra or "model miss"}
+
+
+def _resolve_soccer_outcome(
+    bet_str: str,
+    market: str,
+    home_team: str,
+    away_team: str,
+    home_score: int,
+    away_score: int,
+) -> Optional[tuple[str, str]]:
+    """Return (W/L/P, optional tag) or None if bet type unrecognized."""
+    total = home_score + away_score
+    both_scored = home_score >= 1 and away_score >= 1
+    home_win = home_score > away_score
+    away_win = away_score > home_score
+    is_draw = home_score == away_score
+
+    # Draw No Bet / Asian Handicap 0.0
+    dnb_team = _parse_dnb_team(bet_str, market)
+    if dnb_team:
+        picked_home = _team_matches(dnb_team, home_team)
+        picked_away = _team_matches(dnb_team, away_team)
+        if not picked_home and not picked_away:
+            return None
+        if is_draw:
+            return ("P", "draw push")
+        if picked_home:
+            return ("W" if home_win else "L", "")
+        return ("W" if away_win else "L", "")
+
+    # Match Result / Moneyline (3-way — draw loses)
+    ml_team = _parse_ml_team(bet_str, market)
+    if ml_team:
+        picked_home = _team_matches(ml_team, home_team)
+        picked_away = _team_matches(ml_team, away_team)
+        if not picked_home and not picked_away:
+            return None
+        if picked_home and home_win:
+            return ("W", "")
+        if picked_away and away_win:
+            return ("W", "")
+        return ("L", "")
+
+    # Totals
+    direction, line = _parse_total(bet_str, market)
+    if direction and line is not None:
+        if total == line:
+            return ("P", "exact total")
+        if direction == "Over":
+            return ("W" if total > line else "L", "")
+        return ("W" if total < line else "L", "")
+
+    # Both Teams to Score
+    btts = _parse_btts(bet_str, market)
+    if btts:
+        if btts == "Yes":
+            return ("W" if both_scored else "L", "")
+        return ("W" if not both_scored else "L", "")
+
+    return None
+
+
+def _parse_game_teams(game: str) -> tuple[Optional[str], Optional[str]]:
+    game_clean = re.sub(r"\s*\([^)]+\)\s*$", "", (game or "").strip())
+    for sep in (" @ ", " vs ", " v ", " at "):
+        if sep in game_clean:
+            parts = game_clean.split(sep, 1)
+            return parts[0].strip(), parts[1].strip()
+    return None, None
+
+
+def _parse_dnb_team(bet_str: str, market: str) -> Optional[str]:
+    if market in ("draw_no_bet", "dnb"):
+        m = re.search(r"(?:draw no bet|dnb)\s*[—\-–:]?\s*(.+)$", bet_str, re.IGNORECASE)
+        if m:
+            return m.group(1).strip()
+    m = re.search(
+        r"(?:draw no bet|dnb|asian handicap 0\.?0?)\s*[—\-–:]?\s*(.+)$",
+        bet_str,
+        re.IGNORECASE,
+    )
+    if m:
+        return m.group(1).strip()
+    m = re.match(r"^(.+?)\s+(?:draw no bet|dnb)\b", bet_str, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+    return None
+
+
+def _parse_ml_team(bet_str: str, market: str) -> Optional[str]:
+    if market in ("h2h", "moneyline", "match_result"):
+        m = re.search(r"(?:match result\s*[—\-–:]?\s*)?(.+?)\s*ml\b", bet_str, re.IGNORECASE)
+        if m:
+            return m.group(1).strip()
+        m = re.search(r"moneyline\s*[—\-–:]?\s*(.+)$", bet_str, re.IGNORECASE)
+        if m:
+            return m.group(1).strip()
+    m = re.search(r"(?:match result\s*[—\-–:]?\s*)?(.+?)\s*ml\b", bet_str, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r"moneyline\s*[—\-–:]?\s*(.+)$", bet_str, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+    return None
+
+
+def _parse_total(bet_str: str, market: str) -> tuple[Optional[str], Optional[float]]:
+    if market in ("totals", "total_goals", "over_under"):
+        m = re.search(r"(over|under)\s+([\d.]+)", bet_str, re.IGNORECASE)
+        if m:
+            return m.group(1).capitalize(), float(m.group(2))
+    m = re.search(
+        r"(?:total goals?\s+)?(over|under)\s+([\d.]+)",
+        bet_str,
+        re.IGNORECASE,
+    )
+    if m:
+        return m.group(1).capitalize(), float(m.group(2))
+    return None, None
+
+
+def _parse_btts(bet_str: str, market: str) -> Optional[str]:
+    if market in ("btts", "both_teams_to_score"):
+        m = re.search(r"(yes|no)\b", bet_str, re.IGNORECASE)
+        if m:
+            return m.group(1).capitalize()
+    m = re.search(
+        r"(?:both teams to score|btts)\s*(yes|no)\b",
+        bet_str,
+        re.IGNORECASE,
+    )
+    if m:
+        return m.group(1).capitalize()
+    return None
+
+
+def _team_matches(picked: str, team_name: str) -> bool:
+    p = picked.lower().strip()
+    t = team_name.lower().strip()
+    if not p or not t:
+        return False
+    if p == t or p in t or t in p:
+        return True
+    p_last = p.split()[-1]
+    t_last = t.split()[-1]
+    return p_last == t_last or p_last in t or t_last in p
+
+
+def _get_match_scores(comp: dict) -> Optional[tuple[str, str, int, int]]:
+    home_team = away_team = None
+    home_score = away_score = None
+    for c in comp.get("competitors", []):
+        team = c.get("team", {}).get("displayName", "")
+        score_raw = c.get("score")
+        try:
+            score = int(score_raw) if score_raw is not None else None
+        except (TypeError, ValueError):
+            score = None
+        if c.get("homeAway") == "home":
+            home_team, home_score = team, score
+        elif c.get("homeAway") == "away":
+            away_team, away_score = team, score
+    if None in (home_team, away_team, home_score, away_score):
+        return None
+    return home_team, away_team, home_score, away_score
+
+
 def _parse_bet(bet_str):
     match = re.search(r"(Over|Under)\s+([\d.]+)", bet_str, re.IGNORECASE)
     if not match:
@@ -127,11 +359,11 @@ def _extract_player(bet_str):
 
 
 def _find_event(sport, league, game, bet_date):
-    parts = game.split(" @ ")
-    if len(parts) != 2:
+    away_hint, home_hint = _parse_game_teams(game)
+    if not away_hint or not home_hint:
         return None
-    away_hint = parts[0].strip().lower()
-    home_hint = parts[1].strip().lower()
+    away_key = away_hint.split()[-1].lower()
+    home_key = home_hint.split()[-1].lower()
     date_str = bet_date.replace("-", "")
     data = _espn_get(f"{ESPN_BASE}/{sport}/{league}/scoreboard", {"dates": date_str, "limit": 50})
     if not data:
@@ -139,8 +371,7 @@ def _find_event(sport, league, game, bet_date):
     for event in data.get("events", []):
         name = event.get("name", "").lower()
         short = event.get("shortName", "").lower()
-        if (away_hint.split()[-1] in name or away_hint.split()[-1] in short) and \
-           (home_hint.split()[-1] in name or home_hint.split()[-1] in short):
+        if (away_key in name or away_key in short) and (home_key in name or home_key in short):
             return event
     return None
 

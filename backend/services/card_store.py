@@ -126,4 +126,7 @@ def persist_esm_card(db, user_id: str, card: dict, *, source: str = "esm") -> Op
         inserted += 1
 
     print(f"[card_store] Persisted {inserted} bet(s) for {user_id} on {today} ({source})")
+    if inserted:
+        from services.sheets_sync import maybe_sync_sheets
+        maybe_sync_sheets(db, reason="new-bets")
     return card_id

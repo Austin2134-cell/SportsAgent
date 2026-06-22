@@ -67,6 +67,9 @@ jobs:
           EMAIL_SMTP_PASS: ${{ secrets.EMAIL_SMTP_PASS }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_SHEETS_CREDENTIALS_JSON: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS_JSON }}
+          GOOGLE_SHEETS_SYNC_EMAIL: ${{ secrets.GOOGLE_SHEETS_SYNC_EMAIL }}
           TIMEZONE: America/Denver
         run: |
           DATE="${{ steps.date.outputs.date }}"
