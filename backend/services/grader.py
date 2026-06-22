@@ -36,6 +36,7 @@ MARKET_TO_ESPN_STAT = {
     "batter_hits": ["H"],
     "batter_home_runs": ["HR"],
     "batter_rbis": ["RBI"],
+    "batter_total_bases": ["TB"],
     "pitcher_strikeouts": ["K"],
     "pitcher_outs": ["OUTS"],
     "player_goals": ["G"],
@@ -405,6 +406,10 @@ def _get_player_stat(box, player_name, market, sport):
                             return float(int(parts[0]) * 3 + (int(parts[1]) if len(parts) > 1 else 0))
                         except Exception:
                             return 0.0
+                if market == "batter_total_bases" or "TB" in stat_labels:
+                    tb = _batter_total_bases(stat_dict)
+                    if tb is not None:
+                        return tb
                 total = 0.0
                 found = False
                 for label in stat_labels:
@@ -418,6 +423,26 @@ def _get_player_stat(box, player_name, market, sport):
                 if found:
                     return total
     return None
+
+
+def _batter_total_bases(stat_dict: dict) -> Optional[float]:
+    """Compute total bases from ESPN batting line (H + 3*HR when TB column absent)."""
+    if stat_dict.get("TB") is not None:
+        try:
+            return float(stat_dict["TB"])
+        except (TypeError, ValueError):
+            pass
+    try:
+        hits = float(stat_dict.get("H", 0))
+        hrs = float(stat_dict.get("HR", 0))
+        doubles = float(stat_dict.get("2B", 0))
+        triples = float(stat_dict.get("3B", 0))
+        if doubles or triples:
+            singles = hits - doubles - triples - hrs
+            return singles + 2 * doubles + 3 * triples + 4 * hrs
+        return hits + 3 * hrs
+    except (TypeError, ValueError):
+        return None
 
 
 def _espn_get(url, params=None):
