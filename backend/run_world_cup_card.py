@@ -24,6 +24,10 @@ Optional (for email delivery):
   SENDGRID_API_KEY
   EMAIL_FROM (default: cards@edgebet.com)
 
+Optional (for Supabase bet logging — same cards/bets tables as main ESM):
+  SUPABASE_URL, SUPABASE_SERVICE_KEY
+  WC_CARD_USER_EMAIL (default: recipient --email address)
+
 NOTE: Without live odds (ODDS_API_KEY or SGO_API_KEY), Claude will receive no
 market data and will return a pass card per ESM data integrity rules. This is
 correct behavior — never fabricate lines.
@@ -253,6 +257,8 @@ def main():
     parser.add_argument("--unit-size", type=float, default=50.0)
     parser.add_argument("--no-email", action="store_true",
                         help="Skip email delivery, just print to console")
+    parser.add_argument("--no-persist", action="store_true",
+                        help="Skip writing card and bets to Supabase")
     args = parser.parse_args()
 
     print(f"[wc_runner] Generating World Cup card for {args.date} "
@@ -277,7 +283,31 @@ def main():
         else:
             print(f"[wc_runner] Card delivered to {args.email}")
 
+    if not args.no_persist:
+        _persist_card(card, args.email)
+
     return card
+
+
+def _persist_card(card: dict, email: str) -> None:
+    url = os.getenv("SUPABASE_URL", "")
+    key = os.getenv("SUPABASE_SERVICE_KEY", "")
+    if not url or not key:
+        print("[wc_runner] SUPABASE_URL / SUPABASE_SERVICE_KEY not set — skipping DB log")
+        return
+    try:
+        from database import db
+        from services.card_store import persist_esm_card, resolve_user_id
+
+        user_id = resolve_user_id(db, email=email)
+        if not user_id:
+            print(f"[wc_runner] No Supabase profile for {email} — skipping DB log")
+            return
+        card_id = persist_esm_card(db, user_id, card, source="world_cup")
+        if card_id:
+            print(f"[wc_runner] Logged to Supabase (card_id={card_id})")
+    except Exception as e:
+        print(f"[wc_runner] Supabase persist failed: {e}")
 
 
 if __name__ == "__main__":
