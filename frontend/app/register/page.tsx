@@ -2,24 +2,33 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { apiPostPublic } from "@/lib/api";
+
 export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ full_name: "", email: "", password: "", invite_code: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API_URL}/auth/register`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Registration failed");
+      await apiPostPublic("/auth/register", {
+        full_name: form.full_name.trim(),
+        email: form.email.trim().toLowerCase(),
+        password: form.password,
+        invite_code: form.invite_code.trim().toUpperCase(),
+      });
       router.push("/login?registered=1");
-    } catch (err: any) { setError(err.message); }
-    finally { setLoading(false); }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Registration failed");
+    } finally {
+      setLoading(false);
+    }
   }
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm fade-in">
@@ -39,7 +48,7 @@ export default function RegisterPage() {
               <input type={field.type} value={form[field.key as keyof typeof form]} onChange={(e) => setForm({ ...form, [field.key]: e.target.value })} required className="w-full bg-[#111] border border-[#222] rounded px-3 py-2.5 text-sm text-[#e4e4e7] focus:outline-none focus:border-[#00d084] transition-colors" placeholder={field.placeholder} />
             </div>
           ))}
-          {error && <div className="bg-[#ff4d4d]/10 border border-[#ff4d4d]/30 rounded px-3 py-2 text-xs text-[#ff4d4d]">{error}</div>}
+          {error && <div className="bg-[#ff4d4d]/10 border border-[#ff4d4d]/30 rounded px-3 py-2 text-xs text-[#ff4d4d] leading-relaxed">{error}</div>}
           <button type="submit" disabled={loading} className="w-full bg-[#00d084] text-black text-xs font-bold py-3 rounded tracking-widest hover:bg-[#00b872] disabled:opacity-50 transition-colors">
             {loading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT →"}
           </button>

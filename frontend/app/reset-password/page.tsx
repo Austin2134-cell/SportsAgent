@@ -30,14 +30,14 @@ export default function ResetPasswordPage() {
     const supabase = createClient();
     const { error } = await supabase.auth.updateUser({ password });
     if (error) { setError(error.message); setLoading(false); }
-    else { setSuccess(true); setTimeout(() => router.push("/dashboard"), 2000); }
+    else { setSuccess(true); setTimeout(() => router.push("/setup"), 2000); }
   }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm fade-in">
         <div className="text-center mb-8">
-          <Link href="/" className="text-[#00d084] text-2xl font-bold tracking-widest glow-green">EDGEBET</Link>
+          <Link href="/" className="text-[#00d084] text-2xl font-bold tracking-widest glow-green">AGENTEDGE</Link>
           <p className="text-[#71717a] text-xs mt-2 tracking-widest">SET NEW PASSWORD</p>
         </div>
 

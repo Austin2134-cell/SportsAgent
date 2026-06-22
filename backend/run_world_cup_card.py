@@ -65,7 +65,12 @@ def _build_wc_market_snapshot(target_date: str) -> dict:
     if odds_key or sgo_key:
         try:
             client = OddsClient()
-            snapshot = client.build_market_snapshot(target_date=target_date)
+            # World Cup is not on SGO free tier — always fetch from The Odds API.
+            snapshot = client.build_market_snapshot(
+                target_date=target_date,
+                sport_keys=[WC_SPORT_KEY],
+                force_source="toa",
+            )
             wc_data = snapshot.get("sports", {}).get(WC_SPORT_KEY)
             if wc_data and wc_data.get("games"):
                 print(f"[wc_runner] Live odds loaded: {len(wc_data['games'])} WC game(s)")
