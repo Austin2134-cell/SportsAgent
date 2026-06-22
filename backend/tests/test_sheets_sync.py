@@ -5,7 +5,13 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from services.sheets_sync import _calc_record, _build_summary_rows, BETS_HEADERS
+from services.sheets_sync import (
+    _calc_record,
+    _build_overall_record_rows,
+    _build_by_sport_rows,
+    BETS_HEADERS,
+    BY_SPORT_HEADERS,
+)
 
 
 def test_calc_record():
@@ -19,16 +25,30 @@ def test_calc_record():
     assert rec["net_units"] == -0.18
 
 
-def test_build_summary_rows():
+def test_build_overall_record_rows():
     bets = [
-        {"date": "2026-06-22", "sport": "SOCCER", "result": "pending", "units": 2, "units_result": 0},
+        {"date": "2026-06-22", "sport": "SOCCER", "result": "pending", "units": 2},
         {"date": "2026-06-21", "sport": "MLB", "result": "W", "units": 2, "units_result": 1.8},
     ]
-    rows = _build_summary_rows(bets, "2026-06-22 12:00 UTC")
-    assert rows[0] == ["Meta", "Last Synced", "2026-06-22 12:00 UTC"]
-    assert rows[3][2] == "1"
-    assert any(r[0] == "By Date" and r[1] == "2026-06-22" for r in rows)
+    rows = _build_overall_record_rows(bets, "2026-06-22 12:00 UTC")
+    assert rows[0] == ["Last Synced", "2026-06-22 12:00 UTC"]
+    assert rows[1] == ["Total Plays", "2"]
+    assert rows[2] == ["Pending", "1"]
 
 
-def test_bets_headers_count():
-    assert len(BETS_HEADERS) == 15
+def test_build_by_sport_rows():
+    bets = [
+        {"sport": "SOCCER", "result": "pending", "units": 2, "units_result": 0},
+        {"sport": "SOCCER", "result": "pending", "units": 2, "units_result": 0},
+        {"sport": "MLB", "result": "W", "units": 2, "units_result": 1.8},
+    ]
+    rows = _build_by_sport_rows(bets)
+    assert len(rows) == 2
+    soccer = next(r for r in rows if r[0] == "SOCCER")
+    assert soccer[4] == 2  # pending
+    assert soccer[9] == 2   # total plays
+
+
+def test_headers():
+    assert len(BETS_HEADERS) == 17
+    assert BY_SPORT_HEADERS[0] == "Sport"

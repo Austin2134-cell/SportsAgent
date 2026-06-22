@@ -1,20 +1,14 @@
 """
 Push Supabase bets to a Google Sheet (full sync on each trigger).
 
+Tabs created:
+  All Bets         — every bet, all columns (including pending)
+  Overall Record   — lifetime W-L-P, units, ROI
+  Record by Sport  — breakdown per sport
+
 Requires:
-  GOOGLE_SHEET_ID              — spreadsheet ID from the sheet URL
-  GOOGLE_SHEETS_CREDENTIALS_JSON — service account JSON (single-line string)
-
-Optional:
-  GOOGLE_SHEETS_TAB_BETS       — default "AgentEdge Bets"
-  GOOGLE_SHEETS_TAB_SUMMARY    — default "Record"
-  GOOGLE_SHEETS_SYNC_EMAIL     — only sync this user's bets (default: all users)
-
-Setup:
-  1. Google Cloud → enable Google Sheets API
-  2. Create service account → download JSON key
-  3. Create a Google Sheet → Share with service account email (Editor)
-  4. Paste JSON into GOOGLE_SHEETS_CREDENTIALS_JSON on Railway / GitHub secrets
+  GOOGLE_SHEET_ID
+  GOOGLE_SHEETS_CREDENTIALS_JSON
 """
 
 import json
@@ -38,10 +32,25 @@ BETS_HEADERS = [
     "Tag",
     "Notes",
     "Bet ID",
-    "Updated",
+    "Card ID",
+    "Created",
+    "Last Synced",
 ]
 
-SUMMARY_HEADERS = ["Section", "Metric", "Value"]
+OVERALL_RECORD_HEADERS = ["Metric", "Value"]
+
+BY_SPORT_HEADERS = [
+    "Sport",
+    "Wins",
+    "Losses",
+    "Pushes",
+    "Pending",
+    "Record",
+    "Net Units",
+    "Units Wagered",
+    "ROI %",
+    "Total Plays",
+]
 
 
 def is_configured() -> bool:
@@ -49,7 +58,6 @@ def is_configured() -> bool:
 
 
 def maybe_sync_sheets(db, *, reason: str = "") -> Optional[dict]:
-    """Sync if configured; never raises — logs and returns None on skip/failure."""
     if not is_configured():
         return None
     try:
@@ -64,22 +72,29 @@ def maybe_sync_sheets(db, *, reason: str = "") -> Optional[dict]:
 
 def sync_bets_to_sheet(db) -> dict:
     sheet_id = os.getenv("GOOGLE_SHEET_ID", "").strip()
-    bets_tab = os.getenv("GOOGLE_SHEETS_TAB_BETS", "AgentEdge Bets")
-    summary_tab = os.getenv("GOOGLE_SHEETS_TAB_SUMMARY", "Record")
+    bets_tab = os.getenv("GOOGLE_SHEETS_TAB_BETS", "All Bets")
+    record_tab = os.getenv("GOOGLE_SHEETS_TAB_RECORD", "Overall Record")
+    by_sport_tab = os.getenv("GOOGLE_SHEETS_TAB_BY_SPORT", "Record by Sport")
     sync_email = (os.getenv("GOOGLE_SHEETS_SYNC_EMAIL") or "").strip().lower()
 
     bets = _fetch_bets(db, sync_email)
     profiles = _fetch_profile_map(db)
     synced_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-    bet_rows = [_bet_to_row(b, profiles, synced_at) for b in bets]
-    summary_rows = _build_summary_rows(bets, synced_at)
+    bet_rows = [_bet_to_row(b, synced_at) for b in bets]
+    overall_rows = _build_overall_record_rows(bets, synced_at)
+    sport_rows = _build_by_sport_rows(bets)
 
     client = _get_gspread_client()
     spreadsheet = client.open_by_key(sheet_id)
 
     _write_worksheet(spreadsheet, bets_tab, BETS_HEADERS, bet_rows)
-    _write_worksheet(spreadsheet, summary_tab, SUMMARY_HEADERS, summary_rows)
+    _write_worksheet(spreadsheet, record_tab, OVERALL_RECORD_HEADERS, overall_rows)
+    _write_worksheet(spreadsheet, by_sport_tab, BY_SPORT_HEADERS, sport_rows)
+
+    # Remove legacy combined tab if present
+    _delete_worksheet_if_exists(spreadsheet, "Record")
+    _delete_worksheet_if_exists(spreadsheet, "AgentEdge Bets")
 
     return {"rows": len(bet_rows), "sheet_id": sheet_id, "synced_at": synced_at}
 
@@ -102,7 +117,7 @@ def _fetch_profile_map(db) -> dict[str, str]:
     }
 
 
-def _bet_to_row(bet: dict, profiles: dict, synced_at: str) -> list:
+def _bet_to_row(bet: dict, synced_at: str) -> list:
     odds = int(bet.get("odds") or 0)
     units = float(bet.get("units") or 0)
     units_result = bet.get("units_result")
@@ -110,6 +125,10 @@ def _bet_to_row(bet: dict, profiles: dict, synced_at: str) -> list:
     pl = ""
     if result not in ("PENDING", "P"):
         pl = f"{float(units_result or 0):+.2f}"
+
+    created = bet.get("created_at") or ""
+    if created and "T" in str(created):
+        created = str(created).replace("T", " ")[:19]
 
     return [
         bet.get("date", ""),
@@ -126,49 +145,55 @@ def _bet_to_row(bet: dict, profiles: dict, synced_at: str) -> list:
         bet.get("post_slate_tag", ""),
         bet.get("notes", ""),
         bet.get("id", ""),
+        bet.get("card_id", ""),
+        created,
         synced_at,
     ]
 
 
-def _build_summary_rows(bets: list[dict], synced_at: str) -> list[list]:
+def _build_overall_record_rows(bets: list[dict], synced_at: str) -> list[list]:
     graded = [b for b in bets if b.get("result") not in (None, "pending")]
     pending = [b for b in bets if b.get("result") == "pending"]
-    overall = _calc_record(graded)
+    rec = _calc_record(graded)
 
-    rows = [
-        ["Meta", "Last Synced", synced_at],
-        ["Meta", "Total Bets", str(len(bets))],
-        ["Meta", "Graded", str(len(graded))],
-        ["Meta", "Pending", str(len(pending))],
-        ["All-Time", "Record (W-L-P)", overall["record_str"]],
-        ["All-Time", "Net Units", overall["units_str"]],
-        ["All-Time", "ROI", f"{overall['roi_pct']:+.1f}%"],
-        ["All-Time", "Units Wagered", f"{overall['wagered']:.1f}u"],
+    return [
+        ["Last Synced", synced_at],
+        ["Total Plays", str(len(bets))],
+        ["Pending", str(len(pending))],
+        ["Graded", str(len(graded))],
+        ["Record (W-L-P)", rec["record_str"]],
+        ["Wins", str(rec["wins"])],
+        ["Losses", str(rec["losses"])],
+        ["Pushes", str(rec["pushes"])],
+        ["Net Units", rec["units_str"]],
+        ["Units Wagered", f"{rec['wagered']:.1f}u"],
+        ["ROI %", f"{rec['roi_pct']:+.1f}%"],
     ]
 
+
+def _build_by_sport_rows(bets: list[dict]) -> list[list]:
     by_sport: dict[str, list] = defaultdict(list)
-    for b in graded:
-        by_sport[(b.get("sport") or "Unknown").upper()].append(b)
-    for sport in sorted(by_sport):
-        rec = _calc_record(by_sport[sport])
-        rows.append(["By Sport", sport, f"{rec['record_str']} · {rec['units_str']} · {rec['roi_pct']:+.1f}% ROI"])
-
-    by_date: dict[str, list] = defaultdict(list)
     for b in bets:
-        by_date[b.get("date", "")].append(b)
-    for day in sorted(by_date.keys(), reverse=True)[:60]:
-        day_bets = by_date[day]
-        day_graded = [b for b in day_bets if b.get("result") != "pending"]
-        day_pending = sum(1 for b in day_bets if b.get("result") == "pending")
-        if day_graded:
-            rec = _calc_record(day_graded)
-            detail = f"{rec['record_str']} · {rec['units_str']}"
-        else:
-            detail = "—"
-        if day_pending:
-            detail += f" · {day_pending} pending"
-        rows.append(["By Date", day, f"{len(day_bets)} plays · {detail}"])
+        by_sport[(b.get("sport") or "Unknown").upper()].append(b)
 
+    rows = []
+    for sport in sorted(by_sport):
+        sport_bets = by_sport[sport]
+        graded = [b for b in sport_bets if b.get("result") not in (None, "pending")]
+        pending = sum(1 for b in sport_bets if b.get("result") == "pending")
+        rec = _calc_record(graded)
+        rows.append([
+            sport,
+            rec["wins"],
+            rec["losses"],
+            rec["pushes"],
+            pending,
+            rec["record_str"],
+            rec["net_units"],
+            rec["wagered"],
+            rec["roi_pct"],
+            len(sport_bets),
+        ])
     return rows
 
 
@@ -214,6 +239,16 @@ def _write_worksheet(spreadsheet, title: str, headers: list, rows: list[list]):
     ws.clear()
     ws.update([headers] + rows, value_input_option="USER_ENTERED")
     ws.freeze(rows=1)
+
+
+def _delete_worksheet_if_exists(spreadsheet, title: str):
+    import gspread
+
+    try:
+        ws = spreadsheet.worksheet(title)
+        spreadsheet.del_worksheet(ws)
+    except gspread.WorksheetNotFound:
+        pass
 
 
 def _get_gspread_client():
