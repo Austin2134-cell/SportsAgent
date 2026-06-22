@@ -26,10 +26,13 @@ def run_card_for_user(user_id: str, prefs: dict, target_date: str = None) -> dic
 
     today = target_date or date.today().isoformat()
 
-    existing = db.table("cards").select("id").eq("user_id", user_id).eq("date", today).execute()
+    existing = db.table("cards").select("id, raw_card").eq("user_id", user_id).eq("date", today).execute()
     if existing.data:
-        print(f"[agent_runner] Card already exists for {user_id} on {today}")
-        return {}
+        raw = existing.data[0].get("raw_card") or {}
+        if isinstance(raw, dict) and raw.get("esm"):
+            print(f"[agent_runner] ESM card already exists for {user_id} on {today}")
+            return {}
+        print(f"[agent_runner] Merging ESM plays into existing card for {today}")
 
     max_plays = int(prefs.get("max_plays", 5))
     unit_size = float(prefs.get("unit_size", 50))
