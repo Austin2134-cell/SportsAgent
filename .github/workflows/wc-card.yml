@@ -21,9 +21,9 @@ on:
           - "false"
           - "true"
 
-  # Auto-run daily at 9:30 AM MDT (15:30 UTC) during WC group stage
+  # Auto-run daily at 8:50 AM Mountain Time (14:50 UTC during MDT / 15:50 UTC during MST)
   schedule:
-    - cron: "30 15 * * *"
+    - cron: "50 14 * * *"
 
 jobs:
   generate-card:
