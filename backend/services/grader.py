@@ -91,14 +91,25 @@ def grade_all_pending(db, *, as_of_date: str | None = None):
                 else:
                     update["post_slate_tag"] = grade_tag
             db.table("bets").update(update).eq("id", bet["id"]).execute()
+            graded_bet = {**bet, **update}
+            from agent.post_grade import apply_post_grade_effects
+            apply_post_grade_effects(
+                db,
+                graded_bet,
+                outcome["result"],
+                units_result,
+                tag=grade_tag,
+            )
             graded += 1
             affected_users.add(bet["user_id"])
         else:
             manual += 1
     if affected_users:
         from learning.memory import refresh_memory
+        from agent.post_grade import finalize_grade_batch
         for uid in affected_users:
             refresh_memory(db, uid)
+        finalize_grade_batch(db, affected_users)
     if graded:
         recalculate_graded_units(db)
         from services.sheets_sync import maybe_sync_sheets

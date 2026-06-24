@@ -363,8 +363,10 @@ async def admin_run_wc_card(
 @app.post("/api/admin/grade")
 async def admin_grade(body: GradeRequest, admin: dict = Depends(get_admin_user)):
     from services.units import calculate_units_result
+    from learning.memory import refresh_memory
+    from agent.post_grade import apply_post_grade_effects, finalize_grade_batch
 
-    bet_result = db.table("bets").select("units, odds").eq("id", body.bet_id).single().execute()
+    bet_result = db.table("bets").select("*").eq("id", body.bet_id).single().execute()
     if not bet_result.data:
         raise HTTPException(status_code=404, detail="Bet not found")
     bet = bet_result.data
@@ -375,10 +377,15 @@ async def admin_grade(body: GradeRequest, admin: dict = Depends(get_admin_user))
             float(bet.get("units") or 0),
             int(bet.get("odds") or -110),
         )
+    result = body.result.upper()
     db.table("bets").update({
-        "result": body.result.upper(),
+        "result": result,
         "units_result": units_result,
     }).eq("id", body.bet_id).execute()
+    graded_bet = {**bet, "result": result, "units_result": units_result}
+    apply_post_grade_effects(db, graded_bet, result, units_result)
+    refresh_memory(db, bet["user_id"])
+    finalize_grade_batch(db, {bet["user_id"]})
     return {"message": "Bet graded", "units_result": units_result}
 
 

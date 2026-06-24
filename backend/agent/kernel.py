@@ -13,7 +13,8 @@ import anthropic
 from agent.unit_tracker import AGENT_BET_TAG, get_unit_context, major_league_sport_keys, sync_units_at_risk
 from agent.memory_store import (
     create_hypothesis, get_agent_instance, get_beliefs, log_episode,
-    upsert_belief, format_beliefs_for_prompt,
+    upsert_belief, format_beliefs_for_prompt, expire_stale_hypotheses,
+    get_hypotheses, get_feed, format_hypotheses_for_prompt, format_recent_episodes_for_prompt,
 )
 from agent.prompt import build_agent_system_prompt
 from agent.sports import resolve_user_sports, sport_key_to_display
@@ -49,6 +50,8 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
         )
         return {"skipped": True, "reason": "no major-league sports selected"}
 
+    expire_stale_hypotheses(db, user_id)
+
     sync_units_at_risk(db, user_id, today)
     bankroll = get_unit_context(db, user_id, today)
     unit_size = bankroll["unit_size"]
@@ -59,6 +62,8 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
     espn_context = _build_espn_context(market_snapshot, today)
     beliefs = get_beliefs(db, user_id)
     perf_context = get_performance_context(db, user_id)
+    watching = get_hypotheses(db, user_id, status="watching")
+    recent_episodes = get_feed(db, user_id, limit=15)
 
     system_prompt = build_agent_system_prompt(
         user_name=user_name,
@@ -80,6 +85,8 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
         today, market_snapshot, espn_context,
         max_plays=int(prefs.get("max_plays", 5)),
         units_remaining=bankroll["units_remaining_today"],
+        hypotheses_text=format_hypotheses_for_prompt(watching),
+        recent_activity_text=format_recent_episodes_for_prompt(recent_episodes),
     )
 
     scan_result = _call_agent(system_prompt, user_message)
@@ -205,13 +212,19 @@ def _build_espn_context(market_snapshot: dict, today: str) -> dict:
 def _build_scan_message(
     today: str, market_snapshot: dict, espn_context: dict,
     max_plays: int, units_remaining: float,
+    hypotheses_text: str = "",
+    recent_activity_text: str = "",
 ) -> str:
     parts = [
         f"SCAN DATE: {today}",
         f"MAX NEW POSITIONS THIS SCAN: {max_plays}",
         f"UNITS REMAINING TODAY: {units_remaining:.1f}",
-        "\n--- LIVE MARKET DATA (user's sports only) ---",
     ]
+    if hypotheses_text:
+        parts.append(hypotheses_text)
+    if recent_activity_text:
+        parts.append(recent_activity_text)
+    parts.append("\n--- LIVE MARKET DATA (user's sports only) ---")
     sports = market_snapshot.get("sports", {})
     if sports:
         parts.append(_summarize_market(market_snapshot))
@@ -225,9 +238,9 @@ def _build_scan_message(
         parts.append("No ESPN context available.")
 
     parts.append(
-        "\nRun your agent scan. Observe the slate, track hypotheses, "
-        "recommend positions only where edge is clear and within exposure limits. "
-        "Return ONLY valid JSON matching the agent scan output schema."
+        "\nRun your agent scan. Review active hypotheses and recent activity above. "
+        "Observe the slate, track hypotheses, recommend positions only where edge is clear "
+        "and within exposure limits. Return ONLY valid JSON matching the agent scan output schema."
     )
     return "\n".join(parts)
 
@@ -321,13 +334,6 @@ def _persist_positions(
         accepted.append(pos)
         units_used += units
 
-        log_episode(
-            db, user_id, trigger_type="position", episode_type="position",
-            title=f"Position: {pos.get('bet', '')}",
-            reasoning=pos.get("edge_summary", ""),
-            action_payload=pos,
-        )
-
     if not accepted:
         return 0.0
 
@@ -351,7 +357,7 @@ def _persist_positions(
         card_id = card_result.data[0]["id"] if card_result.data else None
 
     for pos in accepted:
-        db.table("bets").insert({
+        bet_result = db.table("bets").insert({
             "user_id": user_id,
             "card_id": card_id,
             "date": today,
@@ -368,6 +374,15 @@ def _persist_positions(
             "post_slate_tag": AGENT_BET_TAG,
             "notes": pos.get("edge_summary", ""),
         }).execute()
+        bet_id = bet_result.data[0]["id"] if bet_result.data else None
+        payload = {**pos, "bet_id": bet_id} if bet_id else pos
+
+        log_episode(
+            db, user_id, trigger_type="position", episode_type="position",
+            title=f"Position: {pos.get('bet', '')}",
+            reasoning=pos.get("edge_summary", ""),
+            action_payload=payload,
+        )
 
     sync_units_at_risk(db, user_id, today)
     from services.sheets_sync import maybe_sync_sheets
