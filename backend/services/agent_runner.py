@@ -66,7 +66,7 @@ def run_card_for_user(
     print("[agent_runner] Fetching ESPN context...")
     espn_context = _build_espn_context(market_snapshot, today)
 
-    perf_context = get_performance_context(db, user_id)
+    perf_context = get_performance_context(db, user_id, pipeline="esm")
     user_message = _build_user_message(today, market_snapshot, espn_context, max_plays, unit_size, perf_context)
 
     print("[agent_runner] Running ESM analysis...")

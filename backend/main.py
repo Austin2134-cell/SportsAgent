@@ -401,6 +401,33 @@ async def admin_grade_all(admin: dict = Depends(get_admin_user)):
     return grade_all_pending(db)
 
 
+@app.post("/api/admin/backfill-bankroll")
+async def admin_backfill_bankroll(
+    user_id: Optional[str] = None,
+    admin: dict = Depends(get_admin_user),
+):
+    """Replay graded bets to rebuild agent_instances.bankroll_current."""
+    from agent.bankroll_backfill import backfill_all_agent_bankrolls, replay_bankroll_for_user
+
+    if user_id:
+        return replay_bankroll_for_user(db, user_id)
+    return backfill_all_agent_bankrolls(db)
+
+
+@app.post("/api/admin/refresh-memory")
+async def admin_refresh_memory(
+    user_id: Optional[str] = None,
+    admin: dict = Depends(get_admin_user),
+):
+    """Recompute agent_memory stats (optionally for one user)."""
+    from learning.memory import refresh_memory, refresh_memory_all_users
+
+    if user_id:
+        refresh_memory(db, user_id)
+        return {"message": "Memory refreshed", "user_id": user_id}
+    return refresh_memory_all_users(db)
+
+
 @app.post("/api/admin/recalculate-units")
 async def admin_recalculate_units(admin: dict = Depends(get_admin_user)):
     """Recompute units_result for all graded bets and refresh the Google Sheet."""
