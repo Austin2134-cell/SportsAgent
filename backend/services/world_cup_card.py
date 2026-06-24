@@ -38,7 +38,24 @@ def _wc_tournament_day(target_date: str) -> int:
     return max(1, (d - WC_START_DATE).days + 1)
 
 
-def _build_wc_market_snapshot(target_date: str) -> dict:
+def _build_wc_market_snapshot(target_date: str, db=None) -> dict:
+    """Prefer fresh morning cache; fall back to live TOA fetch (CLI / cache miss)."""
+    if db is not None:
+        try:
+            from esm.snapshot_cache import get_cached_snapshot
+
+            cached = get_cached_snapshot(db, [WC_SPORT_KEY], target_date)
+            wc_data = (cached or {}).get("sports", {}).get(WC_SPORT_KEY)
+            if wc_data and wc_data.get("games"):
+                print(
+                    f"[wc_runner] Using cached WC odds: {len(wc_data['games'])} game(s) "
+                    f"(source={cached.get('source', 'cache')})"
+                )
+                return cached
+            print("[wc_runner] Morning WC cache empty — fetching live odds...")
+        except Exception as e:
+            print(f"[wc_runner] Cache read error: {e} — fetching live odds...")
+
     odds_key = os.getenv("ODDS_API_KEY", "")
     sgo_key = os.getenv("SGO_API_KEY", "")
 
@@ -245,6 +262,7 @@ def run_world_cup_card(
     max_plays: int = 5,
     unit_size: float = 50.0,
     print_output: bool = True,
+    db=None,
 ) -> dict:
     """Generate the WC card, optionally email and persist. Returns card JSON."""
     card_date = target_date or today_mt()
@@ -255,7 +273,7 @@ def run_world_cup_card(
         f"(Tournament Day {_wc_tournament_day(card_date)})..."
     )
 
-    snapshot = _build_wc_market_snapshot(card_date)
+    snapshot = _build_wc_market_snapshot(card_date, db=db)
     user_msg = _build_wc_user_message(card_date, snapshot, max_plays, unit_size)
     card = _call_claude(user_msg)
     card["date"] = card_date

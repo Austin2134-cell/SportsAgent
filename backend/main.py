@@ -24,7 +24,12 @@ from services.agent_runner import run_card_for_user
 from agent.provision import provision_agent, get_agent_status
 from agent.kernel import run_agent_scan
 from agent.sports import get_all_supported_sports
-from workers.market_poller import poll_markets, poll_morning_toa_snapshot, run_all_agent_scans
+from workers.market_poller import (
+    poll_markets,
+    poll_morning_toa_snapshot,
+    ensure_wc_odds_before_card,
+    run_all_agent_scans,
+)
 from esm.api_budget import POLL_INTERVAL_MINUTES, AGENT_SCAN_INTERVAL_MINUTES, budget_summary
 from esm.odds_client import OddsClient
 
@@ -36,8 +41,8 @@ scheduler = AsyncIOScheduler(timezone=TIMEZONE)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    scheduler.add_job(_scheduled_morning_toa, "cron", hour=8, minute=40, id="morning_toa_snapshot")
     scheduler.add_job(_scheduled_world_cup_card, "cron", hour=8, minute=50, id="world_cup_card")
-    scheduler.add_job(_scheduled_morning_toa, "cron", hour=9, minute=25, id="morning_toa_snapshot")
     scheduler.add_job(_scheduled_morning_agents, "cron", hour=9, minute=30, id="morning_agent_run")
     scheduler.add_job(run_daily_cards, "cron", hour=9, minute=35, id="daily_cards")
     scheduler.add_job(_scheduled_sheets_sync, "cron", hour=10, minute=0, id="sheets_sync")
@@ -57,9 +62,13 @@ async def _scheduled_world_cup_card():
     try:
         from services.world_cup_card import run_world_cup_card
 
+        odds_result = await asyncio.to_thread(ensure_wc_odds_before_card, db)
+        print(f"[AgentEdge] Pre-WC odds check: {odds_result}")
+
         card = await asyncio.to_thread(
             run_world_cup_card,
             print_output=True,
+            db=db,
         )
         print(
             f"[AgentEdge] World Cup card complete: "
@@ -315,11 +324,13 @@ async def admin_run_wc_card(
     """Manually trigger the World Cup daily card (same job as 8:50 AM Railway schedule)."""
     from services.world_cup_card import run_world_cup_card
 
+    odds_result = await asyncio.to_thread(ensure_wc_odds_before_card, db)
     card = await asyncio.to_thread(
         run_world_cup_card,
         target_date=target_date,
         send_email=not no_email,
         print_output=True,
+        db=db,
     )
     return {
         "message": "World Cup card generated",

@@ -77,7 +77,8 @@ def poll_markets(db, force_source: Optional[str] = None) -> dict:
 
 def poll_morning_toa_snapshot(db) -> dict:
     """
-    Daily 9:25 AM MT — one deliberate TOA snapshot with full props.
+    Daily 8:40 AM MT — deliberate TOA snapshot with full props (MLB + WC).
+    Runs before the 8:50 AM World Cup card and 9:30 AM agent morning scan.
     Uses ~39 credits/day (~1,170/month on 20K plan). Saves SGO objects for background polling.
     """
     enabled = os.getenv("TOA_MORNING_SNAPSHOT", "true").lower() in ("1", "true", "yes")
@@ -87,6 +88,28 @@ def poll_morning_toa_snapshot(db) -> dict:
     print("[poller] Running morning TOA snapshot (forced The Odds API)...")
     result = poll_markets(db, force_source="toa")
     result["job"] = "morning_toa_snapshot"
+    return result
+
+
+WC_SPORT_KEY = "soccer_fifa_world_cup"
+WC_ODDS_MAX_AGE_MINUTES = int(os.getenv("WC_ODDS_MAX_AGE_MINUTES", "45"))
+
+
+def ensure_wc_odds_before_card(db) -> dict:
+    """
+    Guarantee fresh World Cup lines before the daily card.
+    Polls TOA if WC cache is missing or older than WC_ODDS_MAX_AGE_MINUTES.
+    """
+    from esm.snapshot_cache import cache_age_minutes
+
+    age = cache_age_minutes(db, WC_SPORT_KEY)
+    if age is not None and age <= WC_ODDS_MAX_AGE_MINUTES:
+        print(f"[poller] WC odds fresh ({age:.0f} min old) — using morning cache")
+        return {"skipped": True, "cache_age_minutes": round(age, 1)}
+
+    print("[poller] WC odds stale or missing — running pre-card TOA snapshot...")
+    result = poll_markets(db, force_source="toa")
+    result["job"] = "pre_wc_card_odds"
     return result
 
 
