@@ -20,7 +20,14 @@ MDT = ZoneInfo(TIMEZONE)
 MODEL = "claude-sonnet-4-6"
 
 
-def run_card_for_user(user_id: str, prefs: dict, target_date: str = None) -> dict:
+def run_card_for_user(
+    user_id: str,
+    prefs: dict,
+    target_date: str = None,
+    *,
+    force: bool = False,
+    market_snapshot: dict | None = None,
+) -> dict:
     """Generate a daily major-league ESM card (MLB/NBA/NHL/NFL — not World Cup)."""
     from database import db
     from agent.unit_tracker import get_unit_context, major_league_sport_keys, sync_units_at_risk
@@ -32,12 +39,16 @@ def run_card_for_user(user_id: str, prefs: dict, target_date: str = None) -> dic
     unit_size = unit_ctx["unit_size"]
 
     existing = db.table("cards").select("id, raw_card").eq("user_id", user_id).eq("date", today).execute()
-    if existing.data:
+    if existing.data and not force:
         raw = existing.data[0].get("raw_card") or {}
-        if isinstance(raw, dict) and raw.get("esm"):
+        esm = raw.get("esm") if isinstance(raw, dict) else None
+        if isinstance(esm, dict) and esm.get("official_plays"):
             print(f"[agent_runner] ESM card already exists for {user_id} on {today}")
-            return {}
-        print(f"[agent_runner] Merging ESM plays into existing card for {today}")
+            return esm
+        if isinstance(raw, dict) and raw.get("esm"):
+            print(f"[agent_runner] Merging ESM plays into existing card for {today}")
+        elif existing.data:
+            print(f"[agent_runner] Merging ESM plays into existing card for {today}")
 
     max_plays = int(prefs.get("max_plays", 5))
     sport_keys = major_league_sport_keys(resolve_user_sports(prefs.get("sports", ["MLB"])))
@@ -45,8 +56,12 @@ def run_card_for_user(user_id: str, prefs: dict, target_date: str = None) -> dic
         print(f"[agent_runner] No major-league sports configured for {user_id} — skipping ESM card")
         return {}
 
-    print(f"[agent_runner] Fetching odds — {today} (1 unit = ${unit_size:.0f})")
-    market_snapshot = _build_market_snapshot(today, sport_keys=sport_keys)
+    if market_snapshot is None:
+        print(f"[agent_runner] Fetching odds — {today} (1 unit = ${unit_size:.0f})")
+        market_snapshot = _build_market_snapshot(today, sport_keys=sport_keys)
+    else:
+        games = sum(len(v.get("games", [])) for v in market_snapshot.get("sports", {}).values())
+        print(f"[agent_runner] Using supplied snapshot — {today} (1 unit = ${unit_size:.0f}, {games} games)")
 
     print("[agent_runner] Fetching ESPN context...")
     espn_context = _build_espn_context(market_snapshot, today)

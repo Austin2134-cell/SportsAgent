@@ -6,9 +6,17 @@ Supports US player props (NBA/MLB/NHL/NFL) and soccer markets (DNB, ML, totals, 
 """
 
 import re
+import os
 import requests
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
+from zoneinfo import ZoneInfo
+
+TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
+
+
+def _today_mt() -> str:
+    return datetime.now(ZoneInfo(TIMEZONE)).date().isoformat()
 
 ESPN_BASE = "https://site.api.espn.com/apis/site/v2/sports"
 HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json"}
@@ -50,12 +58,13 @@ SOCCER_MARKETS = frozenset({
 })
 
 
-def grade_all_pending(db):
-    today = date.today().isoformat()
+def grade_all_pending(db, *, as_of_date: str | None = None):
+    """Grade all pending bets with game date strictly before as_of_date (default: today MT)."""
+    today = as_of_date or _today_mt()
     result = db.table("bets").select("*").eq("result", "pending").lt("date", today).execute()
     bets = result.data or []
     if not bets:
-        return {"graded": 0, "manual": 0}
+        return {"graded": 0, "manual": 0, "as_of": today}
     graded = 0
     manual = 0
     affected_users: set = set()
@@ -91,7 +100,7 @@ def grade_all_pending(db):
         maybe_sync_sheets(db, reason="post-grade")
         for uid in affected_users:
             sync_units_at_risk(db, uid)
-    return {"graded": graded, "manual": manual}
+    return {"graded": graded, "manual": manual, "as_of": today}
 
 
 def _grade_bet(bet: dict) -> Optional[dict]:
@@ -109,6 +118,9 @@ def _grade_bet(bet: dict) -> Optional[dict]:
 
     if sport in ("SOCCER", "WC") or market in SOCCER_MARKETS or _looks_like_soccer_bet(bet_str):
         return _grade_soccer_bet(bet_str, market, game, bet_date, odds, units, espn_sport, espn_league)
+
+    if market in ("game_total", "totals", "total") or bet_str.lower().startswith("total "):
+        return _grade_game_total_bet(bet_str, game, bet_date, odds, units, espn_sport, espn_league)
 
     event = _find_event(espn_sport, espn_league, game, bet_date)
     if not event:
@@ -189,6 +201,49 @@ def _grade_soccer_bet(
             "tag": tag_extra or "",
         }
     return {"result": "L", "units_result": -units, "tag": tag_extra or "model miss"}
+
+
+def _grade_game_total_bet(
+    bet_str: str,
+    game: str,
+    bet_date: str,
+    odds: int,
+    units: float,
+    espn_sport: str,
+    espn_league: str,
+) -> Optional[dict]:
+    """Grade full-game Over/Under (MLB/NBA/NHL/NFL)."""
+    direction, line = _parse_total(bet_str, "totals")
+    if direction is None or line is None:
+        direction, line = _parse_bet(bet_str)
+    if direction is None or line is None:
+        return None
+
+    event = _find_event(espn_sport, espn_league, game, bet_date)
+    if not event:
+        return None
+    box = _get_box(espn_sport, espn_league, event["id"])
+    if not box:
+        return None
+    comp = box.get("header", {}).get("competitions", [{}])[0]
+    if comp.get("status", {}).get("type", {}).get("state") != "post":
+        return None
+
+    scores = _get_match_scores(comp)
+    if scores is None:
+        return None
+    _, _, home_score, away_score = scores
+    total = home_score + away_score
+
+    if total == line:
+        return {"result": "P", "units_result": 0.0, "tag": "exact total"}
+    if direction == "Over":
+        won = total > line
+    else:
+        won = total < line
+    if won:
+        return {"result": "W", "units_result": calculate_win_units(units, odds), "tag": ""}
+    return {"result": "L", "units_result": -units, "tag": "model miss"}
 
 
 def _resolve_soccer_outcome(

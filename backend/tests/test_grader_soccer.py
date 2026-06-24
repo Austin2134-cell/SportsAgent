@@ -69,3 +69,9 @@ def test_team_matches():
 def test_calculate_win_units():
     assert calculate_win_units(2, -110) == 1.82
     assert calculate_win_units(2, 150) == 3.0
+
+
+def test_game_total_parser():
+    from services.grader import _parse_total
+    assert _parse_total("Total Over 10.0", "game_total") == ("Over", 10.0)
+    assert _parse_total("Total Under 7.5", "game_total") == ("Under", 7.5)

@@ -41,6 +41,7 @@ scheduler = AsyncIOScheduler(timezone=TIMEZONE)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    scheduler.add_job(_scheduled_morning_grade, "cron", hour=9, minute=15, id="morning_grade")
     scheduler.add_job(_scheduled_morning_toa, "cron", hour=8, minute=40, id="morning_toa_snapshot")
     scheduler.add_job(_scheduled_world_cup_card, "cron", hour=8, minute=50, id="world_cup_card")
     scheduler.add_job(_scheduled_morning_agents, "cron", hour=9, minute=30, id="morning_agent_run")
@@ -79,6 +80,21 @@ async def _scheduled_world_cup_card():
         print(f"[AgentEdge] World Cup card error: {e}")
 
 
+async def _scheduled_morning_grade():
+    """Grade yesterday's bets, refresh agent memory, sync sheet (9:15 AM Mountain Time)."""
+    try:
+        from agent.unit_tracker import today_mt, sync_units_at_risk
+
+        grade_result = grade_all_pending(db)
+        print(f"[AgentEdge] Morning grade ({grade_result.get('as_of')}): {grade_result}")
+        today = today_mt()
+        agents = db.table("agent_instances").select("user_id").eq("status", "active").execute()
+        for row in agents.data or []:
+            sync_units_at_risk(db, row["user_id"], today)
+    except Exception as e:
+        print(f"[AgentEdge] Morning grade error: {e}")
+
+
 async def _scheduled_morning_toa():
     try:
         result = poll_morning_toa_snapshot(db)
@@ -88,12 +104,10 @@ async def _scheduled_morning_toa():
 
 
 async def _scheduled_morning_agents():
-    """Grade pending bets, sync unit tracker, then run agent scans."""
+    """Run agent morning scans against fresh odds cache (grading runs at 9:15 AM)."""
     try:
         from agent.unit_tracker import today_mt, sync_units_at_risk
 
-        grade_result = grade_all_pending(db)
-        print(f"[AgentEdge] Morning grade: {grade_result}")
         today = today_mt()
         agents = db.table("agent_instances").select("user_id").eq("status", "active").execute()
         for row in agents.data or []:
