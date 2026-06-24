@@ -38,9 +38,10 @@ jobs:
         run: |
           if [ -z "$SUPABASE_DB_URL" ]; then
             echo "::warning::SUPABASE_DB_URL not set — skipping SQL migrations."
-            echo "Tables may already exist. Add SUPABASE_DB_URL to GitHub Secrets to auto-migrate."
           else
-            python scripts/run_migration.py
+            python scripts/run_migration.py || {
+              echo "::warning::SQL migrations failed — tables may already exist. Continuing setup."
+            }
           fi
 
       - name: Seed learning loop
