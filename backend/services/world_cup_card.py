@@ -283,7 +283,7 @@ def run_world_cup_card(
         if user_id:
             unit_size = get_unit_context(db, user_id, card_date)["unit_size"]
     if unit_size is None:
-        unit_size = 10.0  # fallback when no bankroll on file ($1k × 1%)
+        unit_size = 30.0  # fallback when no bankroll on file ($1k × 3%)
 
     print(
         f"[wc_runner] Generating World Cup card for {card_date} "

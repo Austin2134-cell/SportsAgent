@@ -159,7 +159,7 @@ class PreferencesUpdate(BaseModel):
 
 class AgentSetupRequest(BaseModel):
     bankroll_starting: float = 1000
-    unit_pct: float = 0.01
+    unit_pct: float = 0.03
     max_daily_pct: float = 0.06
     sports: list[str] = ["MLB", "WC"]
     bet_types: list[str] = ["player_props", "straight"]

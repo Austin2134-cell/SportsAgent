@@ -1,9 +1,9 @@
 """
 Bankroll math — auto-calculated unit sizing from bankroll percentage.
-Default: 1 unit = 1% of bankroll, max daily exposure = 6% of bankroll (~6 units).
+Default: 1 unit = 3% of bankroll, max daily exposure = 6% of bankroll (~2 units).
 """
 
-DEFAULT_UNIT_PCT = 0.01
+DEFAULT_UNIT_PCT = 0.03
 DEFAULT_MAX_DAILY_PCT = 0.06
 
 

@@ -1,4 +1,4 @@
-"""Unit tracker — 1% bankroll sizing and WC separation."""
+"""Unit tracker — 3% bankroll sizing and WC separation."""
 
 from agent.bankroll import compute_bankroll_summary, compute_unit_size, compute_max_daily_units
 from agent.unit_tracker import (
@@ -8,27 +8,27 @@ from agent.unit_tracker import (
 )
 
 
-def test_one_percent_unit_size():
-    assert compute_unit_size(1000, DEFAULT_UNIT_PCT) == 10.0
-    assert compute_unit_size(2500, 0.01) == 25.0
+def test_three_percent_unit_size():
+    assert compute_unit_size(1000, DEFAULT_UNIT_PCT) == 30.0
+    assert compute_unit_size(2500, 0.03) == 75.0
 
 
-def test_max_daily_units_at_one_percent():
-    # 6% daily cap / 1% per unit = 6 units on $1000 bankroll
-    assert compute_max_daily_units(1000, 0.01, 0.06) == 6
+def test_max_daily_units_at_three_percent():
+    # 6% daily cap / 3% per unit = 2 units on $1000 bankroll
+    assert compute_max_daily_units(1000, 0.03, 0.06) == 2
 
 
 def test_wc_bets_excluded_from_major_league_exposure():
     summary = compute_bankroll_summary(
         bankroll_current=1000,
         bankroll_starting=1000,
-        unit_pct=0.01,
+        unit_pct=0.03,
         max_daily_pct=0.06,
-        units_at_risk=3.0,
+        units_at_risk=1.0,
     )
-    assert summary["unit_size"] == 10.0
-    assert summary["max_daily_units"] == 6
-    assert summary["units_remaining_today"] == 3.0
+    assert summary["unit_size"] == 30.0
+    assert summary["max_daily_units"] == 2
+    assert summary["units_remaining_today"] == 1.0
 
 
 def test_is_wc_bet_by_tag_or_notes():

@@ -1,5 +1,5 @@
 """
-Daily unit tracker — 1 unit = unit_pct of bankroll (default 1%).
+Daily unit tracker — 1 unit = unit_pct of bankroll (default 3%).
 
 World Cup bets (post_slate_tag=world_cup) are tracked separately and do not
 count toward the agent / major-league daily exposure cap.
@@ -15,7 +15,7 @@ from zoneinfo import ZoneInfo
 from agent.bankroll import compute_bankroll_summary, compute_unit_size
 
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
-DEFAULT_UNIT_PCT = float(os.getenv("UNIT_PCT", "0.01"))
+DEFAULT_UNIT_PCT = float(os.getenv("UNIT_PCT", "0.03"))
 DEFAULT_MAX_DAILY_PCT = float(os.getenv("MAX_DAILY_PCT", "0.06"))
 
 WC_BET_TAG = "world_cup"
@@ -92,7 +92,7 @@ def sync_units_at_risk(db, user_id: str, bet_date: Optional[str] = None) -> dict
 
 
 def get_unit_context(db, user_id: str, bet_date: Optional[str] = None) -> dict:
-    """Bankroll summary with live unit size (1% default) and synced exposure."""
+    """Bankroll summary with live unit size (3% default) and synced exposure."""
     bet_date = bet_date or today_mt()
     synced = sync_units_at_risk(db, user_id, bet_date)
 
