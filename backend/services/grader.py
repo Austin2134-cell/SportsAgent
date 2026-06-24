@@ -105,10 +105,11 @@ def grade_all_pending(db, *, as_of_date: str | None = None):
         else:
             manual += 1
     if affected_users:
-        from learning.memory import refresh_memory
+        from learning.memory import refresh_memory, refresh_platform_memory
         from agent.post_grade import finalize_grade_batch
         for uid in affected_users:
             refresh_memory(db, uid)
+        refresh_platform_memory(db)
         finalize_grade_batch(db, affected_users)
     if graded:
         recalculate_graded_units(db)

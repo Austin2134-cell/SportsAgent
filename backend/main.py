@@ -363,7 +363,7 @@ async def admin_run_wc_card(
 @app.post("/api/admin/grade")
 async def admin_grade(body: GradeRequest, admin: dict = Depends(get_admin_user)):
     from services.units import calculate_units_result
-    from learning.memory import refresh_memory
+    from learning.memory import refresh_memory, refresh_platform_memory
     from agent.post_grade import apply_post_grade_effects, finalize_grade_batch
 
     bet_result = db.table("bets").select("*").eq("id", body.bet_id).single().execute()
@@ -385,6 +385,7 @@ async def admin_grade(body: GradeRequest, admin: dict = Depends(get_admin_user))
     graded_bet = {**bet, "result": result, "units_result": units_result}
     apply_post_grade_effects(db, graded_bet, result, units_result)
     refresh_memory(db, bet["user_id"])
+    refresh_platform_memory(db)
     finalize_grade_batch(db, {bet["user_id"]})
     return {"message": "Bet graded", "units_result": units_result}
 
@@ -420,11 +421,12 @@ async def admin_refresh_memory(
     admin: dict = Depends(get_admin_user),
 ):
     """Recompute agent_memory stats (optionally for one user)."""
-    from learning.memory import refresh_memory, refresh_memory_all_users
+    from learning.memory import refresh_memory, refresh_memory_all_users, refresh_platform_memory
 
     if user_id:
         refresh_memory(db, user_id)
-        return {"message": "Memory refreshed", "user_id": user_id}
+        refresh_platform_memory(db)
+        return {"message": "Memory refreshed", "user_id": user_id, "platform_refreshed": True}
     return refresh_memory_all_users(db)
 
 

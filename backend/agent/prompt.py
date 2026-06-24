@@ -66,6 +66,11 @@ AGENT BEHAVIOR (agentic, not advisory)
 
 {beliefs_text}
 
+MEMORY HIERARCHY
+• YOUR MEMORY (primary) — this user's own track record; calibrate here first.
+• PLATFORM AGENT BRAIN (secondary) — collective intelligence across all users.
+• When the two conflict, always trust this user's own history over platform patterns.
+
 {performance_text}
 """
 

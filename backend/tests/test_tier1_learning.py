@@ -2,7 +2,14 @@
 
 from agent.bankroll import apply_bet_result, compute_unit_size
 from agent.bankroll_backfill import replay_bankroll_for_user
-from learning.memory import _aggregate_bets, _format_for_prompt, _pipeline_key, _compute_stats
+from learning.memory import (
+    _aggregate_bets,
+    _compute_user_stats,
+    _format_user_memory,
+    _format_platform_memory,
+    _pipeline_key,
+    get_performance_context,
+)
 
 
 def test_pipeline_key_normalizes_tags():
@@ -37,7 +44,7 @@ def test_aggregate_bets_basic():
             "bet": "Test loss",
         },
     ]
-    stats = _aggregate_bets(bets)
+    stats = _aggregate_bets(bets, include_recent_losses=True)
     assert stats["wins"] == 1
     assert stats["losses"] == 1
     assert stats["net_units"] == -0.18
@@ -46,7 +53,7 @@ def test_aggregate_bets_basic():
     assert stats["recent_losses"][0]["pipeline"] == "world_cup"
 
 
-def test_format_for_prompt_prioritizes_agent_pipeline():
+def test_format_user_memory_prioritizes_agent_pipeline():
     stats = {
         "lookback_days": 90,
         "wins": 3,
@@ -89,10 +96,115 @@ def test_format_for_prompt_prioritizes_agent_pipeline():
             },
         },
     }
-    text = _format_for_prompt(stats, pipeline="agent")
-    assert "AGENT pipeline" in text
-    assert "Overall (all pipelines)" in text
+    text = _format_user_memory(stats, pipeline="agent")
+    assert "YOUR MEMORY (PRIMARY" in text
+    assert "Your AGENT bets" in text
+    assert "Your all-pipeline record" in text
+    assert "Your pipeline breakdown" in text
     assert "world_cup:" in text
+
+
+def test_format_platform_memory_is_anonymized():
+    stats = {
+        "lookback_days": 90,
+        "active_users": 12,
+        "wins": 80,
+        "losses": 65,
+        "pushes": 5,
+        "net_units": 8.0,
+        "roi_pct": 4.0,
+        "total_bets": 150,
+        "by_market": {
+            "batter_hits": {"W": 10, "L": 25, "P": 0, "net": -12.0},
+        },
+        "by_sport": {},
+        "by_confidence": {},
+        "by_odds_bucket": {},
+        "weak_markets": [{"market": "batter_hits", "record": "10-25", "net_units": -12.0}],
+        "by_pipeline": {
+            "agent": {
+                "wins": 40,
+                "losses": 30,
+                "pushes": 2,
+                "net_units": 6.0,
+                "roi_pct": 5.0,
+                "total_bets": 72,
+                "by_market": {},
+                "by_sport": {},
+                "by_confidence": {},
+                "by_odds_bucket": {},
+                "weak_markets": [{"market": "batter_hits", "record": "10-25", "net_units": -12.0}],
+            },
+        },
+    }
+    text = _format_platform_memory(stats, pipeline="agent")
+    assert "PLATFORM AGENT BRAIN (SECONDARY" in text
+    assert "12 active user" in text
+    assert "trust the user's own history" in text
+    assert "Platform weak markets" in text
+    assert "batter_hits" in text
+    # No individual bet strings in platform brain
+    assert "Over" not in text
+
+
+def test_get_performance_context_user_first_then_platform():
+    class FakeDB:
+        def table(self, name):
+            return self
+
+        def select(self, *_cols):
+            return self
+
+        def eq(self, field, value):
+            self._eq = (field, value)
+            return self
+
+        def execute(self):
+            if self._eq == ("user_id", "user-1"):
+                return type("R", (), {"data": [{
+                    "stats": {
+                        "lookback_days": 90,
+                        "wins": 2, "losses": 1, "pushes": 0,
+                        "net_units": 1.0, "roi_pct": 10.0, "total_bets": 3,
+                        "by_market": {}, "by_sport": {}, "by_confidence": {},
+                        "by_odds_bucket": {}, "recent_losses": [],
+                        "by_pipeline": {
+                            "agent": {
+                                "wins": 2, "losses": 1, "pushes": 0,
+                                "net_units": 1.0, "roi_pct": 10.0, "total_bets": 3,
+                                "by_market": {}, "by_sport": {}, "by_confidence": {},
+                                "by_odds_bucket": {}, "recent_losses": [],
+                            },
+                        },
+                    },
+                }]})()
+            if self._eq == ("key", "global"):
+                return type("R", (), {"data": [{
+                    "stats": {
+                        "lookback_days": 90,
+                        "active_users": 5,
+                        "wins": 20, "losses": 18, "pushes": 0,
+                        "net_units": 2.0, "roi_pct": 3.0, "total_bets": 38,
+                        "by_market": {}, "by_sport": {}, "by_confidence": {},
+                        "by_odds_bucket": {}, "weak_markets": [],
+                        "by_pipeline": {
+                            "agent": {
+                                "wins": 15, "losses": 12, "pushes": 0,
+                                "net_units": 3.0, "roi_pct": 5.0, "total_bets": 27,
+                                "by_market": {}, "by_sport": {}, "by_confidence": {},
+                                "by_odds_bucket": {}, "weak_markets": [],
+                            },
+                        },
+                    },
+                }]})()
+            return type("R", (), {"data": []})()
+
+    text = get_performance_context(FakeDB(), "user-1", pipeline="agent")
+    user_pos = text.find("YOUR MEMORY (PRIMARY")
+    platform_pos = text.find("PLATFORM AGENT BRAIN (SECONDARY")
+    assert user_pos >= 0
+    assert platform_pos >= 0
+    assert user_pos < platform_pos
 
 
 class FakeQuery:
