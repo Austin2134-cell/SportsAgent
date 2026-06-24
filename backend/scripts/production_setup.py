@@ -5,6 +5,7 @@ Uses SUPABASE_URL + SUPABASE_SERVICE_KEY (no admin JWT required).
 Triggered via GitHub Actions workflow "Production Setup" or: python scripts/production_setup.py
 See .github/workflows/production-setup.yml
 Requires SUPABASE_DB_URL in GitHub Secrets and Cursor Secrets for SQL migrations.
+Last verified after DB password reset.
 """
 from __future__ import annotations
 
