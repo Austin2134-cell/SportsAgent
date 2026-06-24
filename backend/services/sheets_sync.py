@@ -6,9 +6,9 @@ Tabs created:
   Overall Record   — lifetime W-L-P, units, ROI
   Record by Sport  — breakdown per sport
 
-Requires:
-  GOOGLE_SHEET_ID
-  GOOGLE_SHEETS_CREDENTIALS_JSON
+Unit columns follow ESM rules:
+  Units Risked = stake; Units Won = profit at odds (wins only);
+  Units Lost = full risk lost (losses only); Net Units = W/L P/L.
 """
 
 import json
@@ -17,6 +17,8 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from typing import Optional
 
+from services.units import aggregate_record, format_net_units, format_units_lost, format_units_won, net_units, units_lost, units_won
+
 BETS_HEADERS = [
     "Date",
     "Sport",
@@ -24,11 +26,13 @@ BETS_HEADERS = [
     "Bet",
     "Market",
     "Odds",
-    "Units",
+    "Units Risked",
     "Book",
     "Confidence",
     "Result",
-    "Units P/L",
+    "Units Won",
+    "Units Lost",
+    "Net Units",
     "Tag",
     "Notes",
     "Bet ID",
@@ -46,8 +50,10 @@ BY_SPORT_HEADERS = [
     "Pushes",
     "Pending",
     "Record",
+    "Units Risked",
+    "Units Won",
+    "Units Lost",
     "Net Units",
-    "Units Wagered",
     "ROI %",
     "Total Plays",
 ]
@@ -78,7 +84,6 @@ def sync_bets_to_sheet(db) -> dict:
     sync_email = (os.getenv("GOOGLE_SHEETS_SYNC_EMAIL") or "").strip().lower()
 
     bets = _fetch_bets(db, sync_email)
-    profiles = _fetch_profile_map(db)
     synced_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     bet_rows = [_bet_to_row(b, synced_at) for b in bets]
@@ -92,7 +97,6 @@ def sync_bets_to_sheet(db) -> dict:
     _write_worksheet(spreadsheet, record_tab, OVERALL_RECORD_HEADERS, overall_rows)
     _write_worksheet(spreadsheet, by_sport_tab, BY_SPORT_HEADERS, sport_rows)
 
-    # Remove legacy combined tab if present
     _delete_worksheet_if_exists(spreadsheet, "Record")
     _delete_worksheet_if_exists(spreadsheet, "AgentEdge Bets")
 
@@ -119,12 +123,8 @@ def _fetch_profile_map(db) -> dict[str, str]:
 
 def _bet_to_row(bet: dict, synced_at: str) -> list:
     odds = int(bet.get("odds") or 0)
-    units = float(bet.get("units") or 0)
-    units_result = bet.get("units_result")
+    units_risked = float(bet.get("units") or 0)
     result = (bet.get("result") or "pending").upper()
-    pl = ""
-    if result not in ("PENDING", "P"):
-        pl = f"{float(units_result or 0):+.2f}"
 
     created = bet.get("created_at") or ""
     if created and "T" in str(created):
@@ -137,11 +137,13 @@ def _bet_to_row(bet: dict, synced_at: str) -> list:
         bet.get("bet", ""),
         bet.get("market", ""),
         f"{odds:+d}" if odds else "",
-        units,
+        units_risked,
         bet.get("book", ""),
         bet.get("confidence", ""),
         result,
-        pl,
+        format_units_won(units_won(bet)),
+        format_units_lost(units_lost(bet)),
+        format_net_units(net_units(bet)),
         bet.get("post_slate_tag", ""),
         bet.get("notes", ""),
         bet.get("id", ""),
@@ -154,7 +156,7 @@ def _bet_to_row(bet: dict, synced_at: str) -> list:
 def _build_overall_record_rows(bets: list[dict], synced_at: str) -> list[list]:
     graded = [b for b in bets if b.get("result") not in (None, "pending")]
     pending = [b for b in bets if b.get("result") == "pending"]
-    rec = _calc_record(graded)
+    rec = aggregate_record(graded)
 
     return [
         ["Last Synced", synced_at],
@@ -165,8 +167,10 @@ def _build_overall_record_rows(bets: list[dict], synced_at: str) -> list[list]:
         ["Wins", str(rec["wins"])],
         ["Losses", str(rec["losses"])],
         ["Pushes", str(rec["pushes"])],
+        ["Units Risked", f"{rec['units_risked']:.1f}u"],
+        ["Units Won", f"{rec['units_won']:.1f}u"],
+        ["Units Lost", f"{rec['units_lost']:.1f}u"],
         ["Net Units", rec["units_str"]],
-        ["Units Wagered", f"{rec['wagered']:.1f}u"],
         ["ROI %", f"{rec['roi_pct']:+.1f}%"],
     ]
 
@@ -181,7 +185,7 @@ def _build_by_sport_rows(bets: list[dict]) -> list[list]:
         sport_bets = by_sport[sport]
         graded = [b for b in sport_bets if b.get("result") not in (None, "pending")]
         pending = sum(1 for b in sport_bets if b.get("result") == "pending")
-        rec = _calc_record(graded)
+        rec = aggregate_record(graded)
         rows.append([
             sport,
             rec["wins"],
@@ -189,8 +193,10 @@ def _build_by_sport_rows(bets: list[dict]) -> list[list]:
             rec["pushes"],
             pending,
             rec["record_str"],
+            rec["units_risked"],
+            rec["units_won"],
+            rec["units_lost"],
             rec["net_units"],
-            rec["wagered"],
             rec["roi_pct"],
             len(sport_bets),
         ])
@@ -198,34 +204,8 @@ def _build_by_sport_rows(bets: list[dict]) -> list[list]:
 
 
 def _calc_record(bets: list[dict]) -> dict:
-    wins = losses = pushes = 0
-    net_units = 0.0
-    wagered = 0.0
-    for bet in bets:
-        units = float(bet.get("units", 2))
-        units_result = float(bet.get("units_result", 0))
-        wagered += units
-        r = bet.get("result", "")
-        if r == "W":
-            wins += 1
-            net_units += units_result
-        elif r == "L":
-            losses += 1
-            net_units += units_result
-        elif r == "P":
-            pushes += 1
-    roi = (net_units / wagered * 100) if wagered > 0 else 0.0
-    sign = "+" if net_units >= 0 else ""
-    return {
-        "wins": wins,
-        "losses": losses,
-        "pushes": pushes,
-        "net_units": round(net_units, 2),
-        "wagered": round(wagered, 2),
-        "roi_pct": round(roi, 1),
-        "record_str": f"{wins}-{losses}-{pushes}",
-        "units_str": f"{sign}{net_units:.1f}u",
-    }
+    """Backward-compatible wrapper."""
+    return aggregate_record(bets)
 
 
 def _write_worksheet(spreadsheet, title: str, headers: list, rows: list[list]):

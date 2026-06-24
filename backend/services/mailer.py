@@ -165,7 +165,7 @@ def _play_html(play: dict) -> str:
         <div style="font-size:15px;color:#475569;margin-bottom:6px;">
           <span style="color:{color};font-weight:900;font-size:20px;">{odds_str}</span>
           &nbsp;·&nbsp;
-          <span style="color:#94a3b8;font-weight:600;">{play.get('units', 2)}u</span>
+          <span style="color:#94a3b8;font-weight:600;">{play.get('units', 2)}u risk</span>
           &nbsp;·&nbsp;
           <span style="color:#64748b;">{play.get('book','DraftKings')}</span>
           <span style="color:#334155;">{time_part}</span>

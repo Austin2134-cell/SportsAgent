@@ -8,6 +8,8 @@ to inject historical context into the daily prompt.
 
 from datetime import date, timedelta
 
+from services.units import normalize_units_result
+
 LOOKBACK_DAYS = 90
 
 
@@ -47,6 +49,7 @@ def _compute_stats(db, user_id: str) -> dict:
 
     wins = losses = pushes = 0
     net_units = 0.0
+    units_risked_total = 0.0
     by_market: dict = {}
     by_sport: dict = {}
     by_confidence: dict = {}
@@ -55,7 +58,9 @@ def _compute_stats(db, user_id: str) -> dict:
 
     for bet in bets:
         result_val = bet.get("result", "")
-        units_result = float(bet.get("units_result", 0))
+        units_risked = float(bet.get("units") or 0)
+        units_risked_total += units_risked
+        units_result = normalize_units_result(bet)
         market = bet.get("market", "unknown")
         sport = bet.get("sport", "unknown")
         confidence = (bet.get("confidence") or "MEDIUM").upper()
@@ -82,8 +87,7 @@ def _compute_stats(db, user_id: str) -> dict:
         _tally(by_confidence, confidence, result_val, units_result)
         _tally(by_odds_bucket, _odds_bucket(odds), result_val, units_result)
 
-    played = wins + losses
-    roi = round(net_units / played * 100, 1) if played > 0 else 0.0
+    roi = round(net_units / units_risked_total * 100, 1) if units_risked_total > 0 else 0.0
 
     return {
         "lookback_days": LOOKBACK_DAYS,
@@ -91,6 +95,7 @@ def _compute_stats(db, user_id: str) -> dict:
         "wins": wins,
         "losses": losses,
         "pushes": pushes,
+        "units_risked": round(units_risked_total, 2),
         "net_units": round(net_units, 2),
         "roi_pct": roi,
         "by_market": by_market,

@@ -186,7 +186,7 @@ class AgentSetupRequest(BaseModel):
 class GradeRequest(BaseModel):
     bet_id: str
     result: str
-    units_result: float
+    units_result: Optional[float] = None
 
 
 @app.post("/auth/register")
@@ -362,8 +362,24 @@ async def admin_run_wc_card(
 
 @app.post("/api/admin/grade")
 async def admin_grade(body: GradeRequest, admin: dict = Depends(get_admin_user)):
-    db.table("bets").update({"result": body.result.upper(), "units_result": body.units_result}).eq("id", body.bet_id).execute()
-    return {"message": "Bet graded"}
+    from services.units import calculate_units_result
+
+    bet_result = db.table("bets").select("units, odds").eq("id", body.bet_id).single().execute()
+    if not bet_result.data:
+        raise HTTPException(status_code=404, detail="Bet not found")
+    bet = bet_result.data
+    units_result = body.units_result
+    if units_result is None:
+        units_result = calculate_units_result(
+            body.result,
+            float(bet.get("units") or 0),
+            int(bet.get("odds") or -110),
+        )
+    db.table("bets").update({
+        "result": body.result.upper(),
+        "units_result": units_result,
+    }).eq("id", body.bet_id).execute()
+    return {"message": "Bet graded", "units_result": units_result}
 
 
 @app.post("/api/admin/weekly-digest")
@@ -376,6 +392,17 @@ async def admin_weekly_digest(admin: dict = Depends(get_admin_user)):
 async def admin_grade_all(admin: dict = Depends(get_admin_user)):
     from services.grader import grade_all_pending
     return grade_all_pending(db)
+
+
+@app.post("/api/admin/recalculate-units")
+async def admin_recalculate_units(admin: dict = Depends(get_admin_user)):
+    """Recompute units_result for all graded bets and refresh the Google Sheet."""
+    from services.grader import recalculate_graded_units
+    from services.sheets_sync import maybe_sync_sheets
+
+    result = recalculate_graded_units(db)
+    maybe_sync_sheets(db, reason="recalculate-units")
+    return result
 
 
 @app.post("/api/admin/sync-sheets")
@@ -474,29 +501,19 @@ async def run_weekly_digest():
 
 
 def _calculate_record(bets: list) -> dict:
-    wins = losses = pushes = 0
-    net_units = 0.0
-    wagered = 0.0
-    for bet in bets:
-        units = float(bet.get("units", 2))
-        units_result = float(bet.get("units_result", 0))
-        wagered += units
-        if bet["result"] == "W":
-            wins += 1
-            net_units += units_result
-        elif bet["result"] == "L":
-            losses += 1
-            net_units += units_result
-        elif bet["result"] == "P":
-            pushes += 1
-    roi = (net_units / wagered * 100) if wagered > 0 else 0.0
-    sign = "+" if net_units >= 0 else ""
+    from services.units import aggregate_record
+
+    rec = aggregate_record(bets)
     return {
-        "wins": wins, "losses": losses, "pushes": pushes,
-        "total": wins + losses + pushes,
-        "net_units": round(net_units, 2),
-        "wagered": round(wagered, 2),
-        "roi_pct": round(roi, 1),
-        "record_str": f"{wins}-{losses}-{pushes}",
-        "units_str": f"{sign}{net_units:.1f}u",
+        "wins": rec["wins"],
+        "losses": rec["losses"],
+        "pushes": rec["pushes"],
+        "total": rec["wins"] + rec["losses"] + rec["pushes"],
+        "net_units": rec["net_units"],
+        "wagered": rec["units_risked"],
+        "units_won": rec["units_won"],
+        "units_lost": rec["units_lost"],
+        "roi_pct": rec["roi_pct"],
+        "record_str": rec["record_str"],
+        "units_str": rec["units_str"],
     }

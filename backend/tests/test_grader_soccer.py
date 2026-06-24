@@ -13,8 +13,8 @@ from services.grader import (
     _parse_btts,
     _resolve_soccer_outcome,
     _team_matches,
-    calculate_win_units,
 )
+from services.units import calculate_win_units
 
 
 def test_parse_game_teams():

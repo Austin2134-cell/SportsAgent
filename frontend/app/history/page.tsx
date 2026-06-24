@@ -173,7 +173,7 @@ export default function HistoryPage() {
                             </div>
                           )}
                           <div className="text-[10px] text-[#71717a]">
-                            {bet.odds > 0 ? "+" : ""}{bet.odds} · {bet.units}u
+                            {bet.odds > 0 ? "+" : ""}{bet.odds} · risk {bet.units}u
                           </div>
                         </div>
                       </div>

@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import { CONFIG_ERROR, getSupabaseConfig } from "@/lib/env";
+import { redirectAfterAuth } from "@/lib/auth-routing";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,6 +14,14 @@ export default function LoginPage() {
   const [info, setInfo] = useState("");
   const [loading, setLoading] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
+
+  useEffect(() => {
+    if (!getSupabaseConfig()) return;
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) redirectAfterAuth(session.access_token, router);
+    });
+  }, [router]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -25,7 +34,7 @@ export default function LoginPage() {
         return;
       }
       const supabase = createClient();
-      const { error: authError } = await supabase.auth.signInWithPassword({
+      const { data: { session }, error: authError } = await supabase.auth.signInWithPassword({
         email: email.trim().toLowerCase(),
         password,
       });
@@ -33,8 +42,10 @@ export default function LoginPage() {
         setError(authError.message);
         return;
       }
-      router.push("/setup");
-      router.refresh();
+      if (session) {
+        await redirectAfterAuth(session.access_token, router);
+        router.refresh();
+      }
     } catch {
       setError("Sign in failed. Please try again.");
     } finally {

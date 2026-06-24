@@ -40,15 +40,19 @@ def test_build_by_sport_rows():
     bets = [
         {"sport": "SOCCER", "result": "pending", "units": 2, "units_result": 0},
         {"sport": "SOCCER", "result": "pending", "units": 2, "units_result": 0},
-        {"sport": "MLB", "result": "W", "units": 2, "units_result": 1.8},
+        {"sport": "MLB", "result": "W", "units": 2, "odds": -110, "units_result": 1.82},
     ]
     rows = _build_by_sport_rows(bets)
     assert len(rows) == 2
     soccer = next(r for r in rows if r[0] == "SOCCER")
     assert soccer[4] == 2  # pending
-    assert soccer[9] == 2   # total plays
+    assert soccer[11] == 2  # total plays
 
 
 def test_headers():
-    assert len(BETS_HEADERS) == 17
+    assert len(BETS_HEADERS) == 19
+    assert "Units Risked" in BETS_HEADERS
+    assert "Units Won" in BETS_HEADERS
+    assert "Units Lost" in BETS_HEADERS
+    assert "Net Units" in BETS_HEADERS
     assert BY_SPORT_HEADERS[0] == "Sport"

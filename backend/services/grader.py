@@ -12,6 +12,8 @@ from datetime import date, datetime
 from typing import Optional
 from zoneinfo import ZoneInfo
 
+from services.units import calculate_units_result, calculate_win_units
+
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
 
 
@@ -71,9 +73,12 @@ def grade_all_pending(db, *, as_of_date: str | None = None):
     for bet in bets:
         outcome = _grade_bet(bet)
         if outcome:
+            units_risked = float(bet.get("units") or 0)
+            odds = int(bet.get("odds") or -110)
+            units_result = calculate_units_result(outcome["result"], units_risked, odds)
             update = {
                 "result": outcome["result"],
-                "units_result": outcome["units_result"],
+                "units_result": units_result,
             }
             grade_tag = outcome.get("tag", "")
             source_tag = (bet.get("post_slate_tag") or "").strip().lower()
@@ -95,12 +100,33 @@ def grade_all_pending(db, *, as_of_date: str | None = None):
         for uid in affected_users:
             refresh_memory(db, uid)
     if graded:
+        recalculate_graded_units(db)
         from services.sheets_sync import maybe_sync_sheets
         from agent.unit_tracker import sync_units_at_risk
         maybe_sync_sheets(db, reason="post-grade")
         for uid in affected_users:
             sync_units_at_risk(db, uid)
     return {"graded": graded, "manual": manual, "as_of": today}
+
+
+def recalculate_graded_units(db, user_id: str | None = None) -> dict:
+    """Normalize units_result for all graded bets from units risked + odds."""
+    query = db.table("bets").select("id, result, units, odds, units_result").neq("result", "pending")
+    if user_id:
+        query = query.eq("user_id", user_id)
+    bets = query.execute().data or []
+    updated = 0
+    for bet in bets:
+        expected = calculate_units_result(
+            bet.get("result", ""),
+            float(bet.get("units") or 0),
+            int(bet.get("odds") or -110),
+        )
+        current = round(float(bet.get("units_result") or 0), 2)
+        if current != expected:
+            db.table("bets").update({"units_result": expected}).eq("id", bet["id"]).execute()
+            updated += 1
+    return {"checked": len(bets), "updated": updated}
 
 
 def _grade_bet(bet: dict) -> Optional[dict]:
@@ -521,8 +547,3 @@ def _espn_get(url, params=None):
     except Exception:
         return None
 
-
-def calculate_win_units(units: float, odds: int) -> float:
-    if odds >= 0:
-        return round(units * (odds / 100), 2)
-    return round(units * (100 / abs(odds)), 2)

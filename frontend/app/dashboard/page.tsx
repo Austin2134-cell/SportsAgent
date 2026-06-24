@@ -67,7 +67,7 @@ function PlayCard({ play, index }: { play: Play; index: number }) {
           </div>
           <div className="text-right flex-shrink-0">
             <div className="text-sm font-bold text-[#00d084]">{oddsStr}</div>
-            <div className="text-[10px] text-[#71717a]">{play.units}u</div>
+            <div className="text-[10px] text-[#71717a]">{play.units}u risk</div>
             <div className="text-[10px] text-[#71717a] mt-1">{expanded ? "▲" : "▼"}</div>
           </div>
         </div>

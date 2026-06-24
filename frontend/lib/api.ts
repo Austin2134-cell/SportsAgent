@@ -57,7 +57,7 @@ export const api = {
   resumeAgent:    (token: string) => apiFetch("/api/agent/resume", token, { method: "PUT" }),
   runCard:    (token: string) => apiFetch("/api/admin/run-card", token, { method: "POST" }),
   gradeAll:   (token: string) => apiFetch("/api/admin/grade-all", token, { method: "POST" }),
-  gradeBet:   (token: string, bet_id: string, result: string, units_result: number) => apiFetch("/api/admin/grade", token, { method: "POST", body: JSON.stringify({ bet_id, result, units_result }) }),
+  gradeBet:   (token: string, bet_id: string, result: string, units_result?: number) => apiFetch("/api/admin/grade", token, { method: "POST", body: JSON.stringify({ bet_id, result, ...(units_result != null ? { units_result } : {}) }) }),
   listUsers:  (token: string) => apiFetch("/api/admin/users", token),
   pendingBets:(token: string) => apiFetch("/api/admin/pending-bets", token),
   createInvite:(token: string, code: string, max_uses = 1) => apiFetch(`/api/admin/invite?code=${code}&max_uses=${max_uses}`, token, { method: "POST" }),
