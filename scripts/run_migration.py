@@ -65,7 +65,7 @@ def connect_postgres(db_url: str):
 
 
 def main() -> int:
-    db_url = os.getenv("SUPABASE_DB_URL") or os.getenv("DATABASE_URL")
+    db_url = (os.getenv("SUPABASE_DB_URL") or os.getenv("DATABASE_URL") or "").strip()
     if not db_url:
         print("Missing SUPABASE_DB_URL — add it to GitHub Secrets or backend/.env")
         print("Supabase → Connect → Direct → Session pooler → URI")
