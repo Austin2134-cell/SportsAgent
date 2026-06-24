@@ -3,6 +3,7 @@ main.py — FastAPI app entrypoint. AgentEdge API: per-user agents, cards,
 bets, preferences, admin, and scheduled market polling + agent scans.
 """
 
+import asyncio
 import os
 from contextlib import asynccontextmanager
 from datetime import date, datetime
@@ -35,6 +36,7 @@ scheduler = AsyncIOScheduler(timezone=TIMEZONE)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    scheduler.add_job(_scheduled_world_cup_card, "cron", hour=8, minute=50, id="world_cup_card")
     scheduler.add_job(_scheduled_morning_toa, "cron", hour=9, minute=25, id="morning_toa_snapshot")
     scheduler.add_job(_scheduled_morning_agents, "cron", hour=9, minute=30, id="morning_agent_run")
     scheduler.add_job(run_daily_cards, "cron", hour=9, minute=35, id="daily_cards")
@@ -45,6 +47,27 @@ async def lifespan(app: FastAPI):
     scheduler.start()
     yield
     scheduler.shutdown()
+
+
+async def _scheduled_world_cup_card():
+    """Daily WC card — email + Supabase + Google Sheet (8:50 AM Mountain Time)."""
+    if os.getenv("WC_CARD_ENABLED", "true").lower() in ("0", "false", "no"):
+        print("[AgentEdge] World Cup card disabled (WC_CARD_ENABLED=false)")
+        return
+    try:
+        from services.world_cup_card import run_world_cup_card
+
+        card = await asyncio.to_thread(
+            run_world_cup_card,
+            print_output=True,
+        )
+        print(
+            f"[AgentEdge] World Cup card complete: "
+            f"{card.get('date')} grade {card.get('slate_grade')} "
+            f"({len(card.get('official_plays') or [])} plays)"
+        )
+    except Exception as e:
+        print(f"[AgentEdge] World Cup card error: {e}")
 
 
 async def _scheduled_morning_toa():
@@ -281,6 +304,29 @@ async def resume_agent(user: dict = Depends(get_current_user)):
 async def admin_run_card(target_date: Optional[str] = None, user_id: Optional[str] = None, admin: dict = Depends(get_admin_user)):
     await run_daily_cards(target_date=target_date, specific_user_id=user_id)
     return {"message": "Card generation triggered"}
+
+
+@app.post("/api/admin/run-wc-card")
+async def admin_run_wc_card(
+    target_date: Optional[str] = None,
+    no_email: bool = False,
+    admin: dict = Depends(get_admin_user),
+):
+    """Manually trigger the World Cup daily card (same job as 8:50 AM Railway schedule)."""
+    from services.world_cup_card import run_world_cup_card
+
+    card = await asyncio.to_thread(
+        run_world_cup_card,
+        target_date=target_date,
+        send_email=not no_email,
+        print_output=True,
+    )
+    return {
+        "message": "World Cup card generated",
+        "date": card.get("date"),
+        "slate_grade": card.get("slate_grade"),
+        "plays": len(card.get("official_plays") or []),
+    }
 
 
 @app.post("/api/admin/grade")

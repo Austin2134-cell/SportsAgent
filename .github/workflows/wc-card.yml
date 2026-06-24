@@ -1,7 +1,9 @@
-name: World Cup Daily Card
+name: World Cup Daily Card (Manual)
+
+# Scheduled delivery runs on Railway at 8:50 AM Mountain Time (APScheduler in main.py).
+# Use this workflow only for manual/offline runs from the GitHub Actions tab.
 
 on:
-  # Manual trigger from GitHub UI — pick any date
   workflow_dispatch:
     inputs:
       date:
@@ -9,7 +11,7 @@ on:
         required: false
         default: ""
       email:
-        description: "Recipient email. Leave blank for default (Austin.noyes21@gmail.com)."
+        description: "Recipient email. Leave blank for default (WC_CARD_USER_EMAIL secret or Austin.noyes21@gmail.com)."
         required: false
         default: ""
       no_email:
@@ -20,10 +22,6 @@ on:
         options:
           - "false"
           - "true"
-
-  # Auto-run daily at 8:50 AM Mountain Time (14:50 UTC during MDT / 15:50 UTC during MST)
-  schedule:
-    - cron: "50 14 * * *"
 
 jobs:
   generate-card:
@@ -50,7 +48,6 @@ jobs:
           if [ -n "${{ github.event.inputs.date }}" ]; then
             echo "date=${{ github.event.inputs.date }}" >> $GITHUB_OUTPUT
           else
-            # Today in Mountain Time (MDT = UTC-6)
             echo "date=$(TZ=America/Denver date +%Y-%m-%d)" >> $GITHUB_OUTPUT
           fi
 
@@ -70,6 +67,7 @@ jobs:
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
           GOOGLE_SHEETS_CREDENTIALS_JSON: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS_JSON }}
           GOOGLE_SHEETS_SYNC_EMAIL: ${{ secrets.GOOGLE_SHEETS_SYNC_EMAIL }}
+          WC_CARD_USER_EMAIL: ${{ secrets.WC_CARD_USER_EMAIL }}
           TIMEZONE: America/Denver
         run: |
           DATE="${{ steps.date.outputs.date }}"
