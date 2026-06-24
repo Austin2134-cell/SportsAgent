@@ -1,44 +1,48 @@
 #!/usr/bin/env python3
-"""Run AgentEdge Supabase migration using SUPABASE_DB_URL or service key from backend/.env"""
+"""Run all AgentEdge Supabase migrations in order (idempotent)."""
 import os
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "backend"))
+MIGRATIONS_DIR = ROOT / "supabase" / "migrations"
 
-from dotenv import load_dotenv
-load_dotenv(ROOT / "backend" / ".env")
-
-MIGRATION = ROOT / "supabase" / "migrations" / "002_agentedge_idempotent.sql"
-if not MIGRATION.exists():
-    MIGRATION = ROOT / "supabase" / "migrations" / "001_agentedge.sql"
+MIGRATION_ORDER = (
+    "002_agentedge_idempotent.sql",
+    "003_platform_memory.sql",
+)
 
 
-def main():
+def main() -> int:
     db_url = os.getenv("SUPABASE_DB_URL") or os.getenv("DATABASE_URL")
     if not db_url:
-        print("Missing SUPABASE_DB_URL in backend/.env")
-        print("Get it from: Supabase → Project Settings → Database → Connection string (URI)")
-        sys.exit(1)
+        print("Missing SUPABASE_DB_URL — add it to GitHub Secrets or backend/.env")
+        print("Supabase → Project Settings → Database → Connection string (URI)")
+        return 1
 
     try:
         import psycopg2
     except ImportError:
-        print("Installing psycopg2-binary...")
         os.system(f"{sys.executable} -m pip install psycopg2-binary -q")
         import psycopg2
 
-    sql = MIGRATION.read_text()
-    print(f"Running migration: {MIGRATION.name}")
+    ran = 0
     conn = psycopg2.connect(db_url)
     conn.autocommit = True
     cur = conn.cursor()
-    cur.execute(sql)
+    for name in MIGRATION_ORDER:
+        path = MIGRATIONS_DIR / name
+        if not path.exists():
+            print(f"Skip missing migration: {name}")
+            continue
+        print(f"Running migration: {name}")
+        cur.execute(path.read_text())
+        ran += 1
     cur.close()
     conn.close()
-    print("Migration complete.")
+    print(f"Migration complete ({ran} file(s)).")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

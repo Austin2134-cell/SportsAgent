@@ -1,0 +1,52 @@
+name: Production Setup
+
+# Runs migrations + seeds the learning loop using GitHub Secrets.
+# Required secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY (already used by wc-card)
+# Optional: SUPABASE_DB_URL (for SQL migrations — get from Supabase Database settings)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/migrations/**"
+      - "backend/scripts/production_setup.py"
+      - "scripts/run_migration.py"
+      - ".github/workflows/production-setup.yml"
+
+jobs:
+  setup:
+    name: Migrate Supabase + seed learning loop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt psycopg2-binary
+
+      - name: Run Supabase migrations
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "::warning::SUPABASE_DB_URL not set — skipping SQL migrations."
+            echo "Tables may already exist. Add SUPABASE_DB_URL to GitHub Secrets to auto-migrate."
+          else
+            python scripts/run_migration.py
+          fi
+
+      - name: Seed learning loop
+        working-directory: backend
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          TIMEZONE: America/Denver
+        run: python scripts/production_setup.py
