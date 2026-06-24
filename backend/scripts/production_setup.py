@@ -2,6 +2,7 @@
 """
 One-shot production setup: grade pending bets, backfill bankroll, refresh memory.
 Uses SUPABASE_URL + SUPABASE_SERVICE_KEY (no admin JWT required).
+Triggered via GitHub Actions workflow "Production Setup" or: python scripts/production_setup.py
 """
 from __future__ import annotations
 
