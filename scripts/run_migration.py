@@ -72,6 +72,8 @@ def main() -> int:
         return 1
 
     try:
+        params = parse_postgres_url(db_url)
+        print(f"Connecting to {params['host']}:{params['port']} as user '{params['user']}'")
         conn = connect_postgres(db_url)
     except Exception as e:
         print(f"Database connection failed: {e}")
