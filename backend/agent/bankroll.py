@@ -1,18 +1,21 @@
 """
 Bankroll math — auto-calculated unit sizing from bankroll percentage.
-Default: 1 unit = 2% of bankroll, max daily exposure = 6% of bankroll (~3 units).
+Default: 1 unit = 1% of bankroll, max daily exposure = 6% of bankroll (~6 units).
 """
 
+DEFAULT_UNIT_PCT = 0.01
+DEFAULT_MAX_DAILY_PCT = 0.06
 
-def compute_unit_size(bankroll: float, unit_pct: float = 0.02) -> float:
+
+def compute_unit_size(bankroll: float, unit_pct: float = DEFAULT_UNIT_PCT) -> float:
     """Dollar value of one unit."""
     return round(max(bankroll * unit_pct, 1.0), 2)
 
 
 def compute_max_daily_units(
     bankroll: float,
-    unit_pct: float = 0.02,
-    max_daily_pct: float = 0.06,
+    unit_pct: float = DEFAULT_UNIT_PCT,
+    max_daily_pct: float = DEFAULT_MAX_DAILY_PCT,
 ) -> int:
     """Max units the agent can recommend in one day."""
     unit_size = compute_unit_size(bankroll, unit_pct)
@@ -23,8 +26,8 @@ def compute_max_daily_units(
 def compute_bankroll_summary(
     bankroll_current: float,
     bankroll_starting: float,
-    unit_pct: float = 0.02,
-    max_daily_pct: float = 0.06,
+    unit_pct: float = DEFAULT_UNIT_PCT,
+    max_daily_pct: float = DEFAULT_MAX_DAILY_PCT,
     units_at_risk: float = 0,
 ) -> dict:
     unit_size = compute_unit_size(bankroll_current, unit_pct)

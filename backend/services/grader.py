@@ -62,11 +62,21 @@ def grade_all_pending(db):
     for bet in bets:
         outcome = _grade_bet(bet)
         if outcome:
-            db.table("bets").update({
+            update = {
                 "result": outcome["result"],
                 "units_result": outcome["units_result"],
-                "post_slate_tag": outcome.get("tag", ""),
-            }).eq("id", bet["id"]).execute()
+            }
+            grade_tag = outcome.get("tag", "")
+            source_tag = (bet.get("post_slate_tag") or "").strip().lower()
+            if grade_tag:
+                if source_tag in {"world_cup", "esm", "agent"}:
+                    note = (bet.get("notes") or "").strip()
+                    tag_note = f"[grade:{grade_tag}]"
+                    if tag_note not in note:
+                        update["notes"] = f"{note} {tag_note}".strip()
+                else:
+                    update["post_slate_tag"] = grade_tag
+            db.table("bets").update(update).eq("id", bet["id"]).execute()
             graded += 1
             affected_users.add(bet["user_id"])
         else:
@@ -77,7 +87,10 @@ def grade_all_pending(db):
             refresh_memory(db, uid)
     if graded:
         from services.sheets_sync import maybe_sync_sheets
+        from agent.unit_tracker import sync_units_at_risk
         maybe_sync_sheets(db, reason="post-grade")
+        for uid in affected_users:
+            sync_units_at_risk(db, uid)
     return {"graded": graded, "manual": manual}
 
 

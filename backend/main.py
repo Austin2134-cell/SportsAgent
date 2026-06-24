@@ -88,10 +88,16 @@ async def _scheduled_morning_toa():
 
 
 async def _scheduled_morning_agents():
-    """Grade pending bets, then run agent scans against fresh morning TOA cache."""
+    """Grade pending bets, sync unit tracker, then run agent scans."""
     try:
+        from agent.unit_tracker import today_mt, sync_units_at_risk
+
         grade_result = grade_all_pending(db)
         print(f"[AgentEdge] Morning grade: {grade_result}")
+        today = today_mt()
+        agents = db.table("agent_instances").select("user_id").eq("status", "active").execute()
+        for row in agents.data or []:
+            sync_units_at_risk(db, row["user_id"], today)
         run_all_agent_scans(db)
     except Exception as e:
         print(f"[AgentEdge] Morning agent run error: {e}")
@@ -153,7 +159,7 @@ class PreferencesUpdate(BaseModel):
 
 class AgentSetupRequest(BaseModel):
     bankroll_starting: float = 1000
-    unit_pct: float = 0.02
+    unit_pct: float = 0.01
     max_daily_pct: float = 0.06
     sports: list[str] = ["MLB", "WC"]
     bet_types: list[str] = ["player_props", "straight"]
@@ -403,7 +409,9 @@ async def health():
 
 
 async def run_daily_cards(target_date: str = None, specific_user_id: str = None):
-    """Legacy daily card job — skips users with active AgentEdge instances (handled by morning agent run)."""
+    """Daily major-league ESM card (MLB/NBA/NHL/NFL). World Cup uses the separate WC pipeline."""
+    from agent.unit_tracker import sync_units_at_risk
+
     today = target_date or date.today().isoformat()
     grade_result = grade_all_pending(db)
     print(f"[AgentEdge] Graded: {grade_result}")
@@ -414,15 +422,12 @@ async def run_daily_cards(target_date: str = None, specific_user_id: str = None)
     users = users_result.data or []
     for user_row in users:
         uid = user_row["id"]
-        agent = db.table("agent_instances").select("status").eq("user_id", uid).execute()
-        if agent.data and agent.data[0].get("status") == "active":
-            print(f"[AgentEdge] Skipping legacy card for {uid} — AgentEdge instance active")
-            continue
         try:
+            sync_units_at_risk(db, uid, today)
             prefs_result = db.table("preferences").select("*").eq("user_id", uid).execute()
             prefs = prefs_result.data[0] if prefs_result.data else {}
             run_card_for_user(uid, prefs, target_date=today)
-            print(f"[AgentEdge] Legacy card generated for {uid}")
+            print(f"[AgentEdge] Major-league ESM card generated for {uid}")
         except Exception as e:
             print(f"[AgentEdge] Error for {uid}: {e}")
 

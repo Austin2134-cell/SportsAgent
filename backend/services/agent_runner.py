@@ -21,10 +21,15 @@ MODEL = "claude-sonnet-4-6"
 
 
 def run_card_for_user(user_id: str, prefs: dict, target_date: str = None) -> dict:
-    """Generate a daily card for one user and persist to Supabase."""
+    """Generate a daily major-league ESM card (MLB/NBA/NHL/NFL — not World Cup)."""
     from database import db
+    from agent.unit_tracker import get_unit_context, major_league_sport_keys, sync_units_at_risk
+    from agent.sports import resolve_user_sports
 
     today = target_date or date.today().isoformat()
+    sync_units_at_risk(db, user_id, today)
+    unit_ctx = get_unit_context(db, user_id, today)
+    unit_size = unit_ctx["unit_size"]
 
     existing = db.table("cards").select("id, raw_card").eq("user_id", user_id).eq("date", today).execute()
     if existing.data:
@@ -35,10 +40,13 @@ def run_card_for_user(user_id: str, prefs: dict, target_date: str = None) -> dic
         print(f"[agent_runner] Merging ESM plays into existing card for {today}")
 
     max_plays = int(prefs.get("max_plays", 5))
-    unit_size = float(prefs.get("unit_size", 50))
+    sport_keys = major_league_sport_keys(resolve_user_sports(prefs.get("sports", ["MLB"])))
+    if not sport_keys:
+        print(f"[agent_runner] No major-league sports configured for {user_id} — skipping ESM card")
+        return {}
 
-    print(f"[agent_runner] Fetching odds — {today}")
-    market_snapshot = _build_market_snapshot(today)
+    print(f"[agent_runner] Fetching odds — {today} (1 unit = ${unit_size:.0f})")
+    market_snapshot = _build_market_snapshot(today, sport_keys=sport_keys)
 
     print("[agent_runner] Fetching ESPN context...")
     espn_context = _build_espn_context(market_snapshot, today)
@@ -69,13 +77,13 @@ def run_card_for_user(user_id: str, prefs: dict, target_date: str = None) -> dic
     return card
 
 
-def _build_market_snapshot(today: str) -> dict:
+def _build_market_snapshot(today: str, sport_keys: list[str] | None = None) -> dict:
     odds_key = os.getenv("ODDS_API_KEY", "")
     if not odds_key:
         print("[agent_runner] WARNING: No ODDS_API_KEY set.")
         return {"date": today, "sports": {}}
     client = OddsClient()
-    snapshot = client.build_market_snapshot(target_date=today)
+    snapshot = client.build_market_snapshot(target_date=today, sport_keys=sport_keys)
     sports_with_games = [k for k, v in snapshot.get("sports", {}).items() if v.get("games")]
     total_games = sum(len(v["games"]) for v in snapshot.get("sports", {}).values())
     print(f"[agent_runner] {total_games} game(s) across {sports_with_games}")

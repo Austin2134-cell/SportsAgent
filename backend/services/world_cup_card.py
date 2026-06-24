@@ -232,14 +232,21 @@ def _print_card(card: dict) -> None:
     print(f"\n{'='*60}\n")
 
 
-def _persist_card(card: dict, email: str) -> None:
+def _persist_card(card: dict, email: str, db=None) -> None:
+    if db is None:
+        try:
+            from database import db as _db
+            db = _db
+        except Exception:
+            pass
     url = os.getenv("SUPABASE_URL", "")
     key = os.getenv("SUPABASE_SERVICE_KEY", "")
     if not url or not key:
         print("[wc_runner] SUPABASE_URL / SUPABASE_SERVICE_KEY not set — skipping DB log")
         return
     try:
-        from database import db
+        if db is None:
+            from database import db
         from services.card_store import persist_esm_card, resolve_user_id
 
         user_id = resolve_user_id(db, email=email)
@@ -260,13 +267,23 @@ def run_world_cup_card(
     send_email: bool = True,
     persist: bool = True,
     max_plays: int = 5,
-    unit_size: float = 50.0,
+    unit_size: Optional[float] = None,
     print_output: bool = True,
     db=None,
 ) -> dict:
     """Generate the WC card, optionally email and persist. Returns card JSON."""
     card_date = target_date or today_mt()
     recipient = (email or default_recipient()).strip()
+
+    if unit_size is None and db is not None:
+        from services.card_store import resolve_user_id
+        from agent.unit_tracker import get_unit_context
+
+        user_id = resolve_user_id(db, email=recipient)
+        if user_id:
+            unit_size = get_unit_context(db, user_id, card_date)["unit_size"]
+    if unit_size is None:
+        unit_size = 10.0  # fallback when no bankroll on file ($1k × 1%)
 
     print(
         f"[wc_runner] Generating World Cup card for {card_date} "
@@ -295,6 +312,6 @@ def run_world_cup_card(
             print(f"[wc_runner] Card delivered to {recipient}")
 
     if persist:
-        _persist_card(card, recipient)
+        _persist_card(card, recipient, db=db)
 
     return card

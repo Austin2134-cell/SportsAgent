@@ -7,6 +7,8 @@ import os
 import re
 from typing import Optional
 
+from agent.unit_tracker import AGENT_BET_TAG, ESM_BET_TAG, WC_BET_TAG
+
 
 def resolve_user_id(db, email: Optional[str] = None) -> Optional[str]:
     """Look up profiles.id by email (case-insensitive)."""
@@ -113,6 +115,7 @@ def persist_esm_card(db, user_id: str, card: dict, *, source: str = "esm") -> Op
         if key in seen_bets:
             continue
         prefix = "[WC] " if source == "world_cup" else ""
+        bet_tag = WC_BET_TAG if source == "world_cup" else ESM_BET_TAG
         db.table("bets").insert({
             "user_id": user_id,
             "card_id": card_id,
@@ -127,6 +130,7 @@ def persist_esm_card(db, user_id: str, card: dict, *, source: str = "esm") -> Op
             "confidence": play.get("confidence", "MEDIUM"),
             "result": "pending",
             "units_result": 0,
+            "post_slate_tag": bet_tag,
             "notes": f"{prefix}{play.get('edge_summary', '')}".strip(),
         }).execute()
         seen_bets.add(key)
@@ -136,4 +140,7 @@ def persist_esm_card(db, user_id: str, card: dict, *, source: str = "esm") -> Op
     if inserted:
         from services.sheets_sync import maybe_sync_sheets
         maybe_sync_sheets(db, reason="new-bets")
+        if source != "world_cup":
+            from agent.unit_tracker import sync_units_at_risk
+            sync_units_at_risk(db, user_id, today)
     return card_id

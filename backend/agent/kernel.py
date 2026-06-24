@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo
 
 import anthropic
 
-from agent.bankroll import compute_bankroll_summary, compute_unit_size, compute_max_daily_units
+from agent.unit_tracker import AGENT_BET_TAG, get_unit_context, major_league_sport_keys, sync_units_at_risk
 from agent.memory_store import (
     create_hypothesis, get_agent_instance, get_beliefs, log_episode,
     upsert_belief, format_beliefs_for_prompt,
@@ -39,23 +39,18 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
 
     today = datetime.now(ZoneInfo(TIMEZONE)).date().isoformat()
     user_sports = prefs.get("sports", ["MLB", "WC"])
-    sport_keys = resolve_user_sports(user_sports)
+    sport_keys = major_league_sport_keys(resolve_user_sports(user_sports))
 
     if not sport_keys:
         log_episode(
             db, user_id, trigger_type=trigger_type, episode_type="observation",
-            title="No sports configured",
-            reasoning="Update your preferences to select at least one sport.",
+            title="No major-league sports configured",
+            reasoning="World Cup is handled by the separate daily WC card. Add MLB/NBA/NHL/NFL in preferences.",
         )
-        return {"skipped": True, "reason": "no sports selected"}
+        return {"skipped": True, "reason": "no major-league sports selected"}
 
-    bankroll = compute_bankroll_summary(
-        float(agent["bankroll_current"]),
-        float(agent["bankroll_starting"]),
-        float(agent.get("unit_pct", 0.02)),
-        float(agent.get("max_daily_pct", 0.06)),
-        float(agent.get("units_at_risk", 0)),
-    )
+    sync_units_at_risk(db, user_id, today)
+    bankroll = get_unit_context(db, user_id, today)
     unit_size = bankroll["unit_size"]
     max_units = bankroll["max_daily_units"]
 
@@ -159,8 +154,9 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
         )
 
     if units_used > 0:
+        synced = sync_units_at_risk(db, user_id, today)
         db.table("agent_instances").update({
-            "units_at_risk": round(float(agent.get("units_at_risk", 0)) + units_used, 2),
+            "units_at_risk": synced["units_at_risk"],
             "mode": "acting",
         }).eq("user_id", user_id).execute()
 
@@ -369,9 +365,11 @@ def _persist_positions(
             "confidence": pos.get("confidence", "MEDIUM"),
             "result": "pending",
             "units_result": 0,
+            "post_slate_tag": AGENT_BET_TAG,
             "notes": pos.get("edge_summary", ""),
         }).execute()
 
+    sync_units_at_risk(db, user_id, today)
     from services.sheets_sync import maybe_sync_sheets
     maybe_sync_sheets(db, reason="agent-scan")
 

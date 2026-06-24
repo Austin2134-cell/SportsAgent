@@ -5,14 +5,15 @@ provision.py — create and configure a user's AgentEdge instance.
 from datetime import datetime, timezone
 
 from agent.bankroll import compute_bankroll_summary, compute_unit_size, compute_max_daily_units
+from agent.unit_tracker import DEFAULT_UNIT_PCT, DEFAULT_MAX_DAILY_PCT, sync_units_at_risk
 from agent.memory_store import log_episode, upsert_belief
 
 
 def provision_agent(db, user_id: str, setup: dict) -> dict:
     """Create or update agent instance from onboarding setup."""
     bankroll = float(setup.get("bankroll_starting", 1000))
-    unit_pct = float(setup.get("unit_pct", 0.02))
-    max_daily_pct = float(setup.get("max_daily_pct", 0.06))
+    unit_pct = float(setup.get("unit_pct", DEFAULT_UNIT_PCT))
+    max_daily_pct = float(setup.get("max_daily_pct", DEFAULT_MAX_DAILY_PCT))
     sports = setup.get("sports", ["MLB", "WC"])
     bet_types = setup.get("bet_types", ["player_props", "straight"])
     risk_level = setup.get("risk_level", "MEDIUM")
@@ -114,8 +115,8 @@ def get_agent_status(db, user_id: str, prefs: dict | None = None) -> dict:
     bankroll = compute_bankroll_summary(
         float(inst["bankroll_current"]),
         float(inst["bankroll_starting"]),
-        float(inst.get("unit_pct", 0.02)),
-        float(inst.get("max_daily_pct", 0.06)),
+        float(inst.get("unit_pct", DEFAULT_UNIT_PCT)),
+        float(inst.get("max_daily_pct", DEFAULT_MAX_DAILY_PCT)),
         float(inst.get("units_at_risk", 0)),
     )
 
