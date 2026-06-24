@@ -308,6 +308,12 @@ async def get_agent_feed(limit: int = 50, user: dict = Depends(get_current_user)
     }
 
 
+@app.get("/api/agent/memory")
+async def get_agent_memory(user: dict = Depends(get_current_user)):
+    from agent.calibration import get_memory_panel
+    return get_memory_panel(db, user["id"])
+
+
 @app.post("/api/agent/scan")
 async def trigger_agent_scan(user: dict = Depends(get_current_user)):
     agent = db.table("agent_instances").select("status").eq("user_id", user["id"]).execute()

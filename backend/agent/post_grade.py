@@ -42,6 +42,8 @@ def apply_post_grade_effects(
     """Run all per-bet post-grade hooks for agent learning loop."""
     update_bankroll_after_grade(db, bet, units_result)
     link_position_episode_outcome(db, bet, result, units_result, tag=tag)
+    from agent.calibration import reflect_on_grade
+    reflect_on_grade(db, bet, result, units_result, tag=tag)
 
 
 def finalize_grade_batch(db, affected_user_ids: set[str]) -> None:
