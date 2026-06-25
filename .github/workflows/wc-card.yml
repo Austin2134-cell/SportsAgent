@@ -65,7 +65,24 @@ jobs:
             echo "date=$(TZ=America/Denver date +%Y-%m-%d)" >> $GITHUB_OUTPUT
           fi
 
+      - name: Verify 8:50 AM Mountain Time (scheduled cron only)
+        if: github.event_name == 'schedule'
+        id: mt_check
+        run: |
+          MT_HOUR=$(TZ=America/Denver date +%H)
+          MT_MIN=$(TZ=America/Denver date +%M)
+          echo "Mountain Time: ${MT_HOUR}:${MT_MIN}"
+          # Dual UTC crons cover MDT/MST; only run when local time is 8:50–8:54 (GHA delay buffer)
+          if [ "$MT_HOUR" = "08" ] && [ "$MT_MIN" -ge 50 ] && [ "$MT_MIN" -le 54 ]; then
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "Within 8:50 AM MT window — proceeding"
+          else
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Outside 8:50 AM MT window — skipping duplicate UTC cron slot"
+          fi
+
       - name: Run World Cup card
+        if: github.event_name != 'schedule' || steps.mt_check.outputs.skip != 'true'
         working-directory: backend
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

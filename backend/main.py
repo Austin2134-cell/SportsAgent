@@ -359,24 +359,31 @@ async def admin_run_card(target_date: Optional[str] = None, user_id: Optional[st
 async def admin_run_wc_card(
     target_date: Optional[str] = None,
     no_email: bool = False,
+    force: bool = False,
     admin: dict = Depends(get_admin_user),
 ):
     """Manually trigger the World Cup daily card (same job as 8:50 AM Railway schedule)."""
     from services.world_cup_card import run_world_cup_card
 
-    odds_result = await asyncio.to_thread(ensure_wc_odds_before_card, db)
-    card = await asyncio.to_thread(
-        run_world_cup_card,
-        target_date=target_date,
-        send_email=not no_email,
-        print_output=True,
-        db=db,
-    )
+    try:
+        odds_result = await asyncio.to_thread(ensure_wc_odds_before_card, db)
+        card = await asyncio.to_thread(
+            run_world_cup_card,
+            target_date=target_date,
+            send_email=not no_email,
+            print_output=True,
+            force=force,
+            db=db,
+        )
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
     return {
         "message": "World Cup card generated",
         "date": card.get("date"),
         "slate_grade": card.get("slate_grade"),
         "plays": len(card.get("official_plays") or []),
+        "skipped": card.get("skipped", False),
+        "odds_check": odds_result,
     }
 
 

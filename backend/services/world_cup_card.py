@@ -232,6 +232,22 @@ def _print_card(card: dict) -> None:
     print(f"\n{'='*60}\n")
 
 
+def _resolve_db(db=None):
+    """Return a Supabase client when credentials are available."""
+    if db is not None:
+        return db
+    url = os.getenv("SUPABASE_URL", "")
+    key = os.getenv("SUPABASE_SERVICE_KEY", "")
+    if not url or not key:
+        return None
+    try:
+        from database import db as _db
+        return _db
+    except Exception as e:
+        print(f"[wc_runner] Could not initialize Supabase client: {e}")
+        return None
+
+
 def _card_already_exists(db, email: str, card_date: str) -> bool:
     """True if a World Cup card was already persisted for this user/date."""
     try:
@@ -307,18 +323,19 @@ def run_world_cup_card(
     """Generate the WC card, optionally email and persist. Returns card JSON."""
     card_date = target_date or today_mt()
     recipient = (email or default_recipient()).strip()
+    active_db = _resolve_db(db)
 
-    if not force and db is not None and _card_already_exists(db, recipient, card_date):
+    if not force and active_db is not None and _card_already_exists(active_db, recipient, card_date):
         print(
             f"[wc_runner] World Cup card already exists for {card_date} ({recipient}) — skipping"
         )
         try:
             from services.card_store import resolve_user_id
 
-            user_id = resolve_user_id(db, email=recipient)
+            user_id = resolve_user_id(active_db, email=recipient)
             if user_id:
                 row = (
-                    db.table("cards")
+                    active_db.table("cards")
                     .select("raw_card")
                     .eq("user_id", user_id)
                     .eq("date", card_date)
@@ -334,13 +351,13 @@ def run_world_cup_card(
             pass
         return {"date": card_date, "skipped": True}
 
-    if unit_size is None and db is not None:
+    if unit_size is None and active_db is not None:
         from services.card_store import resolve_user_id
         from agent.unit_tracker import get_unit_context
 
-        user_id = resolve_user_id(db, email=recipient)
+        user_id = resolve_user_id(active_db, email=recipient)
         if user_id:
-            unit_size = get_unit_context(db, user_id, card_date)["unit_size"]
+            unit_size = get_unit_context(active_db, user_id, card_date)["unit_size"]
     if unit_size is None:
         unit_size = 30.0  # fallback when no bankroll on file ($1k × 3%)
 
@@ -349,7 +366,7 @@ def run_world_cup_card(
         f"(Tournament Day {_wc_tournament_day(card_date)})..."
     )
 
-    snapshot = _build_wc_market_snapshot(card_date, db=db)
+    snapshot = _build_wc_market_snapshot(card_date, db=active_db)
     user_msg = _build_wc_user_message(card_date, snapshot, max_plays, unit_size)
     card = _call_claude(user_msg)
     card["date"] = card_date
@@ -376,6 +393,10 @@ def run_world_cup_card(
             print(f"[wc_runner] Card delivered to {recipient}")
 
     if persist:
-        _persist_card(card, recipient, db=db)
+        _persist_card(card, recipient, db=active_db)
+        if active_db is not None:
+            from services.sheets_sync import maybe_sync_sheets
+
+            maybe_sync_sheets(active_db, reason="world_cup_card")
 
     return card
