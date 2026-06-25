@@ -89,10 +89,15 @@ def _summarize_market(snapshot: dict) -> str:
             home = game["home_team"]
             time_str = game.get("commence_time", "")[:16].replace("T", " ")
             gl = game.get("lines", {})
+            dnb_away = gl.get("away_dnb", "N/A")
+            dnb_home = gl.get("home_dnb", "N/A")
+            dnb_book = gl.get("dnb_book", "")
+            dnb_tag = f" [{dnb_book}]" if dnb_book else ""
             lines.append(
                 f"  {away} vs {home} | {time_str} UTC"
-                f" | ML: {away} {gl.get('away_ml', 'N/A')} / {home} {gl.get('home_ml', 'N/A')}"
-                f" | Total: {gl.get('total', 'N/A')} (O{gl.get('over_odds', '')}/U{gl.get('under_odds', '')})"
+                f" | 3-way ML: {away} {gl.get('away_ml', 'N/A')} / draw {gl.get('draw_ml', 'N/A')} / {home} {gl.get('home_ml', 'N/A')}"
+                f" | DNB{dnb_tag}: {away} {dnb_away} / {home} {dnb_home}"
+                f" | Total {gl.get('total', 'N/A')}: O{gl.get('over_odds', '')}/U{gl.get('under_odds', '')}"
             )
             props = game.get("props", {})
             for market, players in props.items():
@@ -130,10 +135,13 @@ def _build_wc_user_message(
     if live_sports:
         parts.append(_summarize_market(snapshot))
         parts.append(
-            "\nNote: The Odds API h2h market shows straight ML odds. "
-            "To estimate Draw No Bet (DNB) pricing, apply 3-way vig-removal math "
-            "using home ML / draw / away ML. DNB is almost always better EV — "
-            "check it before recommending the straight ML."
+            "\nDNB RULES (data integrity):\n"
+            "• Draw No Bet lines above are POSTED draw_no_bet prices from DraftKings/FanDuel/BetMGM.\n"
+            "• For any DNB official play you MUST use the exact posted DNB odds shown — never estimate from 3-way ML.\n"
+            "• Never use 3-way h2h moneyline as a DNB substitute.\n"
+            "• If posted DNB exceeds -130 juice ceiling, pass — do not recommend that DNB.\n"
+            "• If DNB shows N/A, that side has no posted DNB line — do not fabricate one.\n"
+            "• Use 3-way ML vig-removal math only for true_prob_pct / edge_gap_pct estimates."
         )
     else:
         parts.append(
@@ -370,6 +378,10 @@ def run_world_cup_card(
     user_msg = _build_wc_user_message(card_date, snapshot, max_plays, unit_size)
     card = _call_claude(user_msg)
     card["date"] = card_date
+
+    from esm.soccer_odds import validate_wc_official_plays
+
+    card = validate_wc_official_plays(card, snapshot)
 
     if print_output:
         _print_card(card)

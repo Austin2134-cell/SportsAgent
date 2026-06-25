@@ -228,17 +228,17 @@ HARD AVOIDS (never put on card, no exceptions):
 
 3-WAY PROBABILITY MATH — APPLY TO EVERY SOCCER PLAY:
 Soccer books offer 3-way odds (home/draw/away), which changes vig removal vs. 2-way markets.
-The key insight: DNB almost always offers dramatically better EV than the straight ML.
+The live market feed includes POSTED draw_no_bet lines — use those exact prices for any DNB play.
+Never substitute 3-way moneyline odds as DNB. Never estimate or invent DNB prices.
 
   Example — Argentina -155 / Draw +265 / Ecuador +420:
   Vig-removed true probabilities: Argentina ~52%, Draw ~24%, Ecuador ~17%
   DNB Argentina true probability: 52% ÷ (52% + 17%) = ~75%
-  If book prices DNB at -120 (implied 54.5%), true prob is 75% → 20+ point edge gap
-  Compare: ML -155 (implied 60.8%), true prob 52% → no edge at all
-  → Always check DNB before recommending the straight ML on a WC favorite.
+  If posted DNB is -120 (implied 54.5%), true prob is 75% → strong edge gap
+  If posted DNB is -240, it exceeds the -130 ceiling — automatic pass, not a lean.
 
-For output: implied_prob_pct = implied from the recommended bet line (DNB or ML).
-Estimate true_prob_pct using 3-way vig removal. Note DNB vs. ML math in key_factors.
+For output: implied_prob_pct = implied from the recommended bet line (use posted DNB or ML odds).
+Estimate true_prob_pct using 3-way vig removal from h2h. Note DNB vs. ML math in key_factors.
 
 SITUATIONAL FILTERS — APPLY BEFORE EVERY SOCCER BET:
 • OPENER (first group game for each team): Maximum tactical caution. Both sides playing

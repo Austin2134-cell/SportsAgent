@@ -49,6 +49,11 @@ SPORT_TO_SGO_LEAGUE = {
 
 # Sports that must be fetched from The Odds API (not available on our SGO plan).
 TOA_ONLY_SPORTS = frozenset({"soccer_fifa_world_cup"})
+SOCCER_SPORT_PREFIX = "soccer_"
+
+
+def _is_soccer_sport(sport_key: str) -> bool:
+    return sport_key in TOA_ONLY_SPORTS or sport_key.startswith(SOCCER_SPORT_PREFIX)
 
 # Map SGO statID → our market key, keyed by sport
 SGO_STAT_MAP = {
@@ -345,6 +350,13 @@ def _toa_build_snapshot(today: str, client: OddsClient, sports_filter: list[str]
                         if prop_data:
                             game_entry["props"].update(_toa_extract_props(prop_data, batch))
 
+            if _is_soccer_sport(sport):
+                dnb_lines = _toa_fetch_dnb_lines(
+                    sport, game["id"], game["home_team"], game["away_team"], client,
+                )
+                if dnb_lines:
+                    game_entry["lines"].update(dnb_lines)
+
             sport_data["games"].append(game_entry)
 
         snapshot["sports"][sport] = sport_data
@@ -359,8 +371,9 @@ def _toa_build_snapshot(today: str, client: OddsClient, sports_filter: list[str]
 def _toa_extract_best_lines(game: dict) -> dict:
     best = {
         "home_ml": None, "away_ml": None, "draw_ml": None,
+        "home_dnb": None, "away_dnb": None, "dnb_book": None, "dnb_updated": None,
         "home_spread": None, "away_spread": None, "spread_line": None,
-        "total": None, "over_odds": None, "under_odds": None,
+        "total": None, "over_odds": None, "under_odds": None, "total_book": None,
         "books_checked": [],
     }
     priority = ["draftkings", "fanduel", "betmgm"]
@@ -395,7 +408,69 @@ def _toa_extract_best_lines(game: dict) -> dict:
                         best["over_odds"] = outcome["price"]
                     else:
                         best["under_odds"] = outcome["price"]
+                best["total_book"] = book_key
     return best
+
+
+def _toa_fetch_dnb_lines(
+    sport: str,
+    event_id: str,
+    home_team: str,
+    away_team: str,
+    client: OddsClient,
+) -> dict:
+    """Fetch posted draw_no_bet lines for one soccer event (1 TOA credit)."""
+    if not should_use_toa(OddsClient._usage, 1):
+        return {}
+    event_data = _toa_get(
+        f"/sports/{sport}/events/{event_id}/odds",
+        {
+            "regions": "us",
+            "markets": "draw_no_bet",
+            "oddsFormat": "american",
+            "dateFormat": "iso",
+            "bookmakers": "draftkings,fanduel,betmgm",
+        },
+        client,
+    )
+    if not event_data:
+        return {}
+    return _toa_extract_dnb_lines(event_data, home_team, away_team)
+
+
+def _toa_extract_dnb_lines(event_data: dict, home_team: str, away_team: str) -> dict:
+    """Parse draw_no_bet market from a per-event TOA response."""
+    result = {
+        "home_dnb": None,
+        "away_dnb": None,
+        "dnb_book": None,
+        "dnb_updated": None,
+    }
+    priority = ["draftkings", "fanduel", "betmgm"]
+    bookmakers = {b["key"]: b for b in event_data.get("bookmakers", [])}
+
+    for book_key in priority:
+        book = bookmakers.get(book_key)
+        if not book:
+            continue
+        for market in book.get("markets", []):
+            if market["key"] != "draw_no_bet":
+                continue
+            home_odds = None
+            away_odds = None
+            for outcome in market.get("outcomes", []):
+                name = outcome["name"]
+                if name == home_team:
+                    home_odds = outcome["price"]
+                elif name == away_team:
+                    away_odds = outcome["price"]
+            if home_odds is not None and away_odds is not None:
+                result["home_dnb"] = home_odds
+                result["away_dnb"] = away_odds
+                result["dnb_book"] = book_key
+                result["dnb_updated"] = market.get("last_update")
+                return result
+    return result
 
 
 def _toa_extract_props(prop_data: dict, markets: list[str]) -> dict:
