@@ -113,6 +113,13 @@ def ensure_wc_odds_before_card(db) -> dict:
     return result
 
 
+def sync_wc_splits_before_card(db) -> dict:
+    """Pull Action Network public/money % for WC games into market_splits."""
+    from services.splits_sync import sync_splits_for_sport
+
+    return sync_splits_for_sport(db, WC_SPORT_KEY)
+
+
 def run_all_agent_scans(db) -> dict:
     """Run agent scan for every active, provisioned user (reads from cache)."""
     agents = (

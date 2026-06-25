@@ -11,6 +11,7 @@ MIGRATIONS_DIR = ROOT / "supabase" / "migrations"
 MIGRATION_ORDER = (
     "002_agentedge_idempotent.sql",
     "003_platform_memory.sql",
+    "004_market_splits.sql",
 )
 
 

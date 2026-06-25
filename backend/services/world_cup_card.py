@@ -392,6 +392,12 @@ def run_world_cup_card(
 
     snapshot = _build_wc_market_snapshot(card_date, db=active_db)
 
+    if active_db is not None:
+        from services.splits_sync import sync_splits_for_sport
+
+        splits_result = sync_splits_for_sport(active_db, WC_SPORT_KEY)
+        print(f"[wc_runner] Action Network splits: {splits_result}")
+
     market_intel = None
     if active_db is not None:
         from esm.market_intelligence import (
