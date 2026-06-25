@@ -16,6 +16,7 @@ from esm.odds_client import OddsClient
 from esm.snapshot_cache import store_snapshot
 
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
+SPLITS_SYNC_ON_POLL = os.getenv("SPLITS_SYNC_ON_POLL", "false").lower() in ("1", "true", "yes")
 
 
 def _store_snapshot_results(db, snapshot: dict, sport_keys: list[str], client: OddsClient) -> dict:
@@ -72,7 +73,19 @@ def poll_markets(db, force_source: Optional[str] = None) -> dict:
     )
     result = _store_snapshot_results(db, snapshot, sport_keys, client)
     print(f"[poller] {result['source']} — stored {result['polled']} snapshots, {result['games']} games")
+    if SPLITS_SYNC_ON_POLL:
+        result["splits_sync"] = run_splits_sync(db)
     return result
+
+
+def run_splits_sync(db) -> dict:
+    """Pull Action Network public/money % for all mapped sports (ML, spread, total)."""
+    from services.splits_sync import sync_all_mapped_splits, is_configured
+
+    if not is_configured():
+        return {"skipped": True, "reason": "splits_sync_disabled"}
+    print("[poller] Syncing Action Network splits (all mapped sports)...")
+    return sync_all_mapped_splits(db)
 
 
 def poll_morning_toa_snapshot(db) -> dict:
@@ -88,6 +101,7 @@ def poll_morning_toa_snapshot(db) -> dict:
     print("[poller] Running morning TOA snapshot (forced The Odds API)...")
     result = poll_markets(db, force_source="toa")
     result["job"] = "morning_toa_snapshot"
+    result["splits_sync"] = run_splits_sync(db)
     return result
 
 
@@ -114,10 +128,8 @@ def ensure_wc_odds_before_card(db) -> dict:
 
 
 def sync_wc_splits_before_card(db) -> dict:
-    """Pull Action Network public/money % for WC games into market_splits."""
-    from services.splits_sync import sync_splits_for_sport
-
-    return sync_splits_for_sport(db, WC_SPORT_KEY)
+    """Refresh Action Network splits before the WC card (all sports, not WC-only)."""
+    return run_splits_sync(db)
 
 
 def run_all_agent_scans(db) -> dict:

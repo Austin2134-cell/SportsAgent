@@ -28,6 +28,7 @@ from workers.market_poller import (
     poll_markets,
     poll_morning_toa_snapshot,
     ensure_wc_odds_before_card,
+    run_splits_sync,
     run_all_agent_scans,
 )
 from esm.api_budget import POLL_INTERVAL_MINUTES, AGENT_SCAN_INTERVAL_MINUTES, budget_summary
@@ -63,7 +64,9 @@ async def lifespan(app: FastAPI):
     _log_scheduler_startup()
     scheduler.add_job(_scheduled_morning_grade, "cron", hour=9, minute=15, id="morning_grade")
     scheduler.add_job(_scheduled_morning_toa, "cron", hour=8, minute=40, id="morning_toa_snapshot")
+    scheduler.add_job(_scheduled_splits_sync, "cron", hour=8, minute=45, id="morning_splits_sync")
     scheduler.add_job(_scheduled_world_cup_card, "cron", hour=8, minute=50, id="world_cup_card")
+    scheduler.add_job(_scheduled_splits_sync, "cron", hour=9, minute=25, id="pre_agent_splits_sync")
     scheduler.add_job(_scheduled_morning_agents, "cron", hour=9, minute=30, id="morning_agent_run")
     scheduler.add_job(run_daily_cards, "cron", hour=9, minute=35, id="daily_cards")
     scheduler.add_job(_scheduled_sheets_sync, "cron", hour=10, minute=0, id="sheets_sync")
@@ -121,6 +124,15 @@ async def _scheduled_morning_toa():
         print(f"[AgentEdge] Morning TOA snapshot: {result}")
     except Exception as e:
         print(f"[AgentEdge] Morning TOA snapshot error: {e}")
+
+
+async def _scheduled_splits_sync():
+    """Refresh Action Network public/money splits for all mapped sports."""
+    try:
+        result = await asyncio.to_thread(run_splits_sync, db)
+        print(f"[AgentEdge] Action Network splits sync: {result}")
+    except Exception as e:
+        print(f"[AgentEdge] Splits sync error: {e}")
 
 
 async def _scheduled_morning_agents():

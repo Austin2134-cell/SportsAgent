@@ -72,8 +72,21 @@ def _find_game_history(
     return history
 
 
-def _load_external_splits(db, sport_key: str, event_id: str) -> dict:
-    """Latest public/money % from market_splits if Phase 2 API has populated it."""
+def _load_external_splits(
+    db,
+    sport_key: str,
+    event_id: str,
+    away_team: str = "",
+    home_team: str = "",
+) -> dict:
+    """Latest public/money % from market_splits (matched by team names — AN event IDs differ from TOA)."""
+    if away_team and home_team:
+        from services.splits_sync import find_splits_for_matchup
+
+        splits = find_splits_for_matchup(db, sport_key, away_team, home_team)
+        if splits:
+            return splits
+
     try:
         result = (
             db.table("market_splits")
@@ -95,6 +108,22 @@ def _load_external_splits(db, sport_key: str, event_id: str) -> dict:
         if market not in by_market:
             by_market[market] = row
     return by_market
+
+
+def _apply_split_fields(intel: dict, split: dict | None, prefix: str) -> None:
+    if not split:
+        return
+    intel[f"public_bet_pct_{prefix}"] = split.get("public_bet_pct")
+    intel[f"public_money_pct_{prefix}"] = split.get("public_money_pct")
+    if split.get("source"):
+        intel["splits_source"] = split.get("source")
+    indicator = split.get("sharp_indicator")
+    if indicator in ("sharp", "big_money", "steam"):
+        intel["sharp_money_flag"] = True
+    if indicator == "big_money":
+        intel["big_money_flag"] = True
+    if indicator == "public_heavy":
+        intel.setdefault("flags", []).append(f"public_heavy_{prefix}")
 
 
 def analyze_game_lines(
@@ -121,6 +150,14 @@ def analyze_game_lines(
         "public_bet_pct_away": None,
         "public_money_pct_home": None,
         "public_money_pct_away": None,
+        "public_bet_pct_over": None,
+        "public_bet_pct_under": None,
+        "public_money_pct_over": None,
+        "public_money_pct_under": None,
+        "public_bet_pct_spread_home": None,
+        "public_bet_pct_spread_away": None,
+        "public_money_pct_spread_home": None,
+        "public_money_pct_spread_away": None,
         "splits_source": None,
         "data_quality": "snapshot_only",
     }
@@ -177,22 +214,17 @@ def analyze_game_lines(
     if o_o is not None and c_o is not None and abs(int(c_o) - int(o_o)) >= STEAM_ODDS_THRESHOLD:
         intel["flags"].append("steam_over_juice")
 
-    # External splits (Phase 2)
+    # External splits (Action Network public-betting pages)
     if external_splits:
         intel["data_quality"] = "snapshot_plus_splits"
         h_split = external_splits.get("h2h_home") or external_splits.get("moneyline_home")
         a_split = external_splits.get("h2h_away") or external_splits.get("moneyline_away")
-        if h_split:
-            intel["public_bet_pct_home"] = h_split.get("public_bet_pct")
-            intel["public_money_pct_home"] = h_split.get("public_money_pct")
-            intel["splits_source"] = h_split.get("source")
-            if h_split.get("sharp_indicator") in ("sharp", "big_money", "steam"):
-                intel["sharp_money_flag"] = True
-            if h_split.get("sharp_indicator") == "big_money":
-                intel["big_money_flag"] = True
-        if a_split:
-            intel["public_bet_pct_away"] = a_split.get("public_bet_pct")
-            intel["public_money_pct_away"] = a_split.get("public_money_pct")
+        _apply_split_fields(intel, h_split, "home")
+        _apply_split_fields(intel, a_split, "away")
+        _apply_split_fields(intel, external_splits.get("total_over"), "over")
+        _apply_split_fields(intel, external_splits.get("total_under"), "under")
+        _apply_split_fields(intel, external_splits.get("spread_home"), "spread_home")
+        _apply_split_fields(intel, external_splits.get("spread_away"), "spread_away")
 
         # Reverse line: public heavy on side but line moved away from that side
         pub_h = intel.get("public_bet_pct_home")
@@ -234,7 +266,13 @@ def build_market_intelligence(
             if not eid:
                 continue
             history = _find_game_history(db, sport_key, eid)
-            splits = _load_external_splits(db, sport_key, eid)
+            splits = _load_external_splits(
+                db,
+                sport_key,
+                eid,
+                away_team=game.get("away_team", ""),
+                home_team=game.get("home_team", ""),
+            )
             intel = analyze_game_lines(
                 history,
                 game.get("home_team", ""),
@@ -283,9 +321,23 @@ def format_intelligence_for_prompt(intelligence: dict) -> str:
             pub_a, mon_a = intel.get("public_bet_pct_away"), intel.get("public_money_pct_away")
             if pub_h is not None or pub_a is not None:
                 lines.append(
-                    f"    Public bets: home {pub_h}% / away {pub_a}%"
+                    f"    ML public bets: home {pub_h}% / away {pub_a}%"
                     f" | Money: home {mon_h}% / away {mon_a}%"
                     f" (source: {intel.get('splits_source')})"
+                )
+            pub_o, mon_o = intel.get("public_bet_pct_over"), intel.get("public_money_pct_over")
+            pub_u, mon_u = intel.get("public_bet_pct_under"), intel.get("public_money_pct_under")
+            if pub_o is not None or pub_u is not None:
+                lines.append(
+                    f"    Total public bets: over {pub_o}% / under {pub_u}%"
+                    f" | Money: over {mon_o}% / under {mon_u}%"
+                )
+            pub_sh, mon_sh = intel.get("public_bet_pct_spread_home"), intel.get("public_money_pct_spread_home")
+            pub_sa, mon_sa = intel.get("public_bet_pct_spread_away"), intel.get("public_money_pct_spread_away")
+            if pub_sh is not None or pub_sa is not None:
+                lines.append(
+                    f"    Spread public bets: home {pub_sh}% / away {pub_sa}%"
+                    f" | Money: home {mon_sh}% / away {mon_sa}%"
                 )
             if intel.get("sharp_money_flag"):
                 lines.append("    Sharp/big-money signal on recorded side")
@@ -371,6 +423,12 @@ def enrich_card_with_market_signals(card: dict, snapshot: dict) -> dict:
                 "public_bet_pct_away": intel.get("public_bet_pct_away"),
                 "public_money_pct_home": intel.get("public_money_pct_home"),
                 "public_money_pct_away": intel.get("public_money_pct_away"),
+                "public_bet_pct_over": intel.get("public_bet_pct_over"),
+                "public_bet_pct_under": intel.get("public_bet_pct_under"),
+                "public_money_pct_over": intel.get("public_money_pct_over"),
+                "public_money_pct_under": intel.get("public_money_pct_under"),
+                "public_bet_pct_spread_home": intel.get("public_bet_pct_spread_home"),
+                "public_bet_pct_spread_away": intel.get("public_bet_pct_spread_away"),
                 "sharp_money_flag": intel.get("sharp_money_flag"),
                 "big_money_flag": intel.get("big_money_flag"),
                 "data_quality": intel.get("data_quality"),

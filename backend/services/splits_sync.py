@@ -1,25 +1,33 @@
 """
 Sync Action Network public betting splits into market_splits table.
+
+Covers all mapped leagues (MLB, NBA, NHL, NFL, NCAAB, WC) for game lines:
+moneyline, spread, and total. Player prop splits are not on AN public pages.
 """
 
 from __future__ import annotations
 
+import os
 from datetime import datetime, timezone
-from typing import Optional
 
 from esm.action_network_client import (
+    all_mapped_sport_keys,
     fetch_public_splits,
     match_event_to_game,
     SPORT_TO_AN_PATH,
 )
 
+SPLITS_SYNC_ENABLED = os.getenv("SPLITS_SYNC_ENABLED", "true").lower() in ("1", "true", "yes")
+
 
 def is_configured() -> bool:
-    return True  # No API key — uses public HTML pages
+    return SPLITS_SYNC_ENABLED
 
 
 def sync_splits_for_sport(db, sport_key: str) -> dict:
     """Pull Action Network public-betting page and write splits rows."""
+    if not SPLITS_SYNC_ENABLED:
+        return {"sport_key": sport_key, "skipped": True, "reason": "SPLITS_SYNC_ENABLED=false"}
     if sport_key not in SPORT_TO_AN_PATH:
         return {"sport_key": sport_key, "skipped": True, "reason": "no_an_mapping"}
 
@@ -80,20 +88,25 @@ def sync_all_active_splits(db, sport_keys: list[str]) -> dict:
     return {"rows": total, "sports": results}
 
 
+def sync_all_mapped_splits(db) -> dict:
+    """Sync every sport with an Action Network public-betting page."""
+    return sync_all_active_splits(db, all_mapped_sport_keys())
+
+
 def find_splits_for_matchup(
     db,
     sport_key: str,
     away_team: str,
     home_team: str,
 ) -> dict:
-    """Load latest splits per market for a game matchup."""
+    """Load latest splits per market for a game matchup (team-name match, not event_id)."""
     try:
         result = (
             db.table("market_splits")
             .select("*")
             .eq("sport_key", sport_key)
             .order("captured_at", desc=True)
-            .limit(100)
+            .limit(500)
             .execute()
         )
     except Exception:

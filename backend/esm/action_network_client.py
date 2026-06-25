@@ -69,8 +69,27 @@ def _classify_sharp(ticket_pct: float, money_pct: float) -> Optional[str]:
     return None
 
 
+def _split_row(
+    market_key: str,
+    label: str,
+    tickets: Optional[float],
+    money: Optional[float],
+    odds: Any = None,
+    line: Any = None,
+) -> dict:
+    return {
+        "market": market_key,
+        "team": label,
+        "public_bet_pct": tickets,
+        "public_money_pct": money,
+        "sharp_indicator": _classify_sharp(tickets, money),
+        "odds": odds,
+        "line": line,
+    }
+
+
 def _extract_dk_event_markets(game: dict) -> dict:
-    """Pull moneyline + total splits from DraftKings (book 15) event markets."""
+    """Pull moneyline, spread, and total splits from DraftKings (book 15) event markets."""
     markets = (game.get("markets") or {}).get(DK_BOOK_ID, {})
     event = markets.get("event") or {}
     teams = {t["id"]: t["full_name"] for t in game.get("teams", [])}
@@ -108,6 +127,29 @@ def _extract_dk_event_markets(game: dict) -> dict:
             "odds": row.get("odds"),
         }
 
+    for row in event.get("spread") or []:
+        team_id = row.get("team_id")
+        tickets = (row.get("bet_info") or {}).get("tickets", {}).get("percent")
+        money = (row.get("bet_info") or {}).get("money", {}).get("percent")
+        if tickets is None and money is None:
+            continue
+        if team_id == home_id:
+            market_key = "spread_home"
+            label = home_name
+        elif team_id == away_id:
+            market_key = "spread_away"
+            label = away_name
+        else:
+            continue
+        out[market_key] = _split_row(
+            market_key,
+            label,
+            tickets,
+            money,
+            odds=row.get("odds"),
+            line=row.get("value"),
+        )
+
     for row in event.get("total") or []:
         side = row.get("side")
         tickets = (row.get("bet_info") or {}).get("tickets", {}).get("percent")
@@ -115,15 +157,14 @@ def _extract_dk_event_markets(game: dict) -> dict:
         if tickets is None and money is None:
             continue
         market_key = f"total_{side}"
-        out[market_key] = {
-            "market": market_key,
-            "team": side,
-            "public_bet_pct": tickets,
-            "public_money_pct": money,
-            "sharp_indicator": _classify_sharp(tickets, money),
-            "odds": row.get("odds"),
-            "line": row.get("value"),
-        }
+        out[market_key] = _split_row(
+            market_key,
+            side,
+            tickets,
+            money,
+            odds=row.get("odds"),
+            line=row.get("value"),
+        )
 
     return {
         "event_id": str(game.get("id")),
@@ -157,6 +198,11 @@ def fetch_public_splits(sport_key: str) -> list[dict]:
         if parsed.get("splits"):
             results.append(parsed)
     return results
+
+
+def all_mapped_sport_keys() -> list[str]:
+    """All internal sport keys with Action Network public-betting pages."""
+    return list(SPORT_TO_AN_PATH.keys())
 
 
 def match_event_to_game(
