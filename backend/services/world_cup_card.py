@@ -1,7 +1,7 @@
 """
 World Cup daily card — generate, email, and persist ESM WC plays.
 
-Scheduled on Railway via APScheduler (8:50 AM Mountain Time).
+Scheduled: GitHub Actions cron (primary) + Railway APScheduler backup (8:50 AM Mountain Time).
 """
 
 from __future__ import annotations
@@ -232,6 +232,31 @@ def _print_card(card: dict) -> None:
     print(f"\n{'='*60}\n")
 
 
+def _card_already_exists(db, email: str, card_date: str) -> bool:
+    """True if a World Cup card was already persisted for this user/date."""
+    try:
+        from services.card_store import resolve_user_id
+
+        user_id = resolve_user_id(db, email=email)
+        if not user_id:
+            return False
+        existing = (
+            db.table("cards")
+            .select("raw_card")
+            .eq("user_id", user_id)
+            .eq("date", card_date)
+            .limit(1)
+            .execute()
+        )
+        if not existing.data:
+            return False
+        raw = existing.data[0].get("raw_card") or {}
+        return isinstance(raw, dict) and "world_cup" in raw
+    except Exception as e:
+        print(f"[wc_runner] Could not check existing card: {e}")
+        return False
+
+
 def _persist_card(card: dict, email: str, db=None) -> None:
     if db is None:
         try:
@@ -260,6 +285,13 @@ def _persist_card(card: dict, email: str, db=None) -> None:
         print(f"[wc_runner] Supabase persist failed: {e}")
 
 
+def email_transport_configured() -> bool:
+    """Whether SMTP or SendGrid env vars are present for outbound card email."""
+    if os.getenv("SENDGRID_API_KEY", "").strip():
+        return True
+    return bool(os.getenv("EMAIL_SMTP_HOST", "").strip())
+
+
 def run_world_cup_card(
     *,
     target_date: Optional[str] = None,
@@ -269,11 +301,38 @@ def run_world_cup_card(
     max_plays: int = 5,
     unit_size: Optional[float] = None,
     print_output: bool = True,
+    force: bool = False,
     db=None,
 ) -> dict:
     """Generate the WC card, optionally email and persist. Returns card JSON."""
     card_date = target_date or today_mt()
     recipient = (email or default_recipient()).strip()
+
+    if not force and db is not None and _card_already_exists(db, recipient, card_date):
+        print(
+            f"[wc_runner] World Cup card already exists for {card_date} ({recipient}) — skipping"
+        )
+        try:
+            from services.card_store import resolve_user_id
+
+            user_id = resolve_user_id(db, email=recipient)
+            if user_id:
+                row = (
+                    db.table("cards")
+                    .select("raw_card")
+                    .eq("user_id", user_id)
+                    .eq("date", card_date)
+                    .limit(1)
+                    .execute()
+                )
+                if row.data:
+                    raw = row.data[0].get("raw_card") or {}
+                    wc = raw.get("world_cup") if isinstance(raw, dict) else None
+                    if isinstance(wc, dict):
+                        return wc
+        except Exception:
+            pass
+        return {"date": card_date, "skipped": True}
 
     if unit_size is None and db is not None:
         from services.card_store import resolve_user_id
@@ -301,6 +360,11 @@ def run_world_cup_card(
         print(format_thread_for_display(tweets))
 
     if send_email:
+        if not email_transport_configured():
+            print(
+                "[wc_runner] WARNING: No EMAIL_SMTP_HOST or SENDGRID_API_KEY configured — "
+                "card will NOT be emailed. Set email env vars on Railway or use GitHub Actions."
+            )
         print(f"[wc_runner] Sending card to {recipient}...")
         success = send_card_email(card, recipient, card_date)
         if not success:

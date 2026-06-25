@@ -39,8 +39,28 @@ TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
 scheduler = AsyncIOScheduler(timezone=TIMEZONE)
 
 
+def _log_scheduler_startup():
+    from services.world_cup_card import default_recipient, email_transport_configured
+
+    wc_enabled = os.getenv("WC_CARD_ENABLED", "true").lower() not in ("0", "false", "no")
+    email_ok = email_transport_configured()
+    recipient = default_recipient()
+    print(
+        f"[AgentEdge] Scheduler starting ({TIMEZONE}): "
+        f"WC card={'on' if wc_enabled else 'OFF'} @ 08:50, "
+        f"email={'configured' if email_ok else 'MISSING — cards will not be emailed from Railway'}, "
+        f"recipient={recipient}"
+    )
+    if wc_enabled and not email_ok:
+        print(
+            "[AgentEdge] WARNING: Railway has no EMAIL_SMTP_* or SENDGRID_API_KEY. "
+            "Daily card email is delivered by GitHub Actions cron; configure Railway email as backup."
+        )
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    _log_scheduler_startup()
     scheduler.add_job(_scheduled_morning_grade, "cron", hour=9, minute=15, id="morning_grade")
     scheduler.add_job(_scheduled_morning_toa, "cron", hour=8, minute=40, id="morning_toa_snapshot")
     scheduler.add_job(_scheduled_world_cup_card, "cron", hour=8, minute=50, id="world_cup_card")

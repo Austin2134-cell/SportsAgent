@@ -1,8 +1,7 @@
 """
 run_world_cup_card.py — CLI wrapper for the World Cup daily card.
 
-Scheduled delivery runs on Railway (APScheduler in main.py at 8:50 AM MT).
-Use this script for local/manual runs only.
+Scheduled delivery: GitHub Actions cron (primary) + Railway APScheduler backup (8:50 AM MT).
 """
 
 import argparse
@@ -30,6 +29,11 @@ def main():
     parser.add_argument("--unit-size", type=float, default=50.0)
     parser.add_argument("--no-email", action="store_true", help="Skip email delivery")
     parser.add_argument("--no-persist", action="store_true", help="Skip Supabase log")
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Regenerate even if today's card already exists",
+    )
     args = parser.parse_args()
 
     run_world_cup_card(
@@ -39,6 +43,7 @@ def main():
         persist=not args.no_persist,
         max_plays=args.max_plays,
         unit_size=args.unit_size,
+        force=args.force,
     )
 
 
