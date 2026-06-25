@@ -146,9 +146,11 @@ def _build_wc_user_message(
         )
         if market_intel:
             from esm.market_intelligence import format_intelligence_for_prompt
+            from esm.split_guidance import SPLIT_INTERPRETATION_GUIDANCE
 
             parts.append("\n--- MARKET INTELLIGENCE (line movement / splits) ---")
             parts.append(format_intelligence_for_prompt(market_intel))
+            parts.append(SPLIT_INTERPRETATION_GUIDANCE)
     else:
         parts.append(
             "NO LIVE ODDS DATA AVAILABLE.\n"

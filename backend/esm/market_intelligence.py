@@ -164,84 +164,124 @@ def analyze_game_lines(
 
     if not history:
         intel["flags"].append("no_opening_history")
-        return intel
-
-    open_row = history[0]
-    open_lines = open_row["lines"]
-    intel["opening_lines"] = open_lines
-    intel["opening_captured_at"] = open_row["captured_at"]
+        op = {}
+    else:
+        open_row = history[0]
+        open_lines = open_row["lines"]
+        intel["opening_lines"] = open_lines
+        intel["opening_captured_at"] = open_row["captured_at"]
+        op = open_lines or {}
 
     cur = current_lines or {}
-    op = open_lines or {}
 
-    # ML movement
-    for side, key, team in [("home", "home_ml", home_team), ("away", "away_ml", away_team)]:
-        o, c = op.get(key), cur.get(key)
-        if o is None or c is None:
-            continue
-        delta = int(c) - int(o)
-        if abs(delta) >= STEAM_ODDS_THRESHOLD:
-            intel["flags"].append(f"steam_ml_{side}")
-            intel["steam_side"] = team
-            intel["line_movement_summary"].append(
-                f"{team} ML: {o} → {c} ({delta:+d} cents)"
-            )
-        elif delta != 0:
-            intel["line_movement_summary"].append(
-                f"{team} ML: {o} → {c} ({delta:+d})"
-            )
+    if history:
+        # ML movement
+        for side, key, team in [("home", "home_ml", home_team), ("away", "away_ml", away_team)]:
+            o, c = op.get(key), cur.get(key)
+            if o is None or c is None:
+                continue
+            delta = int(c) - int(o)
+            if abs(delta) >= STEAM_ODDS_THRESHOLD:
+                intel["flags"].append(f"steam_ml_{side}")
+                intel["steam_side"] = team
+                intel["line_movement_summary"].append(
+                    f"{team} ML: {o} → {c} ({delta:+d} cents)"
+                )
+            elif delta != 0:
+                intel["line_movement_summary"].append(
+                    f"{team} ML: {o} → {c} ({delta:+d})"
+                )
 
-    # Total movement
-    o_total, c_total = op.get("total"), cur.get("total")
-    if o_total is not None and c_total is not None:
-        t_delta = float(c_total) - float(o_total)
-        if abs(t_delta) >= STEAM_TOTAL_THRESHOLD:
-            intel["flags"].append("steam_total")
-            intel["line_movement_summary"].append(
-                f"Total: {o_total} → {c_total} ({t_delta:+.1f})"
-            )
-        elif t_delta != 0:
-            intel["line_movement_summary"].append(
-                f"Total: {o_total} → {c_total} ({t_delta:+.1f})"
-            )
+        # Total movement
+        o_total, c_total = op.get("total"), cur.get("total")
+        if o_total is not None and c_total is not None:
+            t_delta = float(c_total) - float(o_total)
+            if abs(t_delta) >= STEAM_TOTAL_THRESHOLD:
+                intel["flags"].append("steam_total")
+                intel["line_movement_summary"].append(
+                    f"Total: {o_total} → {c_total} ({t_delta:+.1f})"
+                )
+            elif t_delta != 0:
+                intel["line_movement_summary"].append(
+                    f"Total: {o_total} → {c_total} ({t_delta:+.1f})"
+                )
 
-    # Under odds movement (juice on total)
-    o_u, c_u = op.get("under_odds"), cur.get("under_odds")
-    if o_u is not None and c_u is not None and abs(int(c_u) - int(o_u)) >= STEAM_ODDS_THRESHOLD:
-        intel["flags"].append("steam_under_juice")
+        # Under/over juice movement
+        o_u, c_u = op.get("under_odds"), cur.get("under_odds")
+        if o_u is not None and c_u is not None and abs(int(c_u) - int(o_u)) >= STEAM_ODDS_THRESHOLD:
+            intel["flags"].append("steam_under_juice")
 
-    o_o, c_o = op.get("over_odds"), cur.get("over_odds")
-    if o_o is not None and c_o is not None and abs(int(c_o) - int(o_o)) >= STEAM_ODDS_THRESHOLD:
-        intel["flags"].append("steam_over_juice")
+        o_o, c_o = op.get("over_odds"), cur.get("over_odds")
+        if o_o is not None and c_o is not None and abs(int(c_o) - int(o_o)) >= STEAM_ODDS_THRESHOLD:
+            intel["flags"].append("steam_over_juice")
 
-    # External splits (Action Network public-betting pages)
+    # External splits — apply even when opening history is missing
     if external_splits:
-        intel["data_quality"] = "snapshot_plus_splits"
-        h_split = external_splits.get("h2h_home") or external_splits.get("moneyline_home")
-        a_split = external_splits.get("h2h_away") or external_splits.get("moneyline_away")
-        _apply_split_fields(intel, h_split, "home")
-        _apply_split_fields(intel, a_split, "away")
-        _apply_split_fields(intel, external_splits.get("total_over"), "over")
-        _apply_split_fields(intel, external_splits.get("total_under"), "under")
-        _apply_split_fields(intel, external_splits.get("spread_home"), "spread_home")
-        _apply_split_fields(intel, external_splits.get("spread_away"), "spread_away")
-
-        # Reverse line: public heavy on side but line moved away from that side
-        pub_h = intel.get("public_bet_pct_home")
-        pub_a = intel.get("public_bet_pct_away")
-        h_o, h_c = op.get("home_ml"), cur.get("home_ml")
-        a_o, a_c = op.get("away_ml"), cur.get("away_ml")
-        if pub_h and pub_h >= 65 and h_o and h_c and _odds_improved_for_bettors(h_o, h_c):
-            intel["reverse_line_flag"] = True
-            intel["flags"].append("reverse_line_home")
-        if pub_a and pub_a >= 65 and a_o and a_c and _odds_improved_for_bettors(a_o, a_c):
-            intel["reverse_line_flag"] = True
-            intel["flags"].append("reverse_line_away")
+        _apply_external_splits(intel, external_splits, op, cur)
 
     if not intel["line_movement_summary"]:
-        intel["line_movement_summary"].append("Lines stable since open")
+        if history:
+            intel["line_movement_summary"].append("Lines stable since open")
+        else:
+            intel["line_movement_summary"].append("No opening snapshot — splits only")
 
     return intel
+
+
+def _apply_external_splits(
+    intel: dict,
+    external_splits: dict,
+    open_lines: dict,
+    current_lines: dict,
+) -> None:
+    """Merge Action Network splits and derive public/sharp/contrarian flags."""
+    intel["data_quality"] = "snapshot_plus_splits"
+    h_split = external_splits.get("h2h_home") or external_splits.get("moneyline_home")
+    a_split = external_splits.get("h2h_away") or external_splits.get("moneyline_away")
+    _apply_split_fields(intel, h_split, "home")
+    _apply_split_fields(intel, a_split, "away")
+    _apply_split_fields(intel, external_splits.get("total_over"), "over")
+    _apply_split_fields(intel, external_splits.get("total_under"), "under")
+    _apply_split_fields(intel, external_splits.get("spread_home"), "spread_home")
+    _apply_split_fields(intel, external_splits.get("spread_away"), "spread_away")
+
+    pub_h = intel.get("public_bet_pct_home")
+    pub_a = intel.get("public_bet_pct_away")
+    pub_o = intel.get("public_bet_pct_over")
+    pub_u = intel.get("public_bet_pct_under")
+    mon_o = intel.get("public_money_pct_over")
+    mon_u = intel.get("public_money_pct_under")
+
+    if pub_o is not None and pub_o >= 70:
+        intel["flags"].append("public_heavy_over")
+    if pub_u is not None and pub_u >= 70:
+        intel["flags"].append("public_heavy_under")
+    if pub_o is not None and pub_u is not None and pub_o >= 65 and pub_u <= 35:
+        intel["flags"].append("contrarian_under_setup")
+    if pub_u is not None and pub_o is not None and pub_u >= 65 and pub_o <= 35:
+        intel["flags"].append("contrarian_over_setup")
+    if (
+        pub_o is not None
+        and mon_u is not None
+        and mon_o is not None
+        and pub_o >= 60
+        and mon_u - mon_o >= 10
+    ):
+        intel["flags"].append("sharp_money_under")
+
+    # Reverse line: public heavy on ML side but line moved away from that side
+    h_o, h_c = open_lines.get("home_ml"), current_lines.get("home_ml")
+    a_o, a_c = open_lines.get("away_ml"), current_lines.get("away_ml")
+    if pub_h and pub_h >= 65 and h_o and h_c and _odds_improved_for_bettors(h_o, h_c):
+        intel["reverse_line_flag"] = True
+        intel["flags"].append("reverse_line_home")
+    if pub_a and pub_a >= 65 and a_o and a_c and _odds_improved_for_bettors(a_o, a_c):
+        intel["reverse_line_flag"] = True
+        intel["flags"].append("reverse_line_away")
+
+    # Reverse total juice: public on over but under juice steamed
+    if pub_o and pub_o >= 65 and "steam_under_juice" in intel["flags"]:
+        intel["flags"].append("reverse_total_under_juice")
 
 
 def build_market_intelligence(
@@ -379,6 +419,12 @@ def sharp_action_label(intel: dict) -> str:
         parts.append("Under juice steamed")
     if "steam_over_juice" in flags:
         parts.append("Over juice steamed")
+    if "contrarian_under_setup" in flags:
+        parts.append("Contrarian Under setup")
+    if "contrarian_over_setup" in flags:
+        parts.append("Contrarian Over setup")
+    if "sharp_money_under" in flags:
+        parts.append("Sharp $ Under")
     return " · ".join(parts) if parts else ""
 
 
@@ -386,6 +432,96 @@ def line_movement_label(intel: dict) -> str:
     if not intel:
         return ""
     return "; ".join(intel.get("line_movement_summary") or [])
+
+
+# Markets that indicate player props when market field is set
+PROP_MARKETS_HINT = frozenset({
+    "player_points", "player_rebounds", "player_assists", "player_threes",
+    "player_blocks", "player_steals", "player_points_rebounds_assists",
+    "batter_hits", "batter_home_runs", "batter_rbis", "pitcher_strikeouts", "pitcher_outs",
+    "player_goals", "player_shots_on_goal", "player_goal_scorer_anytime",
+    "player_shots_on_target", "player_pass_tds", "player_pass_yds",
+})
+
+
+def _game_line_context_note(intel: dict) -> str | None:
+    """Short game-line split summary for player-prop plays (no prop-level splits)."""
+    pub_o = intel.get("public_bet_pct_over")
+    pub_u = intel.get("public_bet_pct_under")
+    if pub_o is not None or pub_u is not None:
+        return f"Game total public: Over {pub_o}% / Under {pub_u}%"
+    pub_h = intel.get("public_bet_pct_home")
+    pub_a = intel.get("public_bet_pct_away")
+    if pub_h is not None or pub_a is not None:
+        return f"Game ML public: home {pub_h}% / away {pub_a}%"
+    return None
+
+
+def _play_split_context(play: dict, intel: dict) -> dict:
+    """Map a play to the relevant public/money % from game-line splits."""
+    bet = (play.get("bet") or "").lower()
+    market = (play.get("market") or "").lower()
+    home = (intel.get("home_team") or "").lower()
+    away = (intel.get("away_team") or "").lower()
+
+    ctx: dict = {
+        "play_split_side": None,
+        "play_public_bet_pct": None,
+        "play_public_money_pct": None,
+        "split_note": None,
+    }
+
+    if market.startswith("player_") or market in PROP_MARKETS_HINT:
+        note = _game_line_context_note(intel)
+        if note:
+            ctx["split_note"] = f"Prop play — game context: {note}"
+        return ctx
+
+    if "under" in bet or "under" in market or market == "total_under":
+        ctx["play_split_side"] = "under"
+        ctx["play_public_bet_pct"] = intel.get("public_bet_pct_under")
+        ctx["play_public_money_pct"] = intel.get("public_money_pct_under")
+        pub_o = intel.get("public_bet_pct_over")
+        if pub_o and pub_o >= 70:
+            ctx["split_note"] = f"Contrarian Under: {pub_o}% public on Over"
+        return ctx
+
+    if "over" in bet or "over" in market or market == "total_over":
+        ctx["play_split_side"] = "over"
+        ctx["play_public_bet_pct"] = intel.get("public_bet_pct_over")
+        ctx["play_public_money_pct"] = intel.get("public_money_pct_over")
+        pub_u = intel.get("public_bet_pct_under")
+        if pub_u and pub_u >= 70:
+            ctx["split_note"] = f"Contrarian Over: {pub_u}% public on Under"
+        return ctx
+
+    if home and home in bet:
+        ctx["play_split_side"] = "home_ml"
+        ctx["play_public_bet_pct"] = intel.get("public_bet_pct_home")
+        ctx["play_public_money_pct"] = intel.get("public_money_pct_home")
+        return ctx
+
+    if away and away in bet:
+        ctx["play_split_side"] = "away_ml"
+        ctx["play_public_bet_pct"] = intel.get("public_bet_pct_away")
+        ctx["play_public_money_pct"] = intel.get("public_money_pct_away")
+        return ctx
+
+    if "spread" in bet or "spread" in market:
+        if home and home in bet:
+            ctx["play_split_side"] = "spread_home"
+            ctx["play_public_bet_pct"] = intel.get("public_bet_pct_spread_home")
+            ctx["play_public_money_pct"] = intel.get("public_money_pct_spread_home")
+        elif away and away in bet:
+            ctx["play_split_side"] = "spread_away"
+            ctx["play_public_bet_pct"] = intel.get("public_bet_pct_spread_away")
+            ctx["play_public_money_pct"] = intel.get("public_money_pct_spread_away")
+        return ctx
+
+    note = _game_line_context_note(intel)
+    if note:
+        ctx["split_note"] = note
+    return ctx
 
 
 def enrich_card_with_market_signals(card: dict, snapshot: dict) -> dict:
@@ -415,6 +551,7 @@ def enrich_card_with_market_signals(card: dict, snapshot: dict) -> dict:
                 continue
             play["line_movement"] = line_movement_label(intel)
             play["sharp_action"] = sharp_action_label(intel)
+            play_ctx = _play_split_context(play, intel)
             signals = {
                 "flags": intel.get("flags"),
                 "steam_side": intel.get("steam_side"),
@@ -429,6 +566,10 @@ def enrich_card_with_market_signals(card: dict, snapshot: dict) -> dict:
                 "public_money_pct_under": intel.get("public_money_pct_under"),
                 "public_bet_pct_spread_home": intel.get("public_bet_pct_spread_home"),
                 "public_bet_pct_spread_away": intel.get("public_bet_pct_spread_away"),
+                "play_split_side": play_ctx.get("play_split_side"),
+                "play_public_bet_pct": play_ctx.get("play_public_bet_pct"),
+                "play_public_money_pct": play_ctx.get("play_public_money_pct"),
+                "split_note": play_ctx.get("split_note"),
                 "sharp_money_flag": intel.get("sharp_money_flag"),
                 "big_money_flag": intel.get("big_money_flag"),
                 "data_quality": intel.get("data_quality"),

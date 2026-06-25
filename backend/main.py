@@ -527,6 +527,10 @@ async def health():
 async def run_daily_cards(target_date: str = None, specific_user_id: str = None):
     """Daily major-league ESM card (MLB/NBA/NHL/NFL). World Cup uses the separate WC pipeline."""
     from agent.unit_tracker import sync_units_at_risk
+    from workers.market_poller import run_splits_sync
+
+    splits_result = run_splits_sync(db)
+    print(f"[AgentEdge] Pre-card Action Network splits: {splits_result}")
 
     today = target_date or date.today().isoformat()
     grade_result = grade_all_pending(db)

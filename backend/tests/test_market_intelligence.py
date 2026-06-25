@@ -72,3 +72,30 @@ def test_sharp_action_label():
     label = sharp_action_label(intel)
     assert "Steam" in label
     assert "Reverse line" in label
+
+
+def test_splits_applied_without_opening_history():
+    """Splits must apply even when no market_snapshots history exists."""
+    splits = {
+        "total_over": {
+            "public_bet_pct": 95,
+            "public_money_pct": 95,
+            "source": "action_network",
+        },
+        "total_under": {
+            "public_bet_pct": 5,
+            "public_money_pct": 5,
+            "source": "action_network",
+        },
+    }
+    intel = analyze_game_lines(
+        [],
+        "Ecuador",
+        "Germany",
+        {"total": 2.5, "under_odds": 140},
+        external_splits=splits,
+    )
+    assert intel["public_bet_pct_over"] == 95
+    assert intel["data_quality"] == "snapshot_plus_splits"
+    assert "public_heavy_over" in intel["flags"]
+    assert "contrarian_under_setup" in intel["flags"]

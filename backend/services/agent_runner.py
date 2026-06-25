@@ -67,8 +67,20 @@ def run_card_for_user(
     espn_context = _build_espn_context(market_snapshot, today)
 
     perf_context = get_performance_context(db, user_id, pipeline="esm")
+    intelligence = None
+    if db is not None:
+        from esm.market_intelligence import (
+            attach_intelligence_to_snapshot,
+            build_market_intelligence,
+        )
+
+        sport_keys = list(market_snapshot.get("sports", {}).keys())
+        intelligence = build_market_intelligence(db, market_snapshot, sport_keys)
+        market_snapshot = attach_intelligence_to_snapshot(market_snapshot, intelligence)
+
     user_message = _build_user_message(
-        today, market_snapshot, espn_context, max_plays, unit_size, perf_context, db=db,
+        today, market_snapshot, espn_context, max_plays, unit_size, perf_context,
+        intelligence=intelligence,
     )
 
     print("[agent_runner] Running ESM analysis...")
@@ -127,8 +139,12 @@ def _build_espn_context(market_snapshot: dict, today: str) -> dict:
 
 def _build_user_message(
     today: str, market_snapshot: dict, espn_context: dict,
-    max_plays: int, unit_size: float, perf_context: str = "", db=None,
+    max_plays: int, unit_size: float, perf_context: str = "",
+    intelligence: dict | None = None,
 ) -> str:
+    from esm.split_guidance import SPLIT_INTERPRETATION_GUIDANCE
+    from esm.market_intelligence import format_intelligence_for_prompt
+
     parts = [
         f"DATE: {today}",
         f"UNIT SIZE: ${unit_size:.0f} per unit",
@@ -144,17 +160,10 @@ def _build_user_message(
     else:
         parts.append("No odds data available for today's slate.")
 
-    if db is not None:
-        from esm.market_intelligence import (
-            attach_intelligence_to_snapshot,
-            build_market_intelligence,
-            format_intelligence_for_prompt,
-        )
-        sport_keys = list(market_snapshot.get("sports", {}).keys())
-        intel = build_market_intelligence(db, market_snapshot, sport_keys)
-        market_snapshot = attach_intelligence_to_snapshot(market_snapshot, intel)
+    if intelligence:
         parts.append("\n--- MARKET INTELLIGENCE (line movement / splits) ---")
-        parts.append(format_intelligence_for_prompt(intel))
+        parts.append(format_intelligence_for_prompt(intelligence))
+        parts.append(SPLIT_INTERPRETATION_GUIDANCE)
 
     parts.append("\n--- INJURY / TEAM CONTEXT ---")
     if espn_context:
