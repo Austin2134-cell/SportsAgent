@@ -434,7 +434,13 @@ def run_world_cup_card(
                 "card will NOT be emailed. Set email env vars on Railway or use GitHub Actions."
             )
         print(f"[wc_runner] Sending card to {recipient}...")
-        success = send_card_email(card, recipient, card_date)
+        success = send_card_email(
+            card,
+            recipient,
+            card_date,
+            subject_label="World Cup Daily Card",
+            header_label="WORLD CUP CARD",
+        )
         if not success:
             print(
                 f"[wc_runner] Email not sent via transport. "

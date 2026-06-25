@@ -209,7 +209,12 @@ def _lean_html(lean: dict) -> str:
     </table>"""
 
 
-def build_html_email(card: dict, card_date: str = None) -> str:
+def build_html_email(
+    card: dict,
+    card_date: str = None,
+    *,
+    header_label: str = "DAILY CARD",
+) -> str:
     card_date = card_date or card.get("date", date.today().isoformat())
     grade = card.get("slate_grade", "?")
     grade_color = _GRADE_COLOR.get(grade, "#94a3b8")
@@ -342,10 +347,10 @@ def build_html_email(card: dict, card_date: str = None) -> str:
                         margin-bottom:14px;">
               EDGE SPORTS MEDIA
             </div>
-            <!-- DAILY CARD title -->
+            <!-- Card title -->
             <div style="font-size:42px;font-weight:900;color:#f1f5f9;
                         letter-spacing:-.03em;line-height:1;margin-bottom:8px;">
-              DAILY CARD
+              {header_label}
             </div>
             <!-- Subtitle -->
             <div style="font-size:12px;font-weight:600;color:#1e3a5a;
@@ -425,11 +430,18 @@ def build_html_email(card: dict, card_date: str = None) -> str:
 </html>"""
 
 
-def send_card_email(card: dict, to_address: str, card_date: str = None) -> bool:
+def send_card_email(
+    card: dict,
+    to_address: str,
+    card_date: str = None,
+    *,
+    subject_label: str = "ESM Daily Card",
+    header_label: str = "DAILY CARD",
+) -> bool:
     """Send the formatted card HTML to to_address. Returns True on success."""
     card_date = card_date or card.get("date", date.today().isoformat())
-    html_body = build_html_email(card, card_date)
-    subject = f"ESM Daily Card — {card_date} (Grade {card.get('slate_grade','?')})"
+    html_body = build_html_email(card, card_date, header_label=header_label)
+    subject = f"{subject_label} — {card_date} (Grade {card.get('slate_grade', '?')})"
 
     sendgrid_key = os.getenv("SENDGRID_API_KEY", "")
     if sendgrid_key:

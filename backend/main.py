@@ -42,21 +42,18 @@ scheduler = AsyncIOScheduler(timezone=TIMEZONE)
 
 def _log_scheduler_startup():
     from services.world_cup_card import default_recipient, email_transport_configured
+    from services.daily_esm_card import default_recipient as esm_recipient, esm_card_enabled
 
     wc_enabled = os.getenv("WC_CARD_ENABLED", "true").lower() not in ("0", "false", "no")
+    esm_enabled = esm_card_enabled()
     email_ok = email_transport_configured()
-    recipient = default_recipient()
     print(
         f"[AgentEdge] Scheduler starting ({TIMEZONE}): "
         f"WC card={'on' if wc_enabled else 'OFF'} @ 08:50, "
-        f"email={'configured' if email_ok else 'MISSING — cards will not be emailed from Railway'}, "
-        f"recipient={recipient}"
+        f"MLB card={'on' if esm_enabled else 'OFF'} @ 09:35, "
+        f"email={'configured' if email_ok else 'MISSING'}, "
+        f"wc_recipient={default_recipient()}, mlb_recipient={esm_recipient()}"
     )
-    if wc_enabled and not email_ok:
-        print(
-            "[AgentEdge] WARNING: Railway has no EMAIL_SMTP_* or SENDGRID_API_KEY. "
-            "Daily card email is delivered by GitHub Actions cron; configure Railway email as backup."
-        )
 
 
 @asynccontextmanager
@@ -68,7 +65,7 @@ async def lifespan(app: FastAPI):
     scheduler.add_job(_scheduled_world_cup_card, "cron", hour=8, minute=50, id="world_cup_card")
     scheduler.add_job(_scheduled_splits_sync, "cron", hour=9, minute=25, id="pre_agent_splits_sync")
     scheduler.add_job(_scheduled_morning_agents, "cron", hour=9, minute=30, id="morning_agent_run")
-    scheduler.add_job(run_daily_cards, "cron", hour=9, minute=35, id="daily_cards")
+    scheduler.add_job(_scheduled_daily_esm_card, "cron", hour=9, minute=35, id="daily_esm_card")
     scheduler.add_job(_scheduled_sheets_sync, "cron", hour=10, minute=0, id="sheets_sync")
     scheduler.add_job(run_weekly_digest, "cron", day_of_week="mon", hour=8, minute=0, id="weekly_digest")
     scheduler.add_job(_scheduled_market_poll, "interval", minutes=POLL_INTERVAL_MINUTES, id="market_poll")
@@ -147,6 +144,21 @@ async def _scheduled_morning_agents():
         run_all_agent_scans(db)
     except Exception as e:
         print(f"[AgentEdge] Morning agent run error: {e}")
+
+
+async def _scheduled_daily_esm_card():
+    """Daily MLB/ESM card — separate email from World Cup (9:35 AM Mountain Time)."""
+    try:
+        from services.daily_esm_card import run_daily_esm_card
+
+        card = await asyncio.to_thread(run_daily_esm_card, print_output=True, db=db)
+        print(
+            f"[AgentEdge] MLB/ESM card complete: "
+            f"{card.get('date')} grade {card.get('slate_grade')} "
+            f"({len(card.get('official_plays') or [])} plays)"
+        )
+    except Exception as e:
+        print(f"[AgentEdge] MLB/ESM card error: {e}")
 
 
 async def _scheduled_market_poll():
@@ -251,8 +263,21 @@ async def get_today_card(user: dict = Depends(get_current_user)):
     today = date.today().isoformat()
     result = db.table("cards").select("*").eq("user_id", user["id"]).eq("date", today).execute()
     if not result.data:
-        return {"card": None, "message": "No card generated yet today. Check back at 9:30 AM MT."}
-    return {"card": result.data[0]}
+        return {"card": None, "message": "No card generated yet today. MLB card at 9:35 AM MT; WC at 8:50 AM MT."}
+    return {"card": _expand_card_row(result.data[0])}
+
+
+def _expand_card_row(row: dict) -> dict:
+    """Expose separate WC and MLB/ESM cards from raw_card without merging plays."""
+    raw = row.get("raw_card") if isinstance(row.get("raw_card"), dict) else {}
+    wc = raw.get("world_cup") if isinstance(raw.get("world_cup"), dict) else None
+    esm = raw.get("esm") if isinstance(raw.get("esm"), dict) else None
+    expanded = dict(row)
+    expanded["world_cup_card"] = wc
+    expanded["esm_card"] = esm
+    expanded["mlb_plays"] = (esm or {}).get("official_plays") or []
+    expanded["world_cup_plays"] = (wc or {}).get("official_plays") or []
+    return expanded
 
 
 @app.get("/api/card/{card_date}")
@@ -260,7 +285,7 @@ async def get_card_by_date(card_date: str, user: dict = Depends(get_current_user
     result = db.table("cards").select("*").eq("user_id", user["id"]).eq("date", card_date).execute()
     if not result.data:
         raise HTTPException(status_code=404, detail="Card not found")
-    return {"card": result.data[0]}
+    return {"card": _expand_card_row(result.data[0])}
 
 
 @app.get("/api/bets")
@@ -362,9 +387,50 @@ async def resume_agent(user: dict = Depends(get_current_user)):
 
 
 @app.post("/api/admin/run-card")
-async def admin_run_card(target_date: Optional[str] = None, user_id: Optional[str] = None, admin: dict = Depends(get_admin_user)):
-    await run_daily_cards(target_date=target_date, specific_user_id=user_id)
-    return {"message": "Card generation triggered"}
+async def admin_run_card(
+    target_date: Optional[str] = None,
+    user_id: Optional[str] = None,
+    force: bool = False,
+    admin: dict = Depends(get_admin_user),
+):
+    """Trigger MLB/ESM daily card (same job as 9:35 AM schedule)."""
+    from services.daily_esm_card import run_daily_esm_card
+
+    card = await asyncio.to_thread(
+        run_daily_esm_card,
+        target_date=target_date,
+        force=force,
+        print_output=True,
+        db=db,
+    )
+    return {"message": "MLB/ESM card generated", "date": card.get("date"), "plays": len(card.get("official_plays") or [])}
+
+
+@app.post("/api/admin/run-esm-card")
+async def admin_run_esm_card(
+    target_date: Optional[str] = None,
+    no_email: bool = False,
+    force: bool = False,
+    admin: dict = Depends(get_admin_user),
+):
+    """Manually trigger the MLB/ESM daily card."""
+    from services.daily_esm_card import run_daily_esm_card
+
+    card = await asyncio.to_thread(
+        run_daily_esm_card,
+        target_date=target_date,
+        send_email=not no_email,
+        force=force,
+        print_output=True,
+        db=db,
+    )
+    return {
+        "message": "MLB/ESM card generated",
+        "date": card.get("date"),
+        "slate_grade": card.get("slate_grade"),
+        "plays": len(card.get("official_plays") or []),
+        "skipped": card.get("skipped", False),
+    }
 
 
 @app.post("/api/admin/run-wc-card")

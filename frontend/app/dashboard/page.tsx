@@ -30,6 +30,10 @@ interface Card {
   leans: any[];
   quick_reads: any[];
   pass_notes: any[];
+  mlb_plays?: Play[];
+  world_cup_plays?: Play[];
+  esm_card?: { slate_grade?: string; slate_grade_note?: string; leans?: any[]; quick_reads?: any[] };
+  world_cup_card?: { slate_grade?: string; slate_grade_note?: string; leans?: any[]; quick_reads?: any[] };
 }
 
 function StatBox({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
@@ -194,40 +198,73 @@ export default function DashboardPage() {
           <div className="text-center py-16">
             <div className="text-[#00d084] text-3xl mb-4">◈</div>
             <p className="text-[#71717a] text-sm">No positions yet today.</p>
-            <p className="text-[#2a2a2a] text-xs mt-2">Your agent will recommend plays when it finds edge.</p>
+            <p className="text-[#2a2a2a] text-xs mt-2">WC card ~8:50 AM MT · MLB card ~9:35 AM MT</p>
             <Link href="/agent" className="inline-block mt-4 text-xs text-[#00d084] hover:underline tracking-widest">VIEW AGENT FEED →</Link>
           </div>
         )}
 
         {card && (
           <div className="space-y-6 fade-in">
-            {/* Slate Header */}
-            <div className="bg-[#111] border border-[#222] rounded p-4">
-              <div className="flex items-center justify-between mb-2">
-                <div>
-                  <div className="text-[10px] text-[#71717a] tracking-widest">TODAY&apos;S SLATE</div>
-                  <div className="text-xs text-[#71717a] mt-0.5">{new Date(card.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}</div>
-                </div>
-                {card.slate_grade && (
-                  <div className="text-right">
-                    <div className="text-[10px] text-[#71717a] tracking-widest">GRADE</div>
-                    <div className={`text-3xl font-bold ${gradeColor}`}>{card.slate_grade}</div>
-                  </div>
-                )}
-              </div>
-              {card.slate_note && <p className="text-xs text-[#71717a] leading-relaxed border-t border-[#222] pt-2 mt-2">{card.slate_note}</p>}
-            </div>
-
-            {/* Main Plays */}
-            {card.plays && card.plays.length > 0 && (
+            {/* World Cup section */}
+            {(card.world_cup_plays?.length ?? 0) > 0 && (
               <div>
-                <div className="text-[10px] text-[#71717a] tracking-widest mb-3 flex items-center gap-2">
-                  <span className="text-[#00d084]">◈</span> PLAYS ({card.plays.length})
+                <div className="text-[10px] text-[#00c3ff] tracking-widest mb-3 flex items-center gap-2">
+                  <span>⚽</span> WORLD CUP
+                  {card.world_cup_card?.slate_grade && (
+                    <span className="text-[#00c3ff] font-bold ml-2">Grade {card.world_cup_card.slate_grade}</span>
+                  )}
                 </div>
+                {card.world_cup_card?.slate_grade_note && (
+                  <p className="text-xs text-[#71717a] mb-3 leading-relaxed">{card.world_cup_card.slate_grade_note}</p>
+                )}
                 <div className="space-y-2">
-                  {card.plays.map((play, i) => (
-                    <PlayCard key={i} play={play} index={i} />
+                  {card.world_cup_plays!.map((play, i) => (
+                    <PlayCard key={`wc-${i}`} play={play} index={i} />
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* MLB / ESM section */}
+            {((card.mlb_plays?.length ?? 0) > 0 || (card.plays?.length ?? 0) > 0) && (
+              <div>
+                <div className="text-[10px] text-[#f59e0b] tracking-widest mb-3 flex items-center gap-2">
+                  <span>⚾</span> MLB DAILY CARD
+                  {(card.esm_card?.slate_grade || card.slate_grade) && (
+                    <span className="text-[#f59e0b] font-bold ml-2">
+                      Grade {card.esm_card?.slate_grade || card.slate_grade}
+                    </span>
+                  )}
+                </div>
+                {(card.esm_card?.slate_grade_note || card.slate_note) && (
+                  <p className="text-xs text-[#71717a] mb-3 leading-relaxed">
+                    {card.esm_card?.slate_grade_note || card.slate_note}
+                  </p>
+                )}
+                <div className="space-y-2">
+                  {(card.mlb_plays?.length ? card.mlb_plays : card.plays).map((play, i) => (
+                    <PlayCard key={`mlb-${i}`} play={play} index={i} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Legacy single slate header when only old combined format */}
+            {!card.mlb_plays?.length && !card.world_cup_plays?.length && card.plays?.length > 0 && (
+              <div className="bg-[#111] border border-[#222] rounded p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <div className="text-[10px] text-[#71717a] tracking-widest">TODAY&apos;S SLATE</div>
+                    <div className="text-xs text-[#71717a] mt-0.5">
+                      {new Date(card.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                    </div>
+                  </div>
+                  {card.slate_grade && (
+                    <div className="text-right">
+                      <div className="text-[10px] text-[#71717a] tracking-widest">GRADE</div>
+                      <div className={`text-3xl font-bold ${gradeColor}`}>{card.slate_grade}</div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

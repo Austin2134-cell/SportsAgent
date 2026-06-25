@@ -1,6 +1,8 @@
 """
 Persist ESM cards and official plays to Supabase (cards + bets tables).
-Used by agent_runner and the World Cup daily card runner.
+
+World Cup and MLB/ESM cards are stored separately in raw_card.world_cup and raw_card.esm.
+Top-level plays/leans columns reflect the MLB card only (dashboard MLB section).
 """
 
 import os
@@ -17,7 +19,6 @@ def resolve_user_id(db, email: Optional[str] = None) -> Optional[str]:
     for row in result.data or []:
         if (row.get("email") or "").strip().lower() == target:
             return row["id"]
-    # Fallback: exact match as stored in auth
     exact = db.table("profiles").select("id").eq("email", target).limit(1).execute()
     if exact.data:
         return exact.data[0]["id"]
@@ -34,12 +35,21 @@ def _bet_key(play: dict) -> tuple:
     return (_normalize_game(play.get("game", "")), (play.get("bet") or "").strip().lower())
 
 
+def _slate_note_from_raw(raw: dict) -> str:
+    parts = []
+    wc = raw.get("world_cup")
+    esm = raw.get("esm")
+    if isinstance(wc, dict) and wc.get("slate_grade_note"):
+        parts.append(f"[World Cup] {wc.get('slate_grade_note', '').strip()}")
+    if isinstance(esm, dict) and esm.get("slate_grade_note"):
+        parts.append(f"[MLB/ESM] {esm.get('slate_grade_note', '').strip()}")
+    return " | ".join(parts)
+
+
 def persist_esm_card(db, user_id: str, card: dict, *, source: str = "esm") -> Optional[str]:
     """
-    Write card JSON and one bets row per official play.
-    Merges into an existing card for the same user/date (e.g. WC + agent same day).
-    Skips duplicate bets (same game + bet text).
-    Returns card_id or None on failure.
+    Write card JSON and bets rows. WC and ESM live in separate raw_card keys — not merged.
+    Top-level plays/leans/quick_reads reflect MLB/ESM only; WC plays stay in raw_card.world_cup.
     """
     today = card.get("date")
     if not today:
@@ -65,7 +75,7 @@ def persist_esm_card(db, user_id: str, card: dict, *, source: str = "esm") -> Op
 
     raw_card = card.copy()
     grade_note = card.get("slate_grade_note", "") or ""
-    source_label = "World Cup" if source == "world_cup" else "ESM"
+    source_label = "World Cup" if source == "world_cup" else "MLB/ESM"
 
     if existing_card.data:
         row = existing_card.data[0]
@@ -74,36 +84,48 @@ def persist_esm_card(db, user_id: str, card: dict, *, source: str = "esm") -> Op
         raw = dict(raw)
         raw[source] = raw_card
 
-        merged_plays = list(row.get("plays") or [])
-        for play in official_plays:
-            if _bet_key(play) not in seen_bets:
-                merged_plays.append(play)
-
-        prior_note = row.get("slate_note") or ""
-        wc_note = f"[{source_label}] {grade_note}".strip()
-        slate_note = wc_note if not prior_note else f"{prior_note} | {wc_note}"
-
-        db.table("cards").update({
-            "slate_grade": card.get("slate_grade") or row.get("slate_grade"),
-            "slate_note": slate_note,
-            "plays": merged_plays,
-            "leans": (row.get("leans") or []) + (card.get("leans") or []),
-            "quick_reads": (row.get("quick_reads") or []) + (card.get("quick_reads") or []),
-            "pass_notes": (row.get("pass_notes") or []) + (card.get("pass_notes") or []),
+        update_payload: dict = {
             "raw_card": raw,
-        }).eq("id", card_id).execute()
+            "slate_note": _slate_note_from_raw(raw),
+        }
+
+        if source == "esm":
+            update_payload.update({
+                "slate_grade": card.get("slate_grade") or row.get("slate_grade"),
+                "plays": official_plays,
+                "leans": card.get("leans", []),
+                "quick_reads": card.get("quick_reads", []),
+                "pass_notes": card.get("pass_notes", []),
+            })
+        elif source == "world_cup":
+            wc = raw.get("world_cup") or {}
+            if not raw.get("esm"):
+                update_payload.update({
+                    "slate_grade": card.get("slate_grade"),
+                    "plays": official_plays,
+                    "leans": card.get("leans", []),
+                    "quick_reads": card.get("quick_reads", []),
+                    "pass_notes": card.get("pass_notes", []),
+                })
+            else:
+                update_payload["slate_grade"] = (
+                    (raw.get("esm") or {}).get("slate_grade") or row.get("slate_grade")
+                )
+
+        db.table("cards").update(update_payload).eq("id", card_id).execute()
     else:
-        card_result = db.table("cards").insert({
+        insert_payload = {
             "user_id": user_id,
             "date": today,
             "slate_grade": card.get("slate_grade"),
             "slate_note": f"[{source_label}] {grade_note}".strip(),
-            "plays": official_plays,
+            "plays": official_plays if source == "esm" or source == "world_cup" else [],
             "leans": card.get("leans", []),
             "quick_reads": card.get("quick_reads", []),
             "pass_notes": card.get("pass_notes", []),
             "raw_card": {source: raw_card},
-        }).execute()
+        }
+        card_result = db.table("cards").insert(insert_payload).execute()
         card_id = card_result.data[0]["id"] if card_result.data else None
 
     if not card_id:
