@@ -446,8 +446,18 @@ def send_card_email(card: dict, to_address: str, card_date: str = None) -> bool:
     return False
 
 
+def _smtp_from_address() -> str:
+    """Gmail SMTP requires the authenticated account as From for reliable delivery."""
+    smtp_user = os.getenv("EMAIL_SMTP_USER", "").strip()
+    configured = os.getenv("EMAIL_FROM", "cards@edgebet.com").strip()
+    host = os.getenv("EMAIL_SMTP_HOST", "").lower()
+    if smtp_user and "gmail" in host and configured.lower() != smtp_user.lower():
+        return smtp_user
+    return configured or smtp_user or "cards@edgebet.com"
+
+
 def _send_via_smtp(html_body: str, subject: str, to_address: str) -> bool:
-    from_addr = os.getenv("EMAIL_FROM", "cards@edgebet.com")
+    from_addr = _smtp_from_address()
     smtp_host = os.getenv("EMAIL_SMTP_HOST")
     smtp_port = int(os.getenv("EMAIL_SMTP_PORT", "587"))
     smtp_user = os.getenv("EMAIL_SMTP_USER", "")
@@ -457,16 +467,19 @@ def _send_via_smtp(html_body: str, subject: str, to_address: str) -> bool:
     msg["Subject"] = subject
     msg["From"] = from_addr
     msg["To"] = to_address
+    branded_from = os.getenv("EMAIL_FROM", "").strip()
+    if branded_from and branded_from.lower() != from_addr.lower():
+        msg["Reply-To"] = branded_from
     msg.attach(MIMEText(html_body, "html"))
 
     try:
-        with smtplib.SMTP(smtp_host, smtp_port, timeout=15) as server:
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=60) as server:
             server.ehlo()
             server.starttls()
             if smtp_user:
                 server.login(smtp_user, smtp_pass)
             server.sendmail(from_addr, to_address, msg.as_string())
-        print(f"[mailer] Email sent to {to_address} via SMTP ({smtp_host})")
+        print(f"[mailer] Email sent to {to_address} via SMTP ({smtp_host}) from {from_addr}")
         return True
     except Exception as e:
         print(f"[mailer] SMTP send failed: {e}")
