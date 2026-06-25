@@ -1,7 +1,8 @@
-name: World Cup Daily Card (Manual)
+name: World Cup Daily Card
 
-# Scheduled delivery runs on Railway at 8:50 AM Mountain Time (APScheduler in main.py).
-# Use this workflow only for manual/offline runs from the GitHub Actions tab.
+# Primary scheduled delivery: GitHub Actions cron at 8:50 AM Mountain Time.
+# Railway APScheduler (main.py) is a backup — idempotency skips duplicate same-day cards.
+# GitHub Secrets must include EMAIL_SMTP_* (or SENDGRID_API_KEY) and WC_CARD_USER_EMAIL.
 
 on:
   workflow_dispatch:
@@ -11,7 +12,7 @@ on:
         required: false
         default: ""
       email:
-        description: "Recipient email. Leave blank for default (WC_CARD_USER_EMAIL secret or Austin.noyes21@gmail.com)."
+        description: "Recipient email. Leave blank for default (WC_CARD_USER_EMAIL secret or austin.noyes21@gmail.com)."
         required: false
         default: ""
       no_email:
@@ -22,6 +23,19 @@ on:
         options:
           - "false"
           - "true"
+      force:
+        description: "Regenerate even if today's card already exists?"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+  # 8:50 AM Mountain Time — 14:50 UTC (MDT/summer) and 15:50 UTC (MST/winter)
+  schedule:
+    - cron: "50 14 * * *"
+    - cron: "50 15 * * *"
 
 jobs:
   generate-card:
@@ -79,8 +93,13 @@ jobs:
           if [ "${{ github.event.inputs.no_email }}" = "true" ]; then
             NO_EMAIL_ARG="--no-email"
           fi
+          FORCE_ARG=""
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            FORCE_ARG="--force"
+          fi
 
           python run_world_cup_card.py \
             --date "$DATE" \
             $EMAIL_ARG \
-            $NO_EMAIL_ARG
+            $NO_EMAIL_ARG \
+            $FORCE_ARG
