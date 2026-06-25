@@ -189,22 +189,22 @@ TIER 1 — OFFICIAL PLAYS (use these first):
   Your team wins = win. Draw = money back. Your team loses = lose.
   Expected hit rate on clear favorites: 65–75%. The draw is the #1 variance-killer
   in soccer — DNB eliminates it entirely at a far lower price than double chance.
-  USE INSTEAD OF ML whenever the straight ML exceeds -130. DNB on the same side is
-  usually -110 to -125, within ceiling, and offers better EV than the juicy ML.
-  Pass if DNB itself exceeds -130 — shift to lean.
+  USE INSTEAD OF ML whenever the straight ML exceeds -150. DNB on the same side is
+  usually -110 to -140, within ceiling, and offers better EV than the juicy ML.
+  Pass if DNB itself exceeds -150 — shift to lean.
 
 • Total Goals Under 2.5 — the default safe soccer market for WC group stage.
   WC group stage averages 2.0–2.4 goals/game historically (~57–62% hit rate).
   Tactical caution, defensive shape, first-game nerves, and must-not-lose mindset
   all push toward low-scoring games. Prioritize openers, experienced defensive nations,
   and any game where at least one side cannot afford to lose.
-  Target price: -105 to -125. Pass if priced worse than -130.
+  Target price: -105 to -140. Pass if priced worse than -150.
 
 TIER 2 — OFFICIAL PLAY OR LEAN (depending on price):
-• Match Result (straight ML): ONLY when the favorite is within the -130 ceiling AND
+• Match Result (straight ML): ONLY when the favorite is within the -150 ceiling AND
   the quality gap is undeniable (FIFA top-10 vs. outside top 40, or host-nation opener).
   Preferred over DNB only when you strongly believe the draw is near-impossible.
-  If the straight ML exceeds -130, take the DNB instead.
+  If the straight ML exceeds -150, take the DNB instead (if DNB is within -150).
 
 • Both Teams to Score No (BTTS No): When at least one side has elite defensive structure
   and a lead-protecting mentality. ~45–50% of WC group games see one side shut out.
@@ -224,7 +224,7 @@ HARD AVOIDS (never put on card, no exceptions):
 • Halftime/Fulltime doubles — game-state variance, worst value on the board.
 • Total Goals Over 2.5 in openers, must-not-lose games, or defensive matchups.
 • Any prop when confirmed lineups are unavailable (WC squad rotation is real and unpredictable).
-• Any line exceeding -130 (same hard ceiling as all ESM bets — no soccer exceptions).
+• Any line exceeding -150 on WC official plays (soccer juice ceiling — no exceptions).
 
 3-WAY PROBABILITY MATH — APPLY TO EVERY SOCCER PLAY:
 Soccer books offer 3-way odds (home/draw/away), which changes vig removal vs. 2-way markets.
@@ -235,7 +235,7 @@ Never substitute 3-way moneyline odds as DNB. Never estimate or invent DNB price
   Vig-removed true probabilities: Argentina ~52%, Draw ~24%, Ecuador ~17%
   DNB Argentina true probability: 52% ÷ (52% + 17%) = ~75%
   If posted DNB is -120 (implied 54.5%), true prob is 75% → strong edge gap
-  If posted DNB is -240, it exceeds the -130 ceiling — automatic pass, not a lean.
+  If posted DNB is -240, it exceeds the -150 ceiling — automatic pass, not a lean.
 
 For output: implied_prob_pct = implied from the recommended bet line (use posted DNB or ML odds).
 Estimate true_prob_pct using 3-way vig removal from h2h. Note DNB vs. ML math in key_factors.
@@ -252,7 +252,7 @@ SITUATIONAL FILTERS — APPLY BEFORE EVERY SOCCER BET:
   side has incentive to not win, treat as dead rubber.
 • HOST NATIONS (USA, Canada, Mexico at 2026 WC): Real structural home advantage —
   home crowd, zero travel, familiar conditions, referee awareness. Boost confidence
-  +1 tier vs. neutral venue when within the -130 ceiling.
+  +1 tier vs. neutral venue when within the -150 ceiling.
 • ALTITUDE VENUES (Mexico City ~2,240m, Guadalajara ~1,590m, Denver ~1,609m):
   High altitude increases cardiovascular fatigue and reduces pace and scoring.
   Reinforce Under bets when altitude venue is confirmed. European and sub-Saharan
@@ -262,7 +262,7 @@ SITUATIONAL FILTERS — APPLY BEFORE EVERY SOCCER BET:
 
 WHEN TO PASS ON SOCCER (sport-specific pass rules):
 • Confirmed lineups unavailable AND group position is already secured for one or both teams.
-• No market available within -130: ML too juicy, DNB also exceeds ceiling, no clean Under.
+• No market available within -150: ML too juicy, DNB also exceeds ceiling, no clean Under.
 • Confirmed dead rubber for either side.
 • The only edges available are speculative player props with uncertain rotation.
 • Line movement pushed the number beyond last playable before you can confirm.

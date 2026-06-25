@@ -42,7 +42,8 @@ def _snapshot():
 
 def test_within_juice_ceiling():
     assert within_juice_ceiling(-118)
-    assert within_juice_ceiling(-130)
+    assert within_juice_ceiling(-150)
+    assert not within_juice_ceiling(-151)
     assert not within_juice_ceiling(-240)
     assert not within_juice_ceiling(-370)
 
@@ -87,7 +88,7 @@ def test_validate_removes_juicy_dnb_and_keeps_totals():
     out = validate_wc_official_plays(card, _snapshot())
     assert len(out["official_plays"]) == 1
     assert out["official_plays"][0]["bet"] == "Total Goals Under 2.5"
-    assert any("exceeds -130" in n for n in out["pass_notes"])
+    assert any("exceeds -150" in n for n in out["pass_notes"])
 
 
 def test_validate_fixes_dnb_when_within_ceiling():

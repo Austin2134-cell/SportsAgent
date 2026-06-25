@@ -5,7 +5,7 @@ Soccer odds helpers — posted DNB lines, juice ceiling, play validation.
 import re
 from typing import Optional
 
-WC_JUICE_CEILING = -130  # American odds; -131 and worse (e.g. -240) exceed ceiling
+WC_JUICE_CEILING = -150  # American odds; -151 and worse (e.g. -240) exceed ceiling
 
 
 def is_dnb_bet(bet_text: str) -> bool:
@@ -39,7 +39,7 @@ def _team_matches(picked: str, team: str) -> bool:
 
 
 def within_juice_ceiling(american_odds: int) -> bool:
-    """True if odds are -130 or better (e.g. -120, +138 pass; -240 fails)."""
+    """True if odds are -150 or better (e.g. -120, +138 pass; -240 fails)."""
     return int(american_odds) >= WC_JUICE_CEILING
 
 
@@ -74,7 +74,7 @@ def posted_dnb_odds(game: dict, team: str) -> Optional[int]:
 def validate_wc_official_plays(card: dict, snapshot: dict) -> dict:
     """
     Enforce data integrity: DNB plays must use posted draw_no_bet lines from the API.
-    Removes DNB plays with no posted line or juice worse than -130.
+    Removes DNB plays with no posted line or juice worse than -150.
     Syncs totals odds to posted API lines when a matching game is found.
     """
     plays = list(card.get("official_plays") or [])
@@ -98,7 +98,7 @@ def validate_wc_official_plays(card: dict, snapshot: dict) -> dict:
                 continue
             if not within_juice_ceiling(posted):
                 removed_notes.append(
-                    f"Removed DNB {team}: posted line {posted} exceeds -130 ceiling"
+                    f"Removed DNB {team}: posted line {posted} exceeds -150 juice ceiling"
                 )
                 continue
             lines = game_row.get("lines", {})
@@ -119,6 +119,12 @@ def validate_wc_official_plays(card: dict, snapshot: dict) -> dict:
                 play["odds"] = int(lines["over_odds"])
             if lines.get("total_book"):
                 play["book"] = lines["total_book"].replace("_", " ").title()
+
+        if not within_juice_ceiling(int(play.get("odds", -110))):
+            removed_notes.append(
+                f"Removed {bet}: odds {play.get('odds')} exceed -150 juice ceiling"
+            )
+            continue
 
         kept.append(play)
 
