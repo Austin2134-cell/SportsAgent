@@ -120,6 +120,7 @@ def _build_wc_user_message(
     snapshot: dict,
     max_plays: int,
     unit_size: float,
+    market_intel: dict | None = None,
 ) -> str:
     tournament_day = _wc_tournament_day(target_date)
     live_sports = {k: v for k, v in snapshot.get("sports", {}).items() if v.get("games")}
@@ -143,6 +144,11 @@ def _build_wc_user_message(
             "• If DNB shows N/A, that side has no posted DNB line — do not fabricate one.\n"
             "• Use 3-way ML vig-removal math only for true_prob_pct / edge_gap_pct estimates."
         )
+        if market_intel:
+            from esm.market_intelligence import format_intelligence_for_prompt
+
+            parts.append("\n--- MARKET INTELLIGENCE (line movement / splits) ---")
+            parts.append(format_intelligence_for_prompt(market_intel))
     else:
         parts.append(
             "NO LIVE ODDS DATA AVAILABLE.\n"
@@ -166,6 +172,8 @@ def _build_wc_user_message(
         "(tactics, keeper quality, missing attackers, tempo), (2) why this line vs alternate total, "
         "(3) tournament day / group-stage context for THIS game.\n"
         "- If edges are thin on unders today, reduce count or pass — do not repeat yesterday's structure.\n"
+        "Decision order: fundamentals → market intelligence (steam/reverse/splits) → posted price for implied_prob only.\n"
+        "Populate market_signals, line_movement, and sharp_action when data is provided.\n"
         "Return a single valid JSON object matching the required schema. "
         "Use sport = 'SOCCER' for all soccer plays. "
         "No markdown, no text outside the JSON."
@@ -383,13 +391,28 @@ def run_world_cup_card(
     )
 
     snapshot = _build_wc_market_snapshot(card_date, db=active_db)
-    user_msg = _build_wc_user_message(card_date, snapshot, max_plays, unit_size)
+
+    market_intel = None
+    if active_db is not None:
+        from esm.market_intelligence import (
+            attach_intelligence_to_snapshot,
+            build_market_intelligence,
+        )
+
+        market_intel = build_market_intelligence(active_db, snapshot, [WC_SPORT_KEY])
+        snapshot = attach_intelligence_to_snapshot(snapshot, market_intel)
+
+    user_msg = _build_wc_user_message(card_date, snapshot, max_plays, unit_size, market_intel)
     card = _call_claude(user_msg)
     card["date"] = card_date
 
     from esm.soccer_odds import validate_wc_official_plays
 
     card = validate_wc_official_plays(card, snapshot)
+
+    from esm.market_intelligence import enrich_card_with_market_signals
+
+    card = enrich_card_with_market_signals(card, snapshot)
 
     if print_output:
         _print_card(card)

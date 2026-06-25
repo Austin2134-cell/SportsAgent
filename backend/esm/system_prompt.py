@@ -520,8 +520,20 @@ or any text outside the JSON object.
       "edge_summary": "two sentence max. include whether operating in tight or standard mode.",
       "key_factors": ["factor 1", "factor 2", "factor 3"],
       "main_risk": "one sentence",
-      "last_playable_number": -130,
-      "correlation_note": "none|description if correlated with another play"
+      "last_playable_number": -150,
+      "correlation_note": "none|description if correlated with another play",
+      "line_movement": "opening vs current summary when market intelligence provided",
+      "sharp_action": "steam/reverse line/sharp money flags when available",
+      "market_signals": {
+        "flags": ["steam_ml_away"],
+        "steam_side": "Team name or null",
+        "reverse_line": false,
+        "public_bet_pct_home": null,
+        "public_money_pct_home": null,
+        "sharp_money_flag": false,
+        "big_money_flag": false,
+        "data_quality": "snapshot_only|snapshot_plus_splits"
+      }
     }
   ],
   "leans": [

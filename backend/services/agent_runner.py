@@ -67,13 +67,19 @@ def run_card_for_user(
     espn_context = _build_espn_context(market_snapshot, today)
 
     perf_context = get_performance_context(db, user_id, pipeline="esm")
-    user_message = _build_user_message(today, market_snapshot, espn_context, max_plays, unit_size, perf_context)
+    user_message = _build_user_message(
+        today, market_snapshot, espn_context, max_plays, unit_size, perf_context, db=db,
+    )
 
     print("[agent_runner] Running ESM analysis...")
     card = _call_claude(user_message)
     if not card:
         print(f"[agent_runner] No card returned for {user_id}")
         return {}
+
+    from esm.market_intelligence import enrich_card_with_market_signals
+
+    card = enrich_card_with_market_signals(card, market_snapshot)
 
     official_plays = card.get("official_plays", [])
     if len(official_plays) > max_plays:
@@ -121,7 +127,7 @@ def _build_espn_context(market_snapshot: dict, today: str) -> dict:
 
 def _build_user_message(
     today: str, market_snapshot: dict, espn_context: dict,
-    max_plays: int, unit_size: float, perf_context: str = "",
+    max_plays: int, unit_size: float, perf_context: str = "", db=None,
 ) -> str:
     parts = [
         f"DATE: {today}",
@@ -138,6 +144,18 @@ def _build_user_message(
     else:
         parts.append("No odds data available for today's slate.")
 
+    if db is not None:
+        from esm.market_intelligence import (
+            attach_intelligence_to_snapshot,
+            build_market_intelligence,
+            format_intelligence_for_prompt,
+        )
+        sport_keys = list(market_snapshot.get("sports", {}).keys())
+        intel = build_market_intelligence(db, market_snapshot, sport_keys)
+        market_snapshot = attach_intelligence_to_snapshot(market_snapshot, intel)
+        parts.append("\n--- MARKET INTELLIGENCE (line movement / splits) ---")
+        parts.append(format_intelligence_for_prompt(intel))
+
     parts.append("\n--- INJURY / TEAM CONTEXT ---")
     if espn_context:
         parts.append(_summarize_espn(espn_context))
@@ -146,6 +164,10 @@ def _build_user_message(
 
     parts.append(
         "\nApply the full ESM framework to this data. "
+        "Decision order: (1) fundamentals/projection → true_prob_pct, "
+        "(2) market intelligence (steam, reverse line, splits) as confirmation or fade signal, "
+        "(3) posted price → implied_prob_pct only. Never treat juice alone as edge. "
+        "Populate market_signals, line_movement, and sharp_action on each play when data exists. "
         "Return your daily card as a single valid JSON object matching the required schema. "
         "No markdown, no commentary outside the JSON."
     )
