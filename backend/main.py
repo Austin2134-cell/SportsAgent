@@ -45,17 +45,14 @@ def _log_scheduler_startup():
     wc_enabled = os.getenv("WC_CARD_ENABLED", "true").lower() not in ("0", "false", "no")
     email_ok = email_transport_configured()
     recipient = default_recipient()
+    scans_per_day = max(1, (24 * 60) // AGENT_SCAN_INTERVAL_MINUTES)
     print(
         f"[AgentEdge] Scheduler starting ({TIMEZONE}): "
         f"WC card={'on' if wc_enabled else 'OFF'} @ 08:50, "
-        f"email={'configured' if email_ok else 'MISSING — cards will not be emailed from Railway'}, "
+        f"agent scans={scans_per_day}/day (every {AGENT_SCAN_INTERVAL_MINUTES} min), "
+        f"email={'configured' if email_ok else 'MISSING'}, "
         f"recipient={recipient}"
     )
-    if wc_enabled and not email_ok:
-        print(
-            "[AgentEdge] WARNING: Railway has no EMAIL_SMTP_* or SENDGRID_API_KEY. "
-            "Daily card email is delivered by GitHub Actions cron; configure Railway email as backup."
-        )
 
 
 @asynccontextmanager
@@ -124,7 +121,7 @@ async def _scheduled_morning_toa():
 
 
 async def _scheduled_morning_agents():
-    """Run agent morning scans against fresh odds cache (grading runs at 9:15 AM)."""
+    """Sync unit exposure after morning grade (Claude scans run on interval only — 8/day)."""
     try:
         from agent.unit_tracker import today_mt, sync_units_at_risk
 
@@ -132,9 +129,8 @@ async def _scheduled_morning_agents():
         agents = db.table("agent_instances").select("user_id").eq("status", "active").execute()
         for row in agents.data or []:
             sync_units_at_risk(db, row["user_id"], today)
-        run_all_agent_scans(db)
     except Exception as e:
-        print(f"[AgentEdge] Morning agent run error: {e}")
+        print(f"[AgentEdge] Morning unit sync error: {e}")
 
 
 async def _scheduled_market_poll():

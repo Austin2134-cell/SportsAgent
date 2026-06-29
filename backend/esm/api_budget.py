@@ -43,7 +43,7 @@ SGO_MIN_REQUEST_INTERVAL_SEC = 60 / SGO_RATE_LIMIT_PER_MIN  # 6 sec between call
 # SGO free tier refreshes ~every 10 min — but polling that often burns 2,500 objects/mo in ~1 day
 # with a typical 18-game slate. Default 60 min; set higher on free tier (see api_budget.py).
 POLL_INTERVAL_MINUTES = int(os.getenv("ODDS_POLL_INTERVAL_MINUTES", "360"))
-AGENT_SCAN_INTERVAL_MINUTES = int(os.getenv("AGENT_SCAN_INTERVAL_MINUTES", "30"))
+AGENT_SCAN_INTERVAL_MINUTES = int(os.getenv("AGENT_SCAN_INTERVAL_MINUTES", "180"))  # 8 scans/day (24h ÷ 8)
 SNAPSHOT_MAX_AGE_MINUTES = int(os.getenv("SNAPSHOT_MAX_AGE_MINUTES", "360"))
 
 # Preferred source: "sgo" (default, cost-efficient) or "toa"
