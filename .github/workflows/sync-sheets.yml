@@ -1,0 +1,38 @@
+name: Sync Google Sheet
+
+# Pushes all Supabase bets (including pending) to the tracking spreadsheet.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 10:05 AM MT backup — after WC (8:50) and MLB (9:35) on Railway
+    - cron: "5 16 * * *"
+    - cron: "5 17 * * *"
+
+jobs:
+  sync:
+    name: Supabase bets → Google Sheet
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt gspread google-auth
+
+      - name: Sync bets to sheet
+        working-directory: backend
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_SHEETS_CREDENTIALS_JSON: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS_JSON }}
+          GOOGLE_SHEETS_SYNC_EMAIL: ${{ secrets.GOOGLE_SHEETS_SYNC_EMAIL }}
+        run: python sync_sheets.py

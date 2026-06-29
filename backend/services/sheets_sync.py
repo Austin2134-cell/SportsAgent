@@ -65,6 +65,11 @@ def is_configured() -> bool:
 
 def maybe_sync_sheets(db, *, reason: str = "") -> Optional[dict]:
     if not is_configured():
+        label = f" ({reason})" if reason else ""
+        print(
+            f"[sheets_sync] Skipped{label}: set GOOGLE_SHEET_ID + "
+            "GOOGLE_SHEETS_CREDENTIALS_JSON on Railway or run GitHub 'Sync Google Sheet' workflow"
+        )
         return None
     try:
         result = sync_bets_to_sheet(db)

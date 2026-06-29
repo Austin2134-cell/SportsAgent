@@ -40,9 +40,20 @@ def main() -> int:
         f"updated={backfill_result['users_updated']}"
     )
 
-    print("3/3 Refreshing user + platform memory...")
+    print("3/4 Refreshing user + platform memory...")
     memory_result = refresh_memory_all_users(db)
     print(f"    {memory_result}")
+
+    print("4/4 Syncing Google Sheet...")
+    try:
+        from services.sheets_sync import is_configured, sync_bets_to_sheet
+        if is_configured():
+            sheet_result = sync_bets_to_sheet(db)
+            print(f"    synced {sheet_result['rows']} rows at {sheet_result['synced_at']}")
+        else:
+            print("    skipped — GOOGLE_SHEET_ID / credentials not set")
+    except Exception as e:
+        print(f"    sheet sync failed: {e}")
 
     # Ensure platform_memory seed row exists (service role bypasses RLS)
     try:
