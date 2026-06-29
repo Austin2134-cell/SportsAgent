@@ -420,9 +420,9 @@ def sharp_action_label(intel: dict) -> str:
     if "steam_over_juice" in flags:
         parts.append("Over juice steamed")
     if "contrarian_under_setup" in flags:
-        parts.append("Contrarian Under setup")
+        parts.append("Public heavy on Over")
     if "contrarian_over_setup" in flags:
-        parts.append("Contrarian Over setup")
+        parts.append("Public heavy on Under")
     if "sharp_money_under" in flags:
         parts.append("Sharp $ Under")
     return " · ".join(parts) if parts else ""
@@ -483,7 +483,8 @@ def _play_split_context(play: dict, intel: dict) -> dict:
         ctx["play_public_money_pct"] = intel.get("public_money_pct_under")
         pub_o = intel.get("public_bet_pct_over")
         if pub_o and pub_o >= 70:
-            ctx["split_note"] = f"Contrarian Under: {pub_o}% public on Over"
+            pub_u = intel.get("public_bet_pct_under")
+            ctx["split_note"] = f"Public betting on total: Over {pub_o}% / Under {pub_u}%"
         return ctx
 
     if "over" in bet or "over" in market or market == "total_over":
@@ -492,7 +493,8 @@ def _play_split_context(play: dict, intel: dict) -> dict:
         ctx["play_public_money_pct"] = intel.get("public_money_pct_over")
         pub_u = intel.get("public_bet_pct_under")
         if pub_u and pub_u >= 70:
-            ctx["split_note"] = f"Contrarian Over: {pub_u}% public on Under"
+            pub_o = intel.get("public_bet_pct_over")
+            ctx["split_note"] = f"Public betting on total: Over {pub_o}% / Under {pub_u}%"
         return ctx
 
     if home and home in bet:

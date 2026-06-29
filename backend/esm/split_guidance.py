@@ -8,8 +8,9 @@ SPLIT INTERPRETATION (when MARKET INTELLIGENCE includes public/money %):
   - Ticket % much higher than money % on a side → recreational/public heavy; fade candidate if your model disagrees.
   - Money % much higher than ticket % → sharp/big-money signal; confirmation if fundamentals agree.
 • Reverse line (flagged): public heavy on one side but line moved toward the other — respect the price action.
-• Totals: 70%+ public on Over + you like Under = classic contrarian setup — state it in edge_summary.
-  70%+ public on Under + you like Over = same, reversed.
+• Totals splits: heavy public on one side (70%+) is context only — note in edge_summary if it
+  confirms or contradicts your fundamental total read; never pick Over or Under solely because
+  of ticket %.
 • Game lines (ML/spread/total) splits apply to game-level bets; player props have no prop-level split feed —
   use game-level total/ML context only as secondary color, not as the prop edge.
 • If splits missing for a game, rely on line movement flags and fundamentals only.

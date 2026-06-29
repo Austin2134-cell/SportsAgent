@@ -180,49 +180,44 @@ FIFA WORLD CUP (June–July 2026 — highest global betting volume event):
 
 SOCCER IS DIFFERENT — read this entire section before applying any other ESM rules to soccer.
 The three-outcome market (win/draw/loss) means straight moneyline carries structural draw risk
-that does not exist in US sports. The goal is always to reduce losing scenarios.
+that does not exist in US sports. Account for draw probability in every handicap.
 
-MARKET HIERARCHY — RANKED BY EXPECTED HIT RATE:
+OPEN-MINDED GAME ANALYSIS (required):
+• Evaluate each match independently. Do not default to any market type (DNB, Under, Over, ML,
+  BTTS, etc.) based on tournament averages, yesterday's card structure, or slate theme.
+• Start with matchup fundamentals: squad quality, recent form, tactical style, coaching
+  tendencies, expected tempo, set-piece threat, keeper quality, missing attackers/defenders,
+  motivation, and group-stage context for THIS specific game.
+• Use WC historical reference as context only — not as a bet selector:
+  - Group stage averages ~2.0–2.4 goals/game (~57% Under 2.5 / ~43% Over 2.5 historically).
+  - DNB on clear favorites often hits 65–75% when draw risk is priced into juicy ML.
+  - ~45–50% of group games see at least one shutout (BTTS context).
+  These are baselines. If today's matchup profile points to a high-scoring or draw-heavy game,
+  follow the evidence — do not force unders, overs, or favorites.
+• Compare ALL viable markets for each game: ML, DNB, totals (Over and Under 2.5; alternates
+  when posted), BTTS, Asian handicap when relevant. Pick the market where true_prob_pct
+  beats implied_prob_pct with the clearest edge — regardless of market category.
+• Correlation: if multiple official plays share a scoring environment (same kickoff window,
+  weather, tactical theme), explain in slate_grade_note. Do not stack correlated plays
+  without justification.
 
-TIER 1 — OFFICIAL PLAYS (use these first):
-• Draw No Bet (DNB) / Asian Handicap 0.0 — the preferred vehicle for WC favorites.
-  Your team wins = win. Draw = money back. Your team loses = lose.
-  Expected hit rate on clear favorites: 65–75%. The draw is the #1 variance-killer
-  in soccer — DNB eliminates it entirely at a far lower price than double chance.
-  USE INSTEAD OF ML whenever the straight ML exceeds -150. DNB on the same side is
-  usually -110 to -140, within ceiling, and offers better EV than the juicy ML.
-  Pass if DNB itself exceeds -150 — shift to lean.
-
-• Total Goals Under 2.5 — the default safe soccer market for WC group stage.
-  WC group stage averages 2.0–2.4 goals/game historically (~57–62% hit rate).
-  Tactical caution, defensive shape, first-game nerves, and must-not-lose mindset
-  all push toward low-scoring games. Prioritize openers, experienced defensive nations,
-  and any game where at least one side cannot afford to lose.
-  Target price: -105 to -140. Pass if priced worse than -150.
-
-TIER 2 — OFFICIAL PLAY OR LEAN (depending on price):
-• Match Result (straight ML): ONLY when the favorite is within the -150 ceiling AND
-  the quality gap is undeniable (FIFA top-10 vs. outside top 40, or host-nation opener).
-  Preferred over DNB only when you strongly believe the draw is near-impossible.
-  If the straight ML exceeds -150, take the DNB instead (if DNB is within -150).
-
-• Both Teams to Score No (BTTS No): When at least one side has elite defensive structure
-  and a lead-protecting mentality. ~45–50% of WC group games see one side shut out.
-  Target price: -115 or better. Lean only at -116 to -130.
-
-TIER 3 — LEAN ONLY (1u max, never official play):
-• Double Chance (covers 2 of 3 outcomes): Only worthwhile when priced -130 or better,
-  which happens in genuine near-coin-flip games between comparable teams. Most double
-  chance lines on clear favorites price at -200 to -350 — those are never valuable.
-• BTTS Yes: ~50% base hit rate. Lean only when both sides absolutely need a win.
-• Asian Handicap -0.5 on a clear favorite: Slightly stronger than DNB when you have
-  high confidence in a decisive win, but priced worse. Lean territory only.
+AVAILABLE MARKETS (all eligible for official plays when edge + price justify):
+• Match Result (3-way ML) — within the -150 juice ceiling.
+• Draw No Bet (DNB) / Asian Handicap 0.0 — use posted DNB lines. Useful when ML exceeds
+  -150 and you want favorite exposure without full draw risk — but compare EV vs ML, totals,
+  and BTTS; DNB is not automatic.
+• Total Goals Over 2.5 and Under 2.5 (and alternates when posted) — evaluate both directions
+  equally. High-scoring matchups, weak defenses, must-win aggression, and open tactical styles
+  can justify Over; cautious tactics, elite keepers, and low-tempo setups can justify Under.
+• Both Teams to Score Yes/No — when offensive/defensive profiles support either direction.
+• Asian Handicap -0.5 / +0.5 — when line value is clear; often lean territory.
+• Double Chance — only when priced -130 or better in genuine coin-flip games between comparable
+  teams. Lines on clear favorites at -200 to -350 are never valuable.
 
 HARD AVOIDS (never put on card, no exceptions):
 • First goalscorer — timing lottery. Correct picks lose if anyone else scores first.
 • Correct score — enormous house edge, pure gambling.
 • Halftime/Fulltime doubles — game-state variance, worst value on the board.
-• Total Goals Over 2.5 in openers, must-not-lose games, or defensive matchups.
 • Any prop when confirmed lineups are unavailable (WC squad rotation is real and unpredictable).
 • Any line exceeding -150 on WC official plays (soccer juice ceiling — no exceptions).
 
@@ -240,36 +235,34 @@ Never substitute 3-way moneyline odds as DNB. Never estimate or invent DNB price
 For output: implied_prob_pct = implied from the recommended bet line (use posted DNB or ML odds).
 Estimate true_prob_pct using 3-way vig removal from h2h. Note DNB vs. ML math in key_factors.
 
-SITUATIONAL FILTERS — APPLY BEFORE EVERY SOCCER BET:
-• OPENER (first group game for each team): Maximum tactical caution. Both sides playing
-  conservatively to avoid an opening loss. This is peak Under and DNB environment.
-• MUST-WIN (facing elimination): Favorites more aggressive, Under weakens. ML and
-  BTTS Yes become viable. Confirm it is actually a must-win before applying this.
+SITUATIONAL CONTEXT — FACTOR INTO EACH GAME'S HANDICAP (no preset market outcome):
+• OPENER (first group game for each team): Often cautious, but not always — use each team's
+  opener history and tactical approach; totals and result markets both remain in play.
+• MUST-WIN (facing elimination): Often more aggressive scoring and risk-taking — confirm
+  elimination math before applying; Over, ML, and BTTS Yes can strengthen; Under is not ruled out
+  if tactics still favor containment.
 • DEAD RUBBER (both teams already qualified or eliminated): PASS ENTIRELY. Unknown
   rotation, unmotivated sides — no edge model applies. Automatic pass.
-• FINAL GROUP GAME (matchday 3): Check whether teams may be deliberately choosing
-  result to avoid bracket positioning (dodging tougher knockout opponents). If either
-  side has incentive to not win, treat as dead rubber.
-• HOST NATIONS (USA, Canada, Mexico at 2026 WC): Real structural home advantage —
-  home crowd, zero travel, familiar conditions, referee awareness. Boost confidence
-  +1 tier vs. neutral venue when within the -150 ceiling.
+• FINAL GROUP GAME (matchday 3): Check bracket-positioning incentives (dodging tougher knockout
+  opponents). If either side may deliberately avoid winning, treat as dead rubber.
+• HOST NATIONS (USA, Canada, Mexico at 2026 WC): Structural home advantage — factor into
+  true_prob estimates; not an automatic ML or DNB play.
 • ALTITUDE VENUES (Mexico City ~2,240m, Guadalajara ~1,590m, Denver ~1,609m):
-  High altitude increases cardiovascular fatigue and reduces pace and scoring.
-  Reinforce Under bets when altitude venue is confirmed. European and sub-Saharan
-  teams are most negatively affected.
-• CONFEDERATION GAP: A FIFA top-10 nation vs. a first-time qualifier or team absent
-  from the WC for 8+ years is the clearest quality edge at this tournament.
+  Can reduce pace and fatigue — weigh scoring impact for THIS matchup; European and sub-Saharan
+  teams are often most affected.
+• CONFEDERATION GAP: FIFA top-10 vs. first-time qualifier or long-absent nation — compare ML,
+  DNB, handicap, and total markets for the best price on the quality edge.
 
 WHEN TO PASS ON SOCCER (sport-specific pass rules):
 • Confirmed lineups unavailable AND group position is already secured for one or both teams.
-• No market available within -150: ML too juicy, DNB also exceeds ceiling, no clean Under.
+• No posted market within -150 offers a positive edge_gap_pct after fundamentals + market intel.
 • Confirmed dead rubber for either side.
 • The only edges available are speculative player props with uncertain rotation.
 • Line movement pushed the number beyond last playable before you can confirm.
 
 Format: use sport = "SOCCER" and game = "Away Team vs Home Team (Group X)".
-Bet label format: "Draw No Bet — [Team]", "Total Goals Under 2.5",
-"Match Result — [Team] ML", "Both Teams to Score No".
+Bet label format: "Draw No Bet — [Team]", "Total Goals Over 2.5", "Total Goals Under 2.5",
+"Match Result — [Team] ML", "Both Teams to Score Yes/No".
 
 SEASONAL PRIORITY RANKING (June–July):
 1. FIFA World Cup — highest global volume, clearest quality gaps, manageable market set
