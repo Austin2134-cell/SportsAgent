@@ -37,6 +37,14 @@ from esm.odds_client import OddsClient
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
 
+
+def _cors_origins() -> list[str]:
+    """Comma-separated FRONTEND_URL supports custom domain + legacy Vercel URL during migration."""
+    origins = [o.strip().rstrip("/") for o in FRONTEND_URL.split(",") if o.strip()]
+    if "http://localhost:3000" not in origins:
+        origins.append("http://localhost:3000")
+    return origins
+
 scheduler = AsyncIOScheduler(timezone=TIMEZONE)
 
 
@@ -189,7 +197,7 @@ app = FastAPI(title="AgentEdge API", version="2.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL, "http://localhost:3000"],
+    allow_origins=_cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

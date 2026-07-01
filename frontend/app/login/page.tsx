@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
-import { CONFIG_ERROR, getSupabaseConfig } from "@/lib/env";
+import { CONFIG_ERROR, getAppUrl, getSupabaseConfig } from "@/lib/env";
 import { redirectAfterAuth } from "@/lib/auth-routing";
 
 export default function LoginPage() {
@@ -71,7 +71,7 @@ export default function LoginPage() {
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(
         email.trim().toLowerCase(),
         {
-          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent("/reset-password")}`,
+          redirectTo: `${getAppUrl()}/auth/callback?next=${encodeURIComponent("/reset-password")}`,
         },
       );
       if (resetError) {
