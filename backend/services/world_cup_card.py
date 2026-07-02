@@ -121,6 +121,8 @@ def _build_wc_user_message(
     max_plays: int,
     unit_size: float,
     market_intel: dict | None = None,
+    perf_context: str = "",
+    defensive_note: str = "",
 ) -> str:
     tournament_day = _wc_tournament_day(target_date)
     live_sports = {k: v for k, v in snapshot.get("sports", {}).items() if v.get("games")}
@@ -130,8 +132,14 @@ def _build_wc_user_message(
         f"UNIT SIZE: ${unit_size:.0f} per unit",
         f"MAX OFFICIAL PLAYS: {max_plays}",
         f"TOURNAMENT: FIFA World Cup 2026 — Group Stage, Day {tournament_day}",
-        "\n--- LIVE MARKET DATA ---",
     ]
+
+    if perf_context:
+        parts.append(perf_context)
+    if defensive_note:
+        parts.append(defensive_note)
+
+    parts.append("\n--- LIVE MARKET DATA ---")
 
     if live_sports:
         parts.append(_summarize_market(snapshot))
@@ -385,6 +393,38 @@ def run_world_cup_card(
     if unit_size is None:
         unit_size = 30.0  # fallback when no bankroll on file ($1k × 3%)
 
+    user_id = None
+    perf_context = ""
+    defensive = {
+        "defensive": False,
+        "max_plays": None,
+        "unit_reduction": 0.0,
+        "blocked_markets": set(),
+        "reasons": [],
+    }
+    if active_db is not None:
+        from services.card_store import resolve_user_id
+        from learning.memory import get_defensive_settings, get_performance_context
+
+        user_id = resolve_user_id(active_db, email=recipient)
+        if user_id:
+            perf_context = get_performance_context(active_db, user_id, pipeline="world_cup")
+            defensive = get_defensive_settings(active_db, user_id, pipeline="world_cup")
+            if defensive["defensive"]:
+                max_plays = min(max_plays, defensive["max_plays"] or max_plays)
+                print(
+                    f"[wc_runner] Defensive mode: max {max_plays} plays "
+                    f"({'; '.join(defensive['reasons'])})"
+                )
+
+    defensive_note = ""
+    if defensive["defensive"]:
+        defensive_note = (
+            "\nDEFENSIVE MODE (code-enforced): Recent losses detected. "
+            f"Cap at {max_plays} official plays, reduce units 0.5u, require 5%+ edge. "
+            f"Reasons: {'; '.join(defensive['reasons'])}."
+        )
+
     print(
         f"[wc_runner] Generating World Cup card for {card_date} "
         f"(Tournament Day {_wc_tournament_day(card_date)})..."
@@ -408,13 +448,27 @@ def run_world_cup_card(
         market_intel = build_market_intelligence(active_db, snapshot, [WC_SPORT_KEY])
         snapshot = attach_intelligence_to_snapshot(snapshot, market_intel)
 
-    user_msg = _build_wc_user_message(card_date, snapshot, max_plays, unit_size, market_intel)
+    user_msg = _build_wc_user_message(
+        card_date, snapshot, max_plays, unit_size, market_intel,
+        perf_context=perf_context, defensive_note=defensive_note,
+    )
     card = _call_claude(user_msg)
     card["date"] = card_date
 
+    from esm.play_validation import DEFENSIVE_MIN_EDGE_GAP_PCT, MIN_EDGE_GAP_PCT
     from esm.soccer_odds import validate_wc_official_plays
 
-    card = validate_wc_official_plays(card, snapshot)
+    min_edge = (
+        DEFENSIVE_MIN_EDGE_GAP_PCT if defensive["defensive"] else MIN_EDGE_GAP_PCT
+    )
+    card = validate_wc_official_plays(
+        card,
+        snapshot,
+        blocked_markets=defensive["blocked_markets"],
+        unit_reduction=defensive["unit_reduction"],
+        max_plays=defensive["max_plays"],
+        min_edge_gap=min_edge,
+    )
 
     from esm.market_intelligence import enrich_card_with_market_signals
 

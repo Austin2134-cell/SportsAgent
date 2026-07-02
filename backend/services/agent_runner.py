@@ -56,6 +56,18 @@ def run_card_for_user(
         print(f"[agent_runner] No major-league sports configured for {user_id} — skipping ESM card")
         return {}
 
+    from learning.memory import get_defensive_settings
+    from esm.play_validation import DEFENSIVE_MIN_EDGE_GAP_PCT, MIN_EDGE_GAP_PCT, apply_play_guards
+
+    defensive = get_defensive_settings(db, user_id, pipeline="esm")
+    if defensive["defensive"]:
+        cap = defensive["max_plays"] or max_plays
+        max_plays = min(max_plays, cap)
+        print(
+            f"[agent_runner] Defensive mode: max {max_plays} plays "
+            f"({'; '.join(defensive['reasons'])})"
+        )
+
     if market_snapshot is None:
         print(f"[agent_runner] Fetching odds — {today} (1 unit = ${unit_size:.0f})")
         market_snapshot = _build_market_snapshot(today, sport_keys=sport_keys)
@@ -67,6 +79,13 @@ def run_card_for_user(
     espn_context = _build_espn_context(market_snapshot, today)
 
     perf_context = get_performance_context(db, user_id, pipeline="esm")
+    defensive_note = ""
+    if defensive["defensive"]:
+        defensive_note = (
+            "\nDEFENSIVE MODE (code-enforced): Recent losses detected. "
+            f"Cap at {max_plays} official plays, reduce units 0.5u, require 5%+ edge. "
+            f"Reasons: {'; '.join(defensive['reasons'])}."
+        )
     intelligence = None
     if db is not None:
         from esm.market_intelligence import (
@@ -80,7 +99,7 @@ def run_card_for_user(
 
     user_message = _build_user_message(
         today, market_snapshot, espn_context, max_plays, unit_size, perf_context,
-        intelligence=intelligence,
+        intelligence=intelligence, defensive_note=defensive_note,
     )
 
     print("[agent_runner] Running ESM analysis...")
@@ -92,6 +111,18 @@ def run_card_for_user(
     from esm.market_intelligence import enrich_card_with_market_signals
 
     card = enrich_card_with_market_signals(card, market_snapshot)
+
+    min_edge = (
+        DEFENSIVE_MIN_EDGE_GAP_PCT if defensive["defensive"] else MIN_EDGE_GAP_PCT
+    )
+    card = apply_play_guards(
+        card,
+        blocked_markets=defensive["blocked_markets"],
+        unit_reduction=defensive["unit_reduction"],
+        max_plays=defensive["max_plays"],
+        min_edge_gap=min_edge,
+        log_prefix="[agent_runner]",
+    )
 
     official_plays = card.get("official_plays", [])
     if len(official_plays) > max_plays:
@@ -141,6 +172,7 @@ def _build_user_message(
     today: str, market_snapshot: dict, espn_context: dict,
     max_plays: int, unit_size: float, perf_context: str = "",
     intelligence: dict | None = None,
+    defensive_note: str = "",
 ) -> str:
     from esm.split_guidance import SPLIT_INTERPRETATION_GUIDANCE
     from esm.market_intelligence import format_intelligence_for_prompt
@@ -153,6 +185,8 @@ def _build_user_message(
 
     if perf_context:
         parts.append(perf_context)
+    if defensive_note:
+        parts.append(defensive_note)
 
     parts.append("\n--- LIVE MARKET DATA ---")
     if market_snapshot.get("sports"):

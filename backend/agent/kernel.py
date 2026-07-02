@@ -20,7 +20,9 @@ from agent.prompt import build_agent_system_prompt
 from agent.sports import resolve_user_sports, sport_key_to_display
 from esm.odds_client import OddsClient
 from esm.stats_client import StatsClient
-from learning.memory import get_performance_context
+from learning.memory import get_defensive_settings, get_performance_context
+from esm.play_validation import apply_position_guards
+from services.card_store import bet_key
 
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
 MODEL = "claude-sonnet-4-6"
@@ -62,6 +64,15 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
     espn_context = _build_espn_context(market_snapshot, today)
     beliefs = get_beliefs(db, user_id)
     perf_context = get_performance_context(db, user_id)
+    defensive = get_defensive_settings(db, user_id, pipeline="agent")
+    max_plays_pref = int(prefs.get("max_plays", 5))
+    if defensive["defensive"]:
+        cap = defensive["max_plays"] or max_plays_pref
+        max_plays_pref = min(max_plays_pref, cap)
+        print(
+            f"[agent] Defensive mode: max {max_plays_pref} positions "
+            f"({'; '.join(defensive['reasons'])})"
+        )
     watching = get_hypotheses(db, user_id, status="watching")
     recent_episodes = get_feed(db, user_id, limit=15)
 
@@ -83,10 +94,15 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
 
     user_message = _build_scan_message(
         today, market_snapshot, espn_context,
-        max_plays=int(prefs.get("max_plays", 5)),
+        max_plays=max_plays_pref,
         units_remaining=bankroll["units_remaining_today"],
         hypotheses_text=format_hypotheses_for_prompt(watching),
         recent_activity_text=format_recent_episodes_for_prompt(recent_episodes),
+        defensive_note=(
+            f"DEFENSIVE MODE: cap {max_plays_pref} positions, -0.5u sizing. "
+            f"Reasons: {'; '.join(defensive['reasons'])}."
+            if defensive["defensive"] else ""
+        ),
     )
 
     scan_result = _call_agent(system_prompt, user_message)
@@ -152,11 +168,18 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
 
     # Positions → bets + card (backward compatible with existing UI)
     positions = scan_result.get("positions", [])
+    if positions:
+        positions = apply_position_guards(
+            positions,
+            blocked_markets=defensive["blocked_markets"],
+            unit_reduction=defensive["unit_reduction"],
+            max_plays=max_plays_pref if defensive["defensive"] else None,
+        )
     units_used = 0.0
     if positions:
         units_used = _persist_positions(
             db, user_id, today, positions,
-            max_plays=int(prefs.get("max_plays", 5)),
+            max_plays=max_plays_pref,
             units_remaining=bankroll["units_remaining_today"],
         )
 
@@ -214,12 +237,15 @@ def _build_scan_message(
     max_plays: int, units_remaining: float,
     hypotheses_text: str = "",
     recent_activity_text: str = "",
+    defensive_note: str = "",
 ) -> str:
     parts = [
         f"SCAN DATE: {today}",
         f"MAX NEW POSITIONS THIS SCAN: {max_plays}",
         f"UNITS REMAINING TODAY: {units_remaining:.1f}",
     ]
+    if defensive_note:
+        parts.append(defensive_note)
     if hypotheses_text:
         parts.append(hypotheses_text)
     if recent_activity_text:
@@ -324,14 +350,28 @@ def _persist_positions(
     max_plays: int, units_remaining: float,
 ) -> float:
     """Write positions to bets table and today's card. Returns units used."""
+    existing = (
+        db.table("bets")
+        .select("game, bet")
+        .eq("user_id", user_id)
+        .eq("date", today)
+        .execute()
+    )
+    seen_bets = {bet_key(b) for b in (existing.data or [])}
+
     units_used = 0.0
     accepted = []
 
     for pos in positions[:max_plays]:
+        key = bet_key(pos)
+        if key in seen_bets:
+            print(f"[agent] Skipping duplicate position: {pos.get('bet', '')}")
+            continue
         units = float(pos.get("units", 1))
         if units_used + units > units_remaining:
             continue
         accepted.append(pos)
+        seen_bets.add(key)
         units_used += units
 
     if not accepted:
