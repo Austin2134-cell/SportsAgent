@@ -12,13 +12,14 @@ from datetime import date, datetime
 from typing import Optional
 from zoneinfo import ZoneInfo
 
-from esm.claude_config import (
-    AGENT_SCAN_MAX_TOKENS,
-    AGENT_SCANS_ENABLED,
-    CARD_MAX_TOKENS,
-    MODEL,
-    log_claude_usage,
-)
+import anthropic
+
+from esm.claude_config import CARD_MAX_TOKENS, MODEL, log_claude_usage
+from esm.odds_client import OddsClient
+from esm.system_prompt import ESM_SYSTEM_PROMPT
+from services.mailer import send_card_email
+from services.social import build_twitter_thread, format_thread_for_display
+
 WC_SPORT_KEY = "soccer_fifa_world_cup"
 WC_START_DATE = date(2026, 6, 11)
 
