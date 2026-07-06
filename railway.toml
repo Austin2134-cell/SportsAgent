@@ -1,0 +1,15 @@
+# Repo-root config when Railway service root directory is NOT set to backend/.
+# In Railway → Service → Settings, either:
+#   A) Set Root Directory = backend  (uses backend/railway.toml), OR
+#   B) Leave root at / and use this file (builds backend/Dockerfile).
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "backend/Dockerfile"
+watchPatterns = ["backend/**"]
+
+[deploy]
+startCommand = "uvicorn main:app --host 0.0.0.0 --port $PORT"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
