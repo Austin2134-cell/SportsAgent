@@ -71,12 +71,23 @@ def posted_dnb_odds(game: dict, team: str) -> Optional[int]:
     return None
 
 
-def validate_wc_official_plays(card: dict, snapshot: dict) -> dict:
+def validate_wc_official_plays(
+    card: dict,
+    snapshot: dict,
+    *,
+    blocked_markets: set[str] | None = None,
+    unit_reduction: float = 0.0,
+    max_plays: int | None = None,
+    min_edge_gap: float | None = None,
+) -> dict:
     """
     Enforce data integrity: DNB plays must use posted draw_no_bet lines from the API.
     Removes DNB plays with no posted line or juice worse than -150.
     Syncs totals odds to posted API lines when a matching game is found.
+    Then applies shared edge/unit/market guards.
     """
+    from esm.play_validation import MIN_EDGE_GAP_PCT, apply_play_guards
+
     plays = list(card.get("official_plays") or [])
     kept: list[dict] = []
     removed_notes: list[str] = []
@@ -136,4 +147,13 @@ def validate_wc_official_plays(card: dict, snapshot: dict) -> dict:
         card["pass_notes"] = pass_notes
 
     card["official_plays"] = kept
-    return card
+    return apply_play_guards(
+        card,
+        juice_ceiling=WC_JUICE_CEILING,
+        blocked_markets=blocked_markets,
+        unit_reduction=unit_reduction,
+        max_plays=max_plays,
+        min_edge_gap=min_edge_gap if min_edge_gap is not None else MIN_EDGE_GAP_PCT,
+        require_edge=False,
+        log_prefix="[wc_runner]",
+    )

@@ -31,6 +31,11 @@ def _normalize_game(game: str) -> str:
     return re.sub(r"\s+", " ", g).lower()
 
 
+def bet_key(play: dict) -> tuple:
+    """Dedupe key for (game, bet) pairs."""
+    return _bet_key(play)
+
+
 def _bet_key(play: dict) -> tuple:
     return (_normalize_game(play.get("game", "")), (play.get("bet") or "").strip().lower())
 
@@ -148,7 +153,7 @@ def persist_esm_card(db, user_id: str, card: dict, *, source: str = "esm") -> Op
             "market": play.get("market", ""),
             "odds": int(play.get("odds", -110)),
             "book": play.get("book", "DraftKings"),
-            "units": float(play.get("units", 2)),
+            "units": float(play.get("units", 1)),
             "confidence": play.get("confidence", "MEDIUM"),
             "result": "pending",
             "units_result": 0,

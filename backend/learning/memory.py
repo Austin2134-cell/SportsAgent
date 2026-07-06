@@ -10,6 +10,10 @@ from datetime import date, timedelta
 from services.units import normalize_units_result
 
 LOOKBACK_DAYS = 90
+RECENT_DAYS = 7
+LOSS_STREAK_THRESHOLD = 3
+DEFENSIVE_MAX_PLAYS = 2
+DEFENSIVE_UNIT_REDUCTION = 0.5
 PIPELINE_TAGS = ("agent", "esm", "world_cup")
 PLATFORM_MEMORY_KEY = "global"
 
@@ -90,6 +94,73 @@ def get_performance_context(db, user_id: str, pipeline: str | None = "agent") ->
     return "\n".join(parts)
 
 
+def get_defensive_settings(db, user_id: str, pipeline: str | None = "agent") -> dict:
+    """
+    Return programmatic enforcement settings when recent form is cold.
+    Used by card pipelines and agent scans to cap plays and block weak markets.
+    """
+    stats: dict = {}
+    try:
+        result = db.table("agent_memory").select("stats").eq("user_id", user_id).execute()
+        if result.data:
+            stats = result.data[0].get("stats") or {}
+    except Exception as e:
+        print(f"[memory] Could not read agent_memory for defensive settings: {e}")
+
+    if not stats:
+        try:
+            stats = _compute_user_stats(db, user_id)
+        except Exception as e:
+            print(f"[memory] Could not compute live stats for defensive settings: {e}")
+            stats = {}
+
+    return _defensive_settings_from_stats(stats, pipeline)
+
+
+def _defensive_settings_from_stats(stats: dict, pipeline: str | None) -> dict:
+    if not stats:
+        return {
+            "defensive": False,
+            "max_plays": None,
+            "unit_reduction": 0.0,
+            "blocked_markets": set(),
+            "reasons": [],
+            "last_7_days": {},
+            "losing_streak": 0,
+        }
+
+    last_7 = stats.get("last_7_days") or {}
+    streak = int(stats.get("losing_streak") or 0)
+    net_7 = float(last_7.get("net_units") or 0)
+
+    defensive = net_7 < 0 or streak >= LOSS_STREAK_THRESHOLD
+    reasons: list[str] = []
+    if net_7 < 0:
+        reasons.append(f"7-day net {net_7:+.1f}u")
+    if streak >= LOSS_STREAK_THRESHOLD:
+        reasons.append(f"{streak}-bet losing streak")
+
+    block_source = stats
+    if pipeline and stats.get("by_pipeline", {}).get(pipeline):
+        block_source = stats["by_pipeline"][pipeline]
+
+    blocked: set[str] = set()
+    for market, rec in (block_source.get("by_market") or {}).items():
+        graded = rec.get("W", 0) + rec.get("L", 0) + rec.get("P", 0)
+        if graded >= 3 and rec.get("net", 0) < 0:
+            blocked.add(market.lower())
+
+    return {
+        "defensive": defensive,
+        "max_plays": DEFENSIVE_MAX_PLAYS if defensive else None,
+        "unit_reduction": DEFENSIVE_UNIT_REDUCTION if defensive else 0.0,
+        "blocked_markets": blocked,
+        "reasons": reasons,
+        "last_7_days": last_7,
+        "losing_streak": streak,
+    }
+
+
 # ── Stats computation ─────────────────────────────────────────────────────────
 
 def _pipeline_key(bet: dict) -> str:
@@ -119,12 +190,39 @@ def _compute_user_stats(db, user_id: str) -> dict:
         if pipeline_bets:
             by_pipeline[key] = _aggregate_bets(pipeline_bets, include_recent_losses=True)
 
+    cutoff_7 = (date.today() - timedelta(days=RECENT_DAYS)).isoformat()
+    last_7_bets = [b for b in bets if (b.get("date") or "") >= cutoff_7]
+    last_7_days = (
+        _aggregate_bets(last_7_bets, include_recent_losses=False)
+        if last_7_bets
+        else {}
+    )
+
     return {
         "lookback_days": LOOKBACK_DAYS,
         "scope": "user",
         **overall,
         "by_pipeline": by_pipeline,
+        "last_7_days": last_7_days,
+        "losing_streak": _compute_losing_streak(bets),
     }
+
+
+def _compute_losing_streak(bets: list) -> int:
+    """Count consecutive losses from most recent graded bet backward."""
+    sorted_bets = sorted(
+        bets,
+        key=lambda b: (b.get("date") or "", b.get("created_at") or ""),
+        reverse=True,
+    )
+    streak = 0
+    for bet in sorted_bets:
+        result_val = bet.get("result", "")
+        if result_val == "L":
+            streak += 1
+        elif result_val in ("W", "P"):
+            break
+    return streak
 
 
 def _compute_platform_stats(db) -> dict:
@@ -280,6 +378,22 @@ def _format_user_memory(stats: dict, pipeline: str | None = "agent") -> str:
         f"\n--- YOUR MEMORY (PRIMARY — {lookback}-day window, this user only) ---",
         "Calibrate sizing, market selection, and pass discipline from THIS block first.",
     ]
+
+    last_7 = stats.get("last_7_days") or {}
+    streak = int(stats.get("losing_streak") or 0)
+    if last_7 or streak:
+        w7 = last_7.get("wins", 0)
+        l7 = last_7.get("losses", 0)
+        net7 = float(last_7.get("net_units") or 0)
+        lines.append(
+            f"RECENT FORM: Last {RECENT_DAYS} days {w7}-{l7} "
+            f"({sign(net7)}u) | Current losing streak: {streak}"
+        )
+    if (last_7.get("net_units") or 0) < 0 or streak >= LOSS_STREAK_THRESHOLD:
+        lines.append(
+            "DEFENSIVE MODE ACTIVE: Max 2 official plays, reduce all units by 0.5u, "
+            "require stronger edge (5%+), avoid markets with negative ROI below."
+        )
 
     by_pipeline = stats.get("by_pipeline") or {}
     if pipeline and pipeline in by_pipeline:
