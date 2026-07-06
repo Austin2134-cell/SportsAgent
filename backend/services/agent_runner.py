@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 
 import anthropic
 
+from esm.claude_config import CARD_MAX_TOKENS, MODEL, log_claude_usage
 from esm.odds_client import OddsClient
 from esm.stats_client import StatsClient
 from esm.system_prompt import ESM_SYSTEM_PROMPT
@@ -17,7 +18,6 @@ from learning.memory import get_performance_context
 
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
 MDT = ZoneInfo(TIMEZONE)
-MODEL = "claude-sonnet-4-6"
 
 
 def run_card_for_user(
@@ -243,14 +243,11 @@ def _call_claude(user_message: str) -> dict:
     try:
         response = client.messages.create(
             model=MODEL,
-            max_tokens=16000,
+            max_tokens=CARD_MAX_TOKENS,
             system=[{"type": "text", "text": ESM_SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}],
             messages=[{"role": "user", "content": user_message}],
         )
-        cache_read = getattr(response.usage, "cache_read_input_tokens", 0) or 0
-        cache_create = getattr(response.usage, "cache_creation_input_tokens", 0) or 0
-        if cache_read or cache_create:
-            print(f"[agent_runner] Token cache — read: {cache_read}, created: {cache_create}")
+        log_claude_usage("esm_card", response.usage)
     except anthropic.APIError as e:
         print(f"[agent_runner] Claude API error: {e}")
         return {}

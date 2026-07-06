@@ -32,6 +32,7 @@ from workers.market_poller import (
     run_all_agent_scans,
 )
 from esm.api_budget import POLL_INTERVAL_MINUTES, AGENT_SCAN_INTERVAL_MINUTES, budget_summary
+from esm.claude_config import AGENT_SCANS_ENABLED
 from esm.odds_client import OddsClient
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
@@ -55,12 +56,13 @@ def _log_scheduler_startup():
     wc_enabled = os.getenv("WC_CARD_ENABLED", "true").lower() not in ("0", "false", "no")
     esm_enabled = esm_card_enabled()
     email_ok = email_transport_configured()
-    scans_per_day = max(1, (24 * 60) // AGENT_SCAN_INTERVAL_MINUTES)
+    scans_per_day = max(1, (24 * 60) // AGENT_SCAN_INTERVAL_MINUTES) if AGENT_SCANS_ENABLED else 0
     print(
         f"[AgentEdge] Scheduler starting ({TIMEZONE}): "
         f"WC card={'on' if wc_enabled else 'OFF'} @ 08:50, "
         f"MLB card={'on' if esm_enabled else 'OFF'} @ 09:35, "
-        f"agent scans={scans_per_day}/day (every {AGENT_SCAN_INTERVAL_MINUTES} min), "
+        f"agent scans={'on' if AGENT_SCANS_ENABLED else 'OFF'}"
+        f"{f' ({scans_per_day}/day every {AGENT_SCAN_INTERVAL_MINUTES} min)' if AGENT_SCANS_ENABLED else ''}, "
         f"email={'configured' if email_ok else 'MISSING'}, "
         f"wc_recipient={default_recipient()}, mlb_recipient={esm_recipient()}"
     )
@@ -178,6 +180,8 @@ async def _scheduled_market_poll():
 
 
 async def _scheduled_agent_scans():
+    if not AGENT_SCANS_ENABLED:
+        return
     try:
         grade_all_pending(db)
         run_all_agent_scans(db)

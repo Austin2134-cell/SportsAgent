@@ -18,12 +18,12 @@ from agent.memory_store import (
 )
 from agent.prompt import build_agent_system_prompt
 from agent.sports import resolve_user_sports, sport_key_to_display
+from esm.claude_config import AGENT_SCAN_MAX_TOKENS, MODEL, log_claude_usage
 from esm.odds_client import OddsClient
 from esm.stats_client import StatsClient
 from learning.memory import get_performance_context
 
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
-MODEL = "claude-sonnet-4-6"
 
 
 def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> dict:
@@ -59,6 +59,17 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
 
     # Fetch filtered market data for user's sports only
     market_snapshot = _build_filtered_snapshot(db, today, sport_keys)
+    game_count = sum(
+        len(v.get("games", [])) for v in market_snapshot.get("sports", {}).values()
+    )
+    if game_count == 0:
+        log_episode(
+            db, user_id, trigger_type=trigger_type, episode_type="observation",
+            title="Quiet slate — no games with odds",
+            reasoning="No live odds for user's sports today. Skipping Claude scan to save API cost.",
+        )
+        return {"skipped": True, "reason": "no_games_on_slate"}
+
     espn_context = _build_espn_context(market_snapshot, today)
     beliefs = get_beliefs(db, user_id)
     perf_context = get_performance_context(db, user_id)
@@ -298,10 +309,11 @@ def _call_agent(system_prompt: str, user_message: str) -> dict:
     try:
         response = client.messages.create(
             model=MODEL,
-            max_tokens=8000,
+            max_tokens=AGENT_SCAN_MAX_TOKENS,
             system=[{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}],
             messages=[{"role": "user", "content": user_message}],
         )
+        log_claude_usage("agent_scan", response.usage)
     except anthropic.APIError as e:
         print(f"[agent] Claude API error: {e}")
         return {}

@@ -12,14 +12,13 @@ from datetime import date, datetime
 from typing import Optional
 from zoneinfo import ZoneInfo
 
-import anthropic
-
-from esm.odds_client import OddsClient
-from esm.system_prompt import ESM_SYSTEM_PROMPT
-from services.mailer import send_card_email
-from services.social import build_twitter_thread, format_thread_for_display
-
-MODEL = "claude-sonnet-4-6"
+from esm.claude_config import (
+    AGENT_SCAN_MAX_TOKENS,
+    AGENT_SCANS_ENABLED,
+    CARD_MAX_TOKENS,
+    MODEL,
+    log_claude_usage,
+)
 WC_SPORT_KEY = "soccer_fifa_world_cup"
 WC_START_DATE = date(2026, 6, 11)
 
@@ -193,12 +192,18 @@ def _call_claude(user_message: str) -> dict:
     try:
         response = client.messages.create(
             model=MODEL,
-            max_tokens=16000,
-            system=ESM_SYSTEM_PROMPT,
+            max_tokens=CARD_MAX_TOKENS,
+            system=[{
+                "type": "text",
+                "text": ESM_SYSTEM_PROMPT,
+                "cache_control": {"type": "ephemeral"},
+            }],
             messages=[{"role": "user", "content": user_message}],
         )
     except anthropic.APIError as e:
         raise RuntimeError(f"Claude API error: {e}") from e
+
+    log_claude_usage("wc_card", response.usage)
 
     raw = response.content[0].text.strip()
     if raw.startswith("```"):
