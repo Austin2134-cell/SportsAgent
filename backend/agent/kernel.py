@@ -22,6 +22,7 @@ from esm.claude_config import AGENT_SCAN_MAX_TOKENS, MODEL, log_claude_usage
 from esm.odds_client import OddsClient
 from esm.stats_client import StatsClient
 from learning.memory import get_performance_context
+from agent.calibration import load_memory_context, format_gates_for_prompt, apply_calibration_to_positions
 
 TIMEZONE = os.getenv("TIMEZONE", "America/Denver")
 
@@ -73,6 +74,8 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
     espn_context = _build_espn_context(market_snapshot, today)
     beliefs = get_beliefs(db, user_id)
     perf_context = get_performance_context(db, user_id)
+    memory_ctx = load_memory_context(db, user_id)
+    gates_text = format_gates_for_prompt(memory_ctx["gates"])
     watching = get_hypotheses(db, user_id, status="watching")
     recent_episodes = get_feed(db, user_id, limit=15)
 
@@ -89,7 +92,7 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
         include_parlays=prefs.get("include_parlays", False),
         mode=agent.get("mode", "scanning"),
         beliefs_text=format_beliefs_for_prompt(beliefs),
-        performance_text=perf_context or "No graded bet history yet.",
+        performance_text=(perf_context or "No graded bet history yet.") + gates_text,
     )
 
     user_message = _build_scan_message(
@@ -164,12 +167,22 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
     # Positions → bets + card (backward compatible with existing UI)
     positions = scan_result.get("positions", [])
     units_used = 0.0
+    calibrated_count = 0
     if positions:
-        units_used = _persist_positions(
-            db, user_id, today, positions,
-            max_plays=int(prefs.get("max_plays", 5)),
-            units_remaining=bankroll["units_remaining_today"],
-        )
+        calibrated, blocked = apply_calibration_to_positions(positions, memory_ctx["gates"])
+        calibrated_count = len(calibrated)
+        for block in blocked:
+            log_episode(
+                db, user_id, trigger_type=trigger_type, episode_type="pass",
+                title=f"Gate blocked: {block.get('bet', block.get('market', ''))}",
+                reasoning=block.get("reason", "Calibration gate"),
+            )
+        if calibrated:
+            units_used = _persist_positions(
+                db, user_id, today, calibrated,
+                max_plays=int(prefs.get("max_plays", 5)),
+                units_remaining=bankroll["units_remaining_today"],
+            )
 
     if units_used > 0:
         synced = sync_units_at_risk(db, user_id, today)
@@ -183,7 +196,8 @@ def run_agent_scan(db, user_id: str, trigger_type: str = "scheduled_scan") -> di
         "mode": new_mode,
         "observations": len(scan_result.get("observations", [])),
         "hypotheses": len(scan_result.get("hypotheses", [])),
-        "positions": len(positions),
+        "positions": calibrated_count if positions else 0,
+        "gates_blocked": len(blocked) if positions else 0,
         "passes": len(scan_result.get("pass_notes", [])),
     }
 

@@ -52,6 +52,7 @@ export const api = {
   getAgent:       (token: string) => apiFetch("/api/agent", token),
   setupAgent:     (token: string, setup: object) => apiFetch("/api/agent/setup", token, { method: "POST", body: JSON.stringify(setup) }),
   getAgentFeed:   (token: string, limit = 50) => apiFetch(`/api/agent/feed?limit=${limit}`, token),
+  getAgentMemory: (token: string) => apiFetch("/api/agent/memory", token),
   triggerScan:    (token: string) => apiFetch("/api/agent/scan", token, { method: "POST" }),
   pauseAgent:     (token: string) => apiFetch("/api/agent/pause", token, { method: "PUT" }),
   resumeAgent:    (token: string) => apiFetch("/api/agent/resume", token, { method: "PUT" }),
