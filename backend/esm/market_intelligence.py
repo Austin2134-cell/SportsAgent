@@ -23,6 +23,26 @@ STEAM_ODDS_THRESHOLD = int(os.getenv("MARKET_STEAM_ODDS_CENTS", "15"))
 STEAM_TOTAL_THRESHOLD = float(os.getenv("MARKET_STEAM_TOTAL_POINTS", "0.5"))
 LOOKBACK_HOURS = int(os.getenv("MARKET_INTEL_LOOKBACK_HOURS", "48"))
 
+# Neutral labels for Claude — internal flag names like contrarian_under_setup must not
+# read as betting instructions.
+_FLAG_LABELS_FOR_PROMPT = {
+    "contrarian_under_setup": "public heavy on Over (context only — not an Under signal)",
+    "contrarian_over_setup": "public heavy on Under (context only — not an Over signal)",
+    "sharp_money_under": "money % favors Under vs tickets (context only)",
+    "public_heavy_over": "public tickets heavy on Over",
+    "public_heavy_under": "public tickets heavy on Under",
+    "reverse_total_under_juice": "public on Over but Under juice moved (price action only)",
+    "steam_under_juice": "Under juice steamed since open",
+    "steam_over_juice": "Over juice steamed since open",
+}
+
+
+def _format_flags_for_prompt(flags: list[str]) -> str:
+    if not flags:
+        return ""
+    labels = [_FLAG_LABELS_FOR_PROMPT.get(f, f) for f in flags]
+    return ", ".join(labels)
+
 
 def _parse_ts(value: str) -> datetime:
     ts = datetime.fromisoformat(value.replace("Z", "+00:00"))
@@ -336,7 +356,8 @@ def format_intelligence_for_prompt(intelligence: dict) -> str:
     lines = [
         "MARKET INTELLIGENCE (line movement + splits when available)",
         "Use as secondary confirmation — fundamentals drive true_prob; price drives implied_prob only.",
-        "Flags: steam = material move since open; reverse_line = public heavy but line moved away.",
+        "Flags describe price/public context — they do NOT prescribe which side to bet.",
+        "Never pick Over or Under solely because public % is lopsided or a flag mentions a side.",
         "",
     ]
 
@@ -352,7 +373,7 @@ def format_intelligence_for_prompt(intelligence: dict) -> str:
                 lines.append(f"    Movement: {mv}")
             flags = intel.get("flags") or []
             if flags:
-                lines.append(f"    Flags: {', '.join(flags)}")
+                lines.append(f"    Flags: {_format_flags_for_prompt(flags)}")
             if intel.get("steam_side"):
                 lines.append(f"    Steam toward: {intel['steam_side']}")
             if intel.get("reverse_line_flag"):

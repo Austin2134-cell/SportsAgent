@@ -22,6 +22,8 @@ from services.social import build_twitter_thread, format_thread_for_display
 MODEL = "claude-sonnet-4-6"
 WC_SPORT_KEY = "soccer_fifa_world_cup"
 WC_START_DATE = date(2026, 6, 11)
+# Bump when WC card selection rules change — stored on each card for debugging.
+WC_CARD_RULES_VERSION = "2026-07-06-market-diversity"
 
 
 def today_mt() -> str:
@@ -174,6 +176,11 @@ def _build_wc_user_message(
         "If multiple official plays share a scoring or result theme, explain correlation in "
         "slate_grade_note. Populate market_signals, line_movement, and sharp_action when data "
         "is provided.\n"
+        "CARD COMPOSITION: Before returning, verify you ran the per-game market checklist "
+        "(DNB, ML, Over 2.5, Under 2.5, BTTS) for every game you considered. A card where "
+        "every official play is Under 2.5 means you skipped stronger edges — re-evaluate. "
+        "If 2+ unders remain, slate_grade_note must explain why each Under beat Over/ML/DNB "
+        "on that specific matchup.\n"
         "Return a single valid JSON object matching the required schema. "
         "Use sport = 'SOCCER' for all soccer plays. "
         "No markdown, no text outside the JSON."
@@ -182,13 +189,40 @@ def _build_wc_user_message(
     return "\n".join(parts)
 
 
-def _call_claude(user_message: str) -> dict:
+def _is_total_under_bet(bet: str) -> bool:
+    text = (bet or "").lower()
+    return "under" in text and ("total" in text or "goals" in text or "2.5" in text)
+
+
+def _is_all_unders_card(card: dict) -> bool:
+    """True when every official play is a total Under (common model failure mode)."""
+    plays = card.get("official_plays") or []
+    if len(plays) < 2:
+        return False
+    return all(_is_total_under_bet(p.get("bet", "")) for p in plays)
+
+
+_ALL_UNDERS_REVISION_PROMPT = """
+Your draft card has ONLY Total Goals Under 2.5 as official plays. That pattern usually means
+the per-game market checklist was skipped (DNB, ML, Over 2.5, BTTS not compared).
+
+Revise the full card:
+1. For each game on today's slate, compare DNB, ML, Over 2.5, Under 2.5, and BTTS when posted.
+2. Replace any Under chosen mainly from tournament averages, yesterday's structure, or public-over splits.
+3. Use the market with the clearest edge_gap_pct per game — fewer plays is fine if edges are thin.
+4. If 2+ Unders remain, slate_grade_note MUST explain why each Under beat Over/ML/DNB on fundamentals.
+5. Return the complete revised JSON card only (no markdown).
+"""
+
+
+def _call_claude(user_message: str, *, revision: bool = False) -> dict:
     api_key = os.getenv("ANTHROPIC_API_KEY", "")
     if not api_key:
         raise RuntimeError("ANTHROPIC_API_KEY not set")
 
     client = anthropic.Anthropic(api_key=api_key)
-    print("[wc_runner] Calling Claude ESM agent...")
+    label = "revision" if revision else "initial"
+    print(f"[wc_runner] Calling Claude ESM agent ({label})...")
 
     try:
         response = client.messages.create(
@@ -411,6 +445,27 @@ def run_world_cup_card(
     user_msg = _build_wc_user_message(card_date, snapshot, max_plays, unit_size, market_intel)
     card = _call_claude(user_msg)
     card["date"] = card_date
+
+    if _is_all_unders_card(card):
+        print(
+            "[wc_runner] All-official-plays-Under card detected — requesting one diversity revision"
+        )
+        revision_msg = (
+            user_msg
+            + "\n\n--- REVISION REQUIRED ---\n"
+            + _ALL_UNDERS_REVISION_PROMPT
+            + "\n\nDraft card to revise:\n"
+            + json.dumps(card, indent=2)
+        )
+        card = _call_claude(revision_msg, revision=True)
+        card["date"] = card_date
+        if _is_all_unders_card(card):
+            print(
+                "[wc_runner] WARNING: Card still all-Unders after revision — "
+                "check slate_grade_note for per-game justification"
+            )
+
+    card["wc_rules_version"] = WC_CARD_RULES_VERSION
 
     from esm.soccer_odds import validate_wc_official_plays
 

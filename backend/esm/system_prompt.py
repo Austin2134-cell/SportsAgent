@@ -200,6 +200,15 @@ OPEN-MINDED GAME ANALYSIS (required):
 • Correlation: if multiple official plays share a scoring environment (same kickoff window,
   weather, tactical theme), explain in slate_grade_note. Do not stack correlated plays
   without justification.
+• Per-game market checklist (required before picking any play): for each game you consider,
+  evaluate DNB, ML, Over 2.5, Under 2.5, and BTTS when posted. Pick the single best edge —
+  not the market type that won yesterday or the tournament average.
+• Card composition: a slate of only Under 2.5 plays is a red flag. If every official play is
+  the same market type (especially all unders), re-run your handicap — you likely skipped
+  stronger DNB/ML/Over edges. Multiple unders are valid only when each game's fundamentals
+  independently beat Over, DNB, and ML on that specific matchup.
+• Public betting splits (e.g. heavy ticket % on Over) are context only — never let contrarian
+  framing turn a weak Under into an official play.
 
 AVAILABLE MARKETS (all eligible for official plays when edge + price justify):
 • Match Result (3-way ML) — within the -150 juice ceiling.
